@@ -1,6 +1,6 @@
 {
   "name": "react-mxgraph",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "main": "dist/react-mxgraph.js",
   "repository": {
     "type": "git",
