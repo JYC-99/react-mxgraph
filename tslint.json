@@ -1,0 +1,378 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "./.tslint/tslint-react.json",
+    "./.tslint/tslint-eslint.json",
+    "./.tslint/tslint-microsoft-contrib.json",
+    "./.tslint/tslint-custom.json"
+  ],
+  "defaultSeverity": "error",
+  "rulesDirectory": "./.tslint/customTSLintRules",
+  "rules": {
+    "adjacent-overload-signatures": true,
+    "align": [
+      true,
+      "elements",
+      "members",
+      "statements"
+    ],
+    "array-type": [
+      true,
+      "array-simple"
+    ],
+    "arrow-parens": true,
+    "arrow-return-shorthand": true,
+    "await-promise": true,
+    "ban": [
+      true,
+      {
+        "message": "No alert, please use popup",
+        "name": "alert"
+      },
+      {
+        "message": "Do not use lodash get, use propety name to get value directly. Use extra if or inline check for possible undefined values.",
+        "name": [
+          "_",
+          "get"
+        ]
+      },
+      {
+        "message": "Do not use lodash filter, use native filter function. Use extra if or inline check for possible undefined values.",
+        "name": [
+          "_",
+          "filter"
+        ]
+      },
+      {
+        "message": "Do not use lodash keys, use Object.keys(xx). Use extra if or inline check for possible undefined values.",
+        "name": [
+          "_",
+          "keys"
+        ]
+      },
+      {
+        "message": "Do not use lodash find, use native find function. Use extra if or inline check for possible undefined values.",
+        "name": [
+          "_",
+          "find"
+        ]
+      }
+    ],
+    "ban-comma-operator": true,
+    "ban-types": [
+      true,
+      [
+        "Object",
+        "Avoid using the `Object` type. Did you mean `object`?"
+      ],
+      [
+        "Function",
+        "Avoid using the `Function` type. Prefer a specific function type, like `() => void`."
+      ],
+      [
+        "Boolean",
+        "Avoid using the `Boolean` type. Did you mean `boolean`?"
+      ],
+      [
+        "Number",
+        "Avoid using the `Number` type. Did you mean `number`?"
+      ],
+      [
+        "String",
+        "Avoid using the `String` type. Did you mean `string`?"
+      ],
+      [
+        "Symbol",
+        "Avoid using the `Symbol` type. Did you mean `symbol`?"
+      ],
+      [
+        "AbortController",
+        "Don't manually setup abort controller, use service classes"
+      ]
+    ],
+    "binary-expression-operand-order": true,
+    "callable-types": true,
+    "class-name": true,
+    "comment-format": [
+      true,
+      "check-space"
+    ],
+    "completed-docs": [
+      false
+    ],
+    "curly": true,
+    "cyclomatic-complexity": [
+      true,
+      10
+    ],
+    "deprecation": true,
+    "encoding": true,
+    "eofline": true,
+    "file-header": false,
+    "file-name-casing": [
+      true,
+      {
+        ".tsx": "pascal-case"
+      }
+    ],
+    "forin": true,
+    "import-blacklist": [
+      true
+    ],
+    "import-name": false, // this one has a bug now that throw an error for scss import.
+    "import-spacing": true,
+    "increment-decrement": true,
+    "indent": [
+      true,
+      "spaces",
+      4
+    ],
+    "interface-name": [
+      true,
+      "always-prefix"
+    ],
+    "interface-over-type-literal": true,
+    "jsdoc-format": true,
+    "label-position": true,
+    "linebreak-style": [
+      false,
+      "CRLF"
+    ],
+    "match-default-export-name": true,
+    "max-classes-per-file": [
+      true,
+      1
+    ],
+    "max-file-line-count": [
+      true,
+      500
+    ],
+    "max-line-length": [
+      true,
+      200
+    ],
+    "member-access": true,
+    "member-ordering": [
+      true,
+      {
+        "alphabetize": false,
+        "order": [
+          "public-static-field",
+          "protected-static-field",
+          "private-static-field",
+          "public-instance-field",
+          "protected-instance-field",
+          "private-instance-field",
+          "public-constructor",
+          "protected-constructor",
+          "private-constructor",
+          "public-static-method",
+          "protected-static-method",
+          "private-static-method",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "new-parens": true,
+    "newline-before-return": false,
+    "newline-per-chained-call": true,
+    "no-angle-bracket-type-assertion": true,
+    "no-any": true,
+    "no-arg": true,
+    "no-bitwise": true,
+    "no-boolean-literal-compare": true,
+    "no-conditional-assignment": true,
+    "no-consecutive-blank-lines": [
+      true,
+      1
+    ],
+    "no-console": true,
+    "no-construct": true,
+    "no-debugger": true,
+    "no-default-export": true,
+    "no-duplicate-imports": true,
+    "no-duplicate-super": true,
+    "no-duplicate-switch-case": true,
+    "no-duplicate-variable": true,
+    "no-dynamic-delete": true,
+    "no-empty": true,
+    "no-empty-interface": true,
+    "no-eval": true,
+    "no-floating-promises": false,
+    "no-for-in-array": false,
+    "no-implicit-dependencies": [
+      true,
+      "dev"
+    ],
+    "no-import-side-effect": false,
+    "no-inferrable-types": true,
+    "no-inferred-empty-object-type": true,
+    "no-internal-module": true,
+    "no-invalid-template-strings": true,
+    "no-invalid-this": true,
+    "no-irregular-whitespace": true,
+    "no-magic-numbers": false,
+    "no-mergeable-namespace": true,
+    "no-misused-new": true,
+    "no-namespace": true,
+    "no-non-null-assertion": true,
+    "no-null-keyword": true,
+    "no-object-literal-type-assertion": true,
+    "no-parameter-properties": true,
+    "no-parameter-reassignment": true,
+    "no-redundant-jsdoc": true,
+    "no-reference": true,
+    "no-reference-import": true,
+    "no-require-imports": true,
+    "no-return-await": true,
+    "no-shadowed-variable": true,
+    "no-sparse-arrays": true,
+    "no-string-literal": true,
+    "no-string-throw": true,
+    "no-submodule-imports": true,
+    "no-switch-case-fall-through": true,
+    "no-this-assignment": true,
+    "no-trailing-whitespace": true,
+    "no-unbound-method": true,
+    "no-unnecessary-callback-wrapper": true,
+    "no-unnecessary-class": [
+      true,
+      "allow-static-only"
+    ],
+    "no-unnecessary-initializer": true,
+    "no-unnecessary-qualifier": true,
+    "no-unnecessary-type-assertion": true,
+    "no-unsafe-any": false,
+    "no-unsafe-finally": true,
+    "no-unused-expression": true,
+    "no-unused-variable": false,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "no-var-requires": true,
+    "no-void-expression": true,
+    "number-literal-format": true,
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
+    "object-literal-shorthand": [
+      true,
+      "always"
+    ],
+    "object-literal-sort-keys": [
+      false,
+      "match-declaration-order"
+    ],
+    "one-line": [
+      true,
+      "check-open-brace"
+    ],
+    "one-variable-per-declaration": true,
+    "only-arrow-functions": false,
+    "ordered-imports": true,
+    "prefer-array-literal": false, // confilict with array-type
+    "prefer-conditional-expression": true,
+    "prefer-const": true,
+    "prefer-for-of": true,
+    "prefer-function-over-method": [
+      true,
+      "allow-protected",
+      "allow-public"
+    ],
+    "prefer-method-signature": true,
+    "prefer-object-spread": true,
+    "prefer-readonly": true,
+    "prefer-switch": [
+      true,
+      {
+        "min-cases": 2
+      }
+    ],
+    "prefer-template": true,
+    "prefer-while": true,
+    "promise-function-async": true,
+    "quotemark": [
+      true,
+      "double"
+    ],
+    "radix": true,
+    "restrict-plus-operands": true,
+    "return-undefined": true,
+    "semicolon": [
+      true,
+      "always"
+    ],
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "never",
+        "asyncArrow": "always",
+        "constructor": "never",
+        "method": "never",
+        "named": "never"
+      }
+    ],
+    "space-within-parens": [
+      true,
+      0
+    ],
+    "strict-boolean-expressions": false,
+    "strict-type-predicates": true,
+    "switch-default": true,
+    "switch-final-break": true,
+    "trailing-comma": [
+      true,
+      "never"
+    ],
+    "triple-equals": true,
+    "type-literal-delimiter": true,
+    "typedef": [
+      true,
+      "call-signature",
+      "property-declaration"
+    ],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      },
+      {
+        "call-signature": "onespace",
+        "index-signature": "onespace",
+        "parameter": "onespace",
+        "property-declaration": "onespace",
+        "variable-declaration": "onespace"
+      }
+    ],
+    "typeof-compare": false, // deprecated.
+    "unified-signatures": true,
+    "use-default-type-parameter": true,
+    "use-isnan": true,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-typecast",
+      "check-type-operator",
+      "check-preblock"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "extends": [
+    "tslint-microsoft-contrib"
+  ],
+  "rules": {
+    "no-backbone-get-set-outside-model": false,
+    "no-stateless-class": false,
+    "react-unused-props-and-state": false,
+    "export-name": true,
+    "function-name": [
+      true,
+      {
+        "method-regex": "^[a-z][\\w\\d]+$",
+        "private-method-regex": "^[a-z][\\w\\d]+$",
+        "protected-method-regex": "^[a-z][\\w\\d]+$",
+        "static-method-regex": "^[a-z][\\w\\d]+$",
+        "function-regex": "^[a-z][\\w\\d]+$"
+      }
+    ],
+    "missing-jsdoc": false,
+    "no-relative-imports": false,
+    "no-suspicious-comment": false,
+    "no-unnecessary-semicolons": false,
+    "react-tsx-curly-spacing": [
+      true,
+      "never",
+      {
+        "allowMultiline": true
+      }
+    ],
+    "prefer-type-cast": false
+  }
+}
