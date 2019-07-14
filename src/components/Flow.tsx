@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
-  ICanvasEdge,
-  ICanvasNode,
+  ICanvasData,
 } from "../types/flow";
 
 import {
@@ -9,21 +8,51 @@ import {
 } from "../context/MxGraphContext";
 
 interface IFlowProps {
-  nodes: ICanvasNode[];
-  edges: ICanvasEdge[];
+  data: ICanvasData,
 }
 
 export class Flow extends React.PureComponent<IFlowProps> {
-  public render(): React.ReactChild {
+  public render(): React.ReactNode {
     return (
       <MxGraphContext.Consumer>{(mxGraph) => {
-        console.log(mxGraph.graph);
+        const {
+          graph,
+        } = mxGraph;
 
-        return (
-          <>
-            Flow
-          </>
-        );
+        if (graph) {
+          graph
+            .getModel()
+            .beginUpdate();
+
+          try {
+            const parent = graph.getDefaultParent();
+
+            const vertexes = this.props.data.nodes.map((node) => {
+              const width = node.size ? node.size[0] : 200;
+              const height = node.size ? node.size[1] : 200;
+
+              return {
+                vertex: graph.insertVertex(parent, null, node.label, node.x, node.y, width, height),
+                id: node.id
+              };
+            });
+
+            this.props.data.edges.forEach((edge) => {
+              const source = vertexes.find((v) => v.id === edge.source);
+              const target = vertexes.find((v) => v.id === edge.target);
+
+              if (source && target) {
+                graph.insertEdge(parent, null, "", source.vertex, target.vertex);
+              }
+            });
+          } finally {
+            graph.getModel().endUpdate();
+          }
+        } else {
+          throw new Error("Init mxGraph failed");
+        }
+
+        return null;
       }}
       </MxGraphContext.Consumer>
     );

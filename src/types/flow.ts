@@ -1,8 +1,8 @@
 export interface IDrawable {
   color?: string;
   fill?: string;
-  x: number | string;
-  y: number | string;
+  x: number;
+  y: number;
 }
 
 export interface ILayoutNode extends IDrawable {
