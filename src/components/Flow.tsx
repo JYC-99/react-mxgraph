@@ -3,6 +3,7 @@ import {
   ICanvasData,
 } from "../types/flow";
 
+// @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 
 import {
@@ -55,7 +56,9 @@ export class Flow extends React.PureComponent<IFlowProps> {
               }
             });
           } finally {
-            graph.getModel().endUpdate();
+            graph
+              .getModel()
+              .endUpdate();
           }
         } else {
           throw new Error("Init mxGraph failed");
