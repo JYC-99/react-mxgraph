@@ -1,10 +1,10 @@
 {
   "name": "react-mxgraph",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:BigYu/react-mxgraph.git"
+    "url": "https://github.com/BigYu/react-mxgraph.git"
   },
   "author": "Yucong Jin<jinyucong911@outlook.com>",
   "license": "MIT"
