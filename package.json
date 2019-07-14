@@ -13,7 +13,7 @@
     "test": "jest",
     "lint": "tslint -p .",
     "dev": "webpack-dev-server --config=webpack.config.dev.js --hot --inline",
-    "build-dts": "tsc.cmd -p tsconfig.json && dts-bundle --configJson dts-bundle.json"
+    "postbuild": "tsc.cmd -p tsconfig.json && dts-bundle --configJson dts-bundle.json"
   },
   "devDependencies": {
     "@babel/core": "7.2.2",
