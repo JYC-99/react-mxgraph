@@ -3,21 +3,30 @@ import {
   ICanvasData,
 } from "../types/flow";
 
+import * as mxGraphJs from "mxgraph-js";
+
 import {
+  IMxGraphContext,
   MxGraphContext
 } from "../context/MxGraphContext";
 
 interface IFlowProps {
-  data: ICanvasData,
+  data: ICanvasData;
 }
+
+const {
+  mxGraph,
+} = mxGraphJs;
 
 export class Flow extends React.PureComponent<IFlowProps> {
   public render(): React.ReactNode {
     return (
-      <MxGraphContext.Consumer>{(mxGraph) => {
+      <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
         const {
-          graph,
-        } = mxGraph;
+          container,
+        } = value;
+
+        const graph = new mxGraph(container);
 
         if (graph) {
           graph

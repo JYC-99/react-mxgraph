@@ -9,12 +9,17 @@ import {
 
 const {
   mxClient,
-  mxGraph,
   mxUtils,
 } = mxGraphJs;
 
-export class MxGraph extends React.PureComponent {
-  private readonly containerRef = React.createRef<HTMLDivElement>();
+export class MxGraph extends React.PureComponent<{}, { container: HTMLDivElement | null }> {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = {
+      container: null,
+    };
+  }
 
   public componentWillMount(): void {
     if (!mxClient.isBrowserSupported()) {
@@ -24,15 +29,21 @@ export class MxGraph extends React.PureComponent {
 
   public render(): React.ReactNode {
     return (
-      <div ref={this.containerRef}>
+      <div ref={this.setContainer}>
         <MxGraphContext.Provider
           value={{
-            graph: new mxGraph(this.containerRef.current),
+            container: this.state.container,
           }}
         >
             {this.props.children}
         </MxGraphContext.Provider>
       </div>
     );
+  }
+
+  private readonly setContainer = (container: HTMLDivElement | null): void => {
+    this.setState({
+      container,
+    });
   }
 }

@@ -10,7 +10,7 @@ import "./index.scss";
 const data = {
   nodes: [{
     type: 'node',
-    size: '70*70',
+    size: [70, 70],
     shape: 'flow-circle',
     color: '#FA8C16',
     label: '起止节点',
@@ -20,7 +20,7 @@ const data = {
     index: 0,
   }, {
     type: 'node',
-    size: '70*70',
+    size: [70, 70],
     shape: 'flow-circle',
     color: '#FA8C16',
     label: '结束节点',

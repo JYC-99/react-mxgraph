@@ -20,7 +20,8 @@ interface IGraphModel {
   endUpdate(): void;
 }
 
-interface IMxGraphContext {
+export interface IMxGraphContext {
+  container: HTMLDivElement | null;
   graph?: {
     getModel(): IGraphModel;
     getDefaultParent(): IParent;
@@ -31,4 +32,5 @@ interface IMxGraphContext {
 
 export const MxGraphContext = React.createContext<IMxGraphContext>({
   graph: undefined,
+  container: null,
 });
