@@ -3,18 +3,29 @@
 //   ../react
 
 declare module 'react-mxgraph' {
+    export * from "react-mxgraph/components/MxGraph";
     export * from "react-mxgraph/components/Flow";
+}
+
+declare module 'react-mxgraph/components/MxGraph' {
+    import * as React from "react";
+    export class MxGraph extends React.PureComponent<{}, {
+        container: HTMLDivElement | null;
+    }> {
+        constructor(props: {});
+        componentWillMount(): void;
+        render(): React.ReactNode;
+    }
 }
 
 declare module 'react-mxgraph/components/Flow' {
     import * as React from "react";
-    import { ICanvasEdge, ICanvasNode } from "react-mxgraph/types/flow";
+    import { ICanvasData } from "react-mxgraph/types/flow";
     interface IFlowProps {
-        nodes: ICanvasNode[];
-        edges: ICanvasEdge[];
+        data: ICanvasData;
     }
     export class Flow extends React.PureComponent<IFlowProps> {
-        render(): React.ReactChild;
+        render(): React.ReactNode;
     }
     export {};
 }
@@ -23,8 +34,8 @@ declare module 'react-mxgraph/types/flow' {
     export interface IDrawable {
         color?: string;
         fill?: string;
-        x: number | string;
-        y: number | string;
+        x: number;
+        y: number;
     }
     export interface ILayoutNode extends IDrawable {
         id: string;
