@@ -4,6 +4,10 @@ import {
   ICanvasNode,
 } from "../types/flow";
 
+import {
+  MxGraphContext
+} from "../context/MxGraphContext";
+
 interface IFlowProps {
   nodes: ICanvasNode[];
   edges: ICanvasEdge[];
@@ -12,9 +16,16 @@ interface IFlowProps {
 export class Flow extends React.PureComponent<IFlowProps> {
   public render(): React.ReactChild {
     return (
-      <>
-        This is flow
-      </>
+      <MxGraphContext.Consumer>{(mxGraph) => {
+        console.log(mxGraph.graph);
+
+        return (
+          <>
+            Flow
+          </>
+        );
+      }}
+      </MxGraphContext.Consumer>
     );
   }
 }
