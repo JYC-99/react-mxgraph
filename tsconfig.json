@@ -3,7 +3,7 @@
     "src"
   ],
   "compilerOptions": {
-    "allowJs": true,
+    // "allowJs": true,
     "target": "es5",
     "lib": [
       "dom",
@@ -12,7 +12,10 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
-    "jsx": "preserve",
+    "jsx": "react",
+    "declaration": true,
+    "declarationDir": "dist",
+    "emitDeclarationOnly": true,
     // settings
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
@@ -27,7 +30,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    // "isolatedModules": true,
+    // "noEmit": true,
   }
 }
