@@ -74,5 +74,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "dependencies": {
+    "mxgraph-js": "^1.0.1"
+  }
 }
