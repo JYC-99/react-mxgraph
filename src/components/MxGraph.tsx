@@ -1,15 +1,17 @@
 import * as React from "react";
 
 // @ts-ignore
-import {
-  mxClient,
-  mxGraph,
-  mxUtils,
-} from "mxgraph-js";
+import * as mxGraphJs from "mxgraph-js";
 
 import {
   MxGraphContext
 } from "../context/MxGraphContext";
+
+const {
+  mxClient,
+  mxGraph,
+  mxUtils,
+} = mxGraphJs;
 
 export class MxGraph extends React.PureComponent {
   private readonly containerRef = React.createRef<HTMLDivElement>();
@@ -25,7 +27,6 @@ export class MxGraph extends React.PureComponent {
       <div ref={this.containerRef}>
         <MxGraphContext.Provider
           value={{
-            mxClient,
             graph: new mxGraph(this.containerRef.current),
           }}
         >
