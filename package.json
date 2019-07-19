@@ -15,6 +15,7 @@
     "dev": "webpack-dev-server --config=webpack.config.dev.js --hot --inline",
     "postbuild": "tsc.cmd -p tsconfig.json && dts-bundle --configJson dts-bundle.json",
     "storybook": "start-storybook",
+    "build-storybook": "build-storybook -c .storybook -o docs",
     "deploy-storybook": "storybook-to-ghpages"
   },
   "devDependencies": {
