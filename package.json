@@ -14,7 +14,8 @@
     "lint": "tslint -p .",
     "dev": "webpack-dev-server --config=webpack.config.dev.js --hot --inline",
     "postbuild": "tsc.cmd -p tsconfig.json && dts-bundle --configJson dts-bundle.json",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "devDependencies": {
     "@babel/core": "7.2.2",
@@ -28,6 +29,7 @@
     "@babel/runtime": "7.4.3",
     "@hot-loader/react-dom": "16.8.1",
     "@storybook/addon-info": "^5.1.9",
+    "@storybook/storybook-deployer": "^2.8.1",
     "@types/bluebird": "3.5.25",
     "@types/enzyme": "3.1.18",
     "@types/humps": "1.1.2",
