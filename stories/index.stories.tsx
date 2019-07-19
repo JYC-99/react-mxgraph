@@ -51,4 +51,4 @@ storiesOf("Flow", module)
         />
       </MxGraph>
     );
-  }, { info: "This is info" });
+  });
