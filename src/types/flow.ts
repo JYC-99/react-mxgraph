@@ -13,7 +13,7 @@ export interface ICanvasNode extends IDrawable {
   label?: string;
   name?: string;
   comment?: string;
-  size?: [number, number];
+  size?: number[];
   shape?: string;
   id: string;
   index: number | string;

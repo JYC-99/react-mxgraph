@@ -30,6 +30,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "resolveJsonModule": true,
+    "rootDirs": ["src", "stories"]
     // "isolatedModules": true,
     // "noEmit": true,
   }
