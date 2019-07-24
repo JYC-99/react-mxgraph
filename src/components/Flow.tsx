@@ -15,20 +15,15 @@ interface IFlowProps {
   data: ICanvasData;
 }
 
-const {
-  mxGraph,
-} = mxGraphJs;
-
 export class Flow extends React.PureComponent<IFlowProps> {
   public render(): React.ReactNode {
     return (
       <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
         const {
-          container,
+          graph,
         } = value;
-
-        const graph = new mxGraph(container);
-
+        console.log("MxgraphContext Consumer", graph);
+        
         if (graph) {
           graph
             .getModel()
@@ -61,7 +56,8 @@ export class Flow extends React.PureComponent<IFlowProps> {
               .endUpdate();
           }
         } else {
-          throw new Error("Init mxGraph failed");
+          console.log("graph has not been initial");
+          //throw new Error("Init mxGraph failed");
         }
 
         return null;
