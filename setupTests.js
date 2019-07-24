@@ -1,8 +1,11 @@
 /** Jest test setup file. */
+import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
 
 const { configure } = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
 const ReactDOM = require('react-dom');
+
+registerRequireContextHook();
 
 // optional
 window.requestAnimationFrame = callback => {

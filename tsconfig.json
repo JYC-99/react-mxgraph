@@ -12,7 +12,7 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
-    "jsx": "react",
+    "jsx": "preserve",
     "declaration": true,
     "declarationDir": "dist",
     "emitDeclarationOnly": true,

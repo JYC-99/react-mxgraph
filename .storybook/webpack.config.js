@@ -12,7 +12,11 @@ module.exports = ({ config, mode }) => {
         "css-loader",
         "sass-loader"
       ]
-  },);
+  }, {
+    test: /\.css$/,
+    exclude: /node_modules(?!\/@storybook\/addon-info)/,
+    use: ['style-loader', 'css-loader'],
+  });
   config.resolve.extensions.push('.ts', '.tsx');
   return config;
 };
