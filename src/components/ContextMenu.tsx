@@ -30,52 +30,6 @@ interface IContextMenuState {
 }
 
 export class ContextMenu extends React.PureComponent<IContextMenuProps, IContextMenuState> {
-  constructor(props: IContextMenuProps) {
-    super(props);
-    this.state = {
-      menuItem: [
-        {
-          name: "vertex",
-          items: [
-            {
-              menuItemType: "item",
-              text: "this is a vertex",
-              func(): void { alert("item 1"); },
-            },
-            {
-              menuItemType: "separator",
-            },
-            {
-              menuItemType: "item",
-              text: "this is a vertex item",
-              func(): void { alert("item 2"); },
-            },
-          ]
-        },
-        {
-          name: "edge",
-          items: [
-            {
-              menuItemType: "item",
-              text: "this is a edge",
-              func(): void { alert("item 1"); },
-            },
-          ],
-        },
-        {
-          name: "canvas",
-          items: [
-            {
-              menuItemType: "item",
-              text: "this is a canvas",
-              func(): void { alert("item 1"); },
-            },
-          ],
-        },
-      ],
-    };
-  }
-
   public render(): React.ReactNode {
     return (
       <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
@@ -102,7 +56,7 @@ export class ContextMenu extends React.PureComponent<IContextMenuProps, IContext
             const currentMenu = this.props.data.find((stateMenu) => {
               return stateMenu.name === name;
             }) ;
-            if(currentMenu) {
+            if (currentMenu) {
               items = currentMenu.items;
             }
             if (items.length !== 0) {
@@ -120,7 +74,6 @@ export class ContextMenu extends React.PureComponent<IContextMenuProps, IContext
             } else {
               throw new Error("Init menu failed");
             }
-
           }
         } else {
           console.log("graph hasn't initial");
