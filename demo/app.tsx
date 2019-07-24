@@ -3,7 +3,6 @@ import { hot } from "react-hot-loader";
 
 import {
   ContextMenu,
-  ItemPanel,
   Flow,
   MxGraph,
 } from "../src/index";
@@ -91,7 +90,6 @@ const Demo = () => (
       <ContextMenu
         data={menuData}
       />
-      <ItemPanel/>
     </MxGraph>
   </div>
 

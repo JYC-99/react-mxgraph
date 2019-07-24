@@ -5,7 +5,14 @@ module.exports = ({ config, mode }) => {
     options: {
       presets: [['react-app', { flow: false, typescript: true }]],
     },
-  });
+  }, {
+    test: /\.scss$/,
+      use: [
+        "style-loader",
+        "css-loader",
+        "sass-loader"
+      ]
+  },);
   config.resolve.extensions.push('.ts', '.tsx');
   return config;
 };
