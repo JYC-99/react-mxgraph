@@ -22,8 +22,6 @@ export class Flow extends React.PureComponent<IFlowProps> {
         const {
           graph,
         } = value;
-        console.log("MxgraphContext Consumer", graph);
-        
         if (graph) {
           graph
             .getModel()
@@ -56,8 +54,7 @@ export class Flow extends React.PureComponent<IFlowProps> {
               .endUpdate();
           }
         } else {
-          console.log("graph has not been initial");
-          //throw new Error("Init mxGraph failed");
+          // error handling
         }
 
         return null;

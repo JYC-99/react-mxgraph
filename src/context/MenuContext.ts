@@ -17,6 +17,7 @@ export interface IMenuContext {
 }
 
 export const MenuContext = React.createContext<IMenuContext>({
+  // tslint:disable-next-line: no-empty
   addMenuItem: () => {},
 });
 
@@ -25,5 +26,6 @@ export interface IMenuItemContext {
 }
 
 export const MenuItemContext = React.createContext<IMenuItemContext>({
+  // tslint:disable-next-line: no-empty
   addItem: () => {},
 });

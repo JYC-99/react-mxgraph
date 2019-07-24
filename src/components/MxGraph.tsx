@@ -4,7 +4,7 @@ import * as React from "react";
 import * as mxGraphJs from "mxgraph-js";
 
 import {
-  MxGraphContext, IMxGraphContext
+  IMxGraphContext, MxGraphContext
 } from "../context/MxGraphContext";
 
 const {
@@ -17,7 +17,6 @@ const {
 } = mxGraphJs;
 
 export class MxGraph extends React.PureComponent<{}, {
-  //container: HTMLDivElement | null;
   graph: IMxGraphContext["graph"];
 }> {
   constructor(props: {}) {
@@ -56,9 +55,5 @@ export class MxGraph extends React.PureComponent<{}, {
       });
     }
     // console.log("setContainer", container, this.state.container);
-  }
-
-  public componentDidUpdate = () : void => {
-    // console.log("did update", this.state.graph);
   }
 }

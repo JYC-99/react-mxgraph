@@ -1,6 +1,6 @@
-import * as React from "react";
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
+import * as React from "react";
 
 const {
   mxEvent,
@@ -62,7 +62,9 @@ export class ContextMenu extends React.PureComponent<IContextMenuProps, IContext
             if (items.length !== 0) {
               items.map((item) => {
                 const text = item.text ? item.text : "default";
+                // tslint:disable-next-line: prefer-switch
                 if (item.menuItemType === "item") {
+                  // tslint:disable-next-line: no-unbound-method no-empty
                   const func = item.func ? item.func : () => {}; // not this
                   menu.addItem(text, null, func);
                 } else if (item.menuItemType === "separator") {
@@ -74,8 +76,9 @@ export class ContextMenu extends React.PureComponent<IContextMenuProps, IContext
             } else {
               throw new Error("Init menu failed");
             }
-          }
+          };
         } else {
+          // tslint:disable-next-line: no-console
           console.log("graph hasn't initial");
         }
         return null;
