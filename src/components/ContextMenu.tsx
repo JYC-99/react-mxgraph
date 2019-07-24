@@ -13,11 +13,8 @@ import {
 
 import {
   IMenuArg,
-  IMenuContext,
-  MenuContext,
 } from "../context/MenuContext";
 
-// tslint:disable-next-line: no-empty-interface
 interface IContextMenuProps {
   data: Array<{
     name: string;
