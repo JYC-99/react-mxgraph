@@ -30,6 +30,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
 
   public render(): React.ReactNode {
     return (
+      <div className="Flow">
       <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
         const {
           setGraph,
@@ -42,6 +43,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         );
       }}
       </MxGraphContext.Consumer>
+      </div>
     );
   }
 

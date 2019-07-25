@@ -25,8 +25,6 @@ interface IContextMenuProps {
 
 export class ContextMenu extends React.PureComponent<IContextMenuProps> {
 
-  private readonly testVal = 2;
-
   constructor(props: {}) {
     console.log("context");
     super(props);
