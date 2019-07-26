@@ -48,13 +48,17 @@ export class Item extends React.PureComponent<IItemProps> {
           if (!graph || !container) {
             return null;
           }
-
+          console.log("addItem");
           this.addToolbarItem(graph, container);
           return null;
         }}</MxGraphContext.Consumer>
         {this.props.children}
       </div>
     );
+  }
+
+  private componentDidMount() {
+    console.log("didMount");
   }
 
   private readonly setStyle = (shape: string) => {
