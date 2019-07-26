@@ -4,21 +4,20 @@ import * as React from "react";
 import * as mxGraphJs from "mxgraph-js";
 
 import {
-  IMxGraphContext, MxGraphContext
+  MxGraphContext
 } from "../context/MxGraphContext";
+import { IMxGraph } from "../types/mxGraph";
 
 const {
   mxClient,
   mxUtils,
 } = mxGraphJs;
 
-const {
-  mxGraph,
-} = mxGraphJs;
+interface IState {
+  graph?: IMxGraph;
+}
 
-export class MxGraph extends React.PureComponent<{}, {
-  graph: IMxGraphContext["graph"];
-}> {
+export class MxGraph extends React.PureComponent<{}, IState> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -34,26 +33,24 @@ export class MxGraph extends React.PureComponent<{}, {
 
   public render(): React.ReactNode {
     return (
-      <div ref={this.setContainer}>
+      <div>
         <MxGraphContext.Provider
           value={{
             graph: this.state.graph,
+            setGraph: (graph) => {
+              if (this.state.graph) {
+                return;
+              }
+
+              this.setState({
+                graph,
+              });
+            }
           }}
         >
             {this.props.children}
         </MxGraphContext.Provider>
       </div>
     );
-  }
-
-  private readonly setContainer = (container: HTMLDivElement | null): void => {
-    // console.log("setContainer", container);
-    if (container !== null) {
-      // console.log("set graph", new mxGraph(container));
-      this.setState({
-        graph: new mxGraph(container),
-      });
-    }
-    // console.log("setContainer", container, this.state.container);
   }
 }
