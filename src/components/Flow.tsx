@@ -29,52 +29,13 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
   private _setGraph?: (graph: IMxGraph) => void;
 
   public render(): React.ReactNode {
+    console.log("flow render");
     return (
       <div className="Flow">
       <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
         const {
           setGraph,
         } = value;
-<<<<<<< HEAD
-=======
-        if (!graph) {
-          // tslint:disable-next-line: no-console
-          console.log("not init graph");
-          return null;
-        }
-        if (graph) {
-          graph
-            .getModel()
-            .beginUpdate();
-
-          try {
-            const parent = graph.getDefaultParent();
-
-            const vertexes = this.props.data.nodes.map((node) => {
-              const width = node.size ? node.size[0] : 200;
-              const height = node.size ? node.size[1] : 200;
-
-              return {
-                vertex: graph.insertVertex(parent, null, node.label, node.x, node.y, width, height),
-                id: node.id
-              };
-            });
-
-            this.props.data.edges.forEach((edge) => {
-              const source = vertexes.find((v) => v.id === edge.source);
-              const target = vertexes.find((v) => v.id === edge.target);
-
-              if (source && target) {
-                graph.insertEdge(parent, null, "", source.vertex, target.vertex);
-              }
-            });
-          } finally {
-            graph
-              .getModel()
-              .endUpdate();
-          }
-        }
->>>>>>> add item panel
 
         this._setGraph = setGraph;
 
@@ -88,11 +49,13 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
   }
 
   public readonly componentDidMount = (): void => {
+    console.log("flow did mount");
     if (!this._setGraph) {
       throw new Error("_setGraph does not initialized!");
     }
-
+    console.log("flow did mount");
     this._initMxGraph(this._setGraph);
+    console.log("flow did mount");
   }
 
   private readonly _initMxGraph = (setGraph: (graph: IMxGraph) => void): void => {

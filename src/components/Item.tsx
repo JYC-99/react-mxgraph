@@ -7,16 +7,17 @@ const {
     mxCell,
     mxUtils,
     mxGeometry,
-    mxDragSource,
-    mxGraphHandler,
   } = mxGraphJs;
+
+import {
+  IMxGraphContext,
+  MxGraphContext,
+} from "../context/MxGraphContext";
 
 import {
   ImxCell,
   IMxGraph,
-  IMxGraphContext,
-  MxGraphContext,
-} from "../context/MxGraphContext";
+} from "../types/mxGraph";
 
 interface IItemProps {
   text?: string;
@@ -33,37 +34,47 @@ interface IItemStatus {
 }
 
 export class Item extends React.PureComponent<IItemProps, IItemStatus> {
+  private readonly _containerRef = React.createRef<HTMLDivElement>();
+  private item = {
+    text: "", width: 100, height: 70, style: "shape=rectangle",
+  };
 
   constructor(props: IItemProps) {
     super(props);
-    this.state = {
-      container: undefined,
-      text: this.props.text ? this.props.text : "",
-      image: this.props.shape ? this.setImage(this.props.shape) : "images/rectangle.gif",
-      width: 100,
-      height: 70,
-      style: this.props.shape ? this.setStyle(this.props.shape) : "shape=rectangle",
-    };
+    console.log(this.item);
+    this.item.text = this.props.text ? this.props.text : "";
+    this.item.style = this.props.shape ? this.setStyle(this.props.shape) : "shape=rectangle";
+    console.log(this.item);
+    // const text = this.props.text ? this.props.text : "";
+    // const style = this.props.shape ? this.setStyle(this.props.shape) : "shape=rectangle";
+    // const item = {text, style};
+    // Object.assign(this.item, item);
   }
 
   public render(): React.ReactNode {
+    console.log("item render");
     return (
-      <div ref={this.setContainer} >
+      <div ref={this._containerRef} >
         <MxGraphContext.Consumer>{(context: IMxGraphContext) => {
           const { graph, } = context;
-          const { container, } = this.state;
+          const container = this._containerRef.current;
+          console.log("render");
           if (!graph || !container) {
-            // tslint:disable-next-line: no-console
-            console.log("test Item not init toolbar container");
+            if(! graph ) console.log("!graph");
+            if(!container) console.log("!container");
             return null;
           }
-
+          console.log("addItem");
           this.addToolbarItem(graph, container);
           return null;
         }}</MxGraphContext.Consumer>
         {this.props.children}
       </div>
     );
+  }
+
+  private componentDidMount() {
+    console.log("didMount");
   }
 
   private readonly setStyle = (shape: string) => {
@@ -80,16 +91,6 @@ export class Item extends React.PureComponent<IItemProps, IItemStatus> {
     }
   }
 
-  private readonly setImage = (shape: string | null) => {
-    switch (shape) {
-      case "":
-      case null:
-        return "/images/rectangle.gif";
-      default:
-        return `/images/${shape}.gif`;
-    }
-  }
-
   private readonly addVertex = (text: string, width: number, height: number, style: string): ImxCell => {
     const vertex = new mxCell(text, new mxGeometry(0, 0, width, height), style);
     vertex.setVertex(true);
@@ -97,20 +98,13 @@ export class Item extends React.PureComponent<IItemProps, IItemStatus> {
   }
 
   private readonly addToolbarItem = (graph: IMxGraph, elt: HTMLDivElement): void => {
-    // mxGraphHandler.prototype.guidesEnabled = true;
 
-    const { text, width, height, style } = this.state;
+    const { text, width, height, style } = this.item;
     const func = (graphF: IMxGraph, _evt: PointerEvent, target: ImxCell, x: number, y: number) => {
 
       const cell = this.addVertex(text, width, height, style);
-      // console.log("offset", _evt.offsetX, _evt.offsetY);
+
       const cells = graphF.importCells([cell], x, y, target);
-      // console.log(cells);
-      // console.log("1", graph);
-      // console.log("2", graphF);
-      // console.log("....");
-      // console.log(x, y);
-      // console.log(_evt);
       if (cells !== null && cells.length > 0) {
         graphF.scrollCellToVisible(cells[0]);
         // disable select item of tool bar ( will produce a new drag-source )
@@ -124,20 +118,6 @@ export class Item extends React.PureComponent<IItemProps, IItemStatus> {
     dragElt.style.height = `${height}px`;
     // cspell: disable-next-line
     mxUtils.makeDraggable(elt, graph, func, dragElt, null, null, graph.autoscroll, true);
-    /*
-    ds.isGuidesEnabled = () => {
-      return graph.graphHandler.guidesEnabled;
-    };
+  }
 
-    ds.createDragElement = mxDragSource.prototype.createDragElement;
-    */
-  }
-  private readonly setContainer = (container: HTMLDivElement | null): void => {
-    if (container !== null) {
-      // console.log("init item container", container);
-      this.setState({
-        container,
-      });
-    }
-  }
 }

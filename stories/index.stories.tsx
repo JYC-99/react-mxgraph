@@ -175,56 +175,10 @@ storiesOf("Flow", module)
       }],
     };
 
-    const menuData = [
-      {
-        name: "vertex",
-        items: [
-          {
-            menuItemType: "item",
-            text: "this is a vertex",
-            func(): void { alert("item 1"); },
-          },
-          {
-            menuItemType: "separator",
-          },
-          {
-            menuItemType: "item",
-            text: "this is a test vertex item",
-            func(): void { alert("item 2"); },
-          },
-        ]
-      },
-      {
-        name: "edge",
-        items: [
-          {
-            menuItemType: "item",
-            text: "this is a edge",
-            func(): void { alert("item 1"); },
-          },
-        ],
-      },
-      {
-        name: "canvas",
-        items: [
-          {
-            menuItemType: "item",
-            text: "this is a canvas",
-            func(): void { alert("item 1"); },
-          },
-        ],
-      },
-    ];
-
     return (
       <div>
       <MxGraph>
-        <Flow
-          data={data}
-        />
-        <ContextMenu
-          data={menuData}
-        />
+        <Flow data={data} />
         <ItemPanel>
           <Item text="test swimlane" shape={"swimlane"}>
             swimlane

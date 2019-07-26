@@ -77,9 +77,6 @@ export class ContextMenu extends React.PureComponent<IContextMenuProps, IContext
               throw new Error("Init menu failed");
             }
           };
-        } else {
-          // tslint:disable-next-line: no-console
-          console.log("graph hasn't initial");
         }
         return null;
       }}
