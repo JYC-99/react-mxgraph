@@ -12,6 +12,7 @@
     "build": "webpack -p --config=webpack.config.prod.js",
     "test": "jest",
     "lint": "tslint -p .",
+    "lintfix": "tslint -p --fix .",
     "dev": "webpack-dev-server --config=webpack.config.dev.js --hot --inline",
     "postbuild": "tsc.cmd -p tsconfig.json && dts-bundle --configJson dts-bundle.json",
     "storybook": "start-storybook",
