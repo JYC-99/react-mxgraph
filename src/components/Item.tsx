@@ -64,7 +64,6 @@ export class Item extends React.PureComponent<IItemProps> {
     }
     switch (shape) {
       case "":
-      case null:
         return "shape=rectangle";
       default:
         return `shape=${shape}`;
