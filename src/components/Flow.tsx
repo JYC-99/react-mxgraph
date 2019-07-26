@@ -29,9 +29,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
   private _setGraph?: (graph: IMxGraph) => void;
 
   public render(): React.ReactNode {
-    console.log("flow render");
     return (
-      <div className="Flow">
       <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
         const {
           setGraph,
@@ -44,18 +42,15 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         );
       }}
       </MxGraphContext.Consumer>
-      </div>
     );
   }
 
   public readonly componentDidMount = (): void => {
-    console.log("flow did mount");
     if (!this._setGraph) {
       throw new Error("_setGraph does not initialized!");
     }
-    console.log("flow did mount");
+
     this._initMxGraph(this._setGraph);
-    console.log("flow did mount");
   }
 
   private readonly _initMxGraph = (setGraph: (graph: IMxGraph) => void): void => {

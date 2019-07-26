@@ -24,57 +24,37 @@ interface IItemProps {
   shape?: string;
 }
 
-interface IItemStatus {
-  container: HTMLDivElement | undefined;
-  text: string;
-  image: string;
-  width: number;
-  height: number;
-  style: string;
-}
-
-export class Item extends React.PureComponent<IItemProps, IItemStatus> {
+export class Item extends React.PureComponent<IItemProps> {
   private readonly _containerRef = React.createRef<HTMLDivElement>();
-  private item = {
+  private readonly item = {
     text: "", width: 100, height: 70, style: "shape=rectangle",
   };
 
   constructor(props: IItemProps) {
     super(props);
-    console.log(this.item);
+
     this.item.text = this.props.text ? this.props.text : "";
     this.item.style = this.props.shape ? this.setStyle(this.props.shape) : "shape=rectangle";
-    console.log(this.item);
-    // const text = this.props.text ? this.props.text : "";
-    // const style = this.props.shape ? this.setStyle(this.props.shape) : "shape=rectangle";
-    // const item = {text, style};
-    // Object.assign(this.item, item);
   }
 
   public render(): React.ReactNode {
-    console.log("item render");
+
     return (
       <div ref={this._containerRef} >
         <MxGraphContext.Consumer>{(context: IMxGraphContext) => {
           const { graph, } = context;
           const container = this._containerRef.current;
-          console.log("render");
+
           if (!graph || !container) {
-            if(! graph ) console.log("!graph");
-            if(!container) console.log("!container");
             return null;
           }
-          console.log("addItem");
+
           this.addToolbarItem(graph, container);
           return null;
         }}</MxGraphContext.Consumer>
         {this.props.children}
       </div>
     );
-  }
-
-  private componentDidMount() {
-    console.log("didMount");
   }
 
   private readonly setStyle = (shape: string) => {
