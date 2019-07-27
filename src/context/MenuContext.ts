@@ -13,12 +13,12 @@ export interface IMenuArg {
 }
 
 export interface IMenuContext {
-  addMenuItem(name: string, item: IMenuArg[]): void;
+  setItem(name: string, item: IMenuArg[]): void;
 }
 
 export const MenuContext = React.createContext<IMenuContext>({
   // tslint:disable-next-line: no-empty
-  addMenuItem: () => {},
+  setItem: () => {},
 });
 
 export interface IMenuItemContext {
