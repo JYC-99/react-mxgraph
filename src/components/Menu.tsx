@@ -1,36 +1,41 @@
 import * as React from "react";
 
 import {
-  IMenuArg,
-  MenuContext,
   IMenuContext,
+  MenuContext,
 } from "../context/MenuContext";
 
 import {
-  createMenu,
-} from "./CreateMenu"
+  IMenu,
+} from "../types/menu";
 
-export class Menu extends React.PureComponent {
-  constructor(props:{}) {
+import {
+  createMenu,
+} from "./CreateMenu";
+
+export class Menu extends React.PureComponent<{name: string}> {
+  public menu: IMenu[];
+  constructor(props: {name: string}) {
     super(props);
-    this.item = [
+    this.menu = [
       {
         menuItemType: "item",
-        text: "this is a sub menu for "+props.name ,
+        text: `this is a sub menu for ${props.name}` ,
+        // tslint:disable-next-line: ban
         func(): void { alert("item 1"); },
       },
       {
         menuItemType: "separator",
       },
     ];
-    console.log("props", props, props.name, this.item[0].text);
   }
 
-  public render() {
+  public render(): React.ReactNode {
     return (
-      <MenuContext.Consumer>{(context: IMenuContext)=> {
-        const { setItem } = context;
-        setItem(this.props.name, this.item);
+      <MenuContext.Consumer>{(context: IMenuContext) => {
+        const { setMenu } = context;
+        setMenu(this.props.name, this.menu);
+        return null;
       }}
       </MenuContext.Consumer>
     );

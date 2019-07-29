@@ -12,55 +12,29 @@ import {
 } from "../context/MxGraphContext";
 
 import {
-  IMenuArg,
   MenuContext,
 } from "../context/MenuContext";
 
-interface IContextMenuProps {
-  data: Array<{
-    name: string;
-    items: IMenuArg[];
-  }>;
-}
+import {
+  IMenu,
+  IMenus,
+} from "../types/menu";
 
-export class ContextMenu extends React.PureComponent<IContextMenuProps> {
+export class ContextMenu extends React.PureComponent {
+  public menus: IMenus;
 
   constructor(props: {}) {
-    console.log("context");
     super(props);
-    this.items =  {
-      vertex: [
-        {
-          menuItemType: "item",
-          text: "this is a vertex",
-          func(): void { alert("item 1"); },
-        },
-        {
-          menuItemType: "separator",
-        }
-      ],
-      edge: [
-        {
-          menuItemType: "item",
-          text: "this is a menu edge",
-          func(): void { alert("item 1"); },
-        },
-      ],
-      canvas: [
-        {
-          menuItemType: "item",
-          text: "this is a menu canvas",
-          func(): void { alert("item 1"); },
-        },
-      ]
+    this.menus =  {
+      vertex: [],
+      edge: [],
+      canvas: []
     };
-    console.log(this.items);
   }
 
   public render(): React.ReactNode {
-    console.log("render")
     return (
-      <MenuContext.Provider value={{setItem: this.setItem}}>
+      <MenuContext.Provider value={{setMenu: this.setMenu}}>
         {this.props.children}
         <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
           const {
@@ -71,7 +45,7 @@ export class ContextMenu extends React.PureComponent<IContextMenuProps> {
 
           if (graph) {
             graph.popupMenuHandler.autoExpand = true;
-            graph.popupMenuHandler.factoryMethod = (menu, cell, evt) => {
+            graph.popupMenuHandler.factoryMethod = (menu, cell, _evt) => {
               let name = "item";
               if (cell === null) {
                 name = "canvas";
@@ -82,30 +56,9 @@ export class ContextMenu extends React.PureComponent<IContextMenuProps> {
               else if (cell.edge) {
                 name = "edge";
               }
-              let items: IMenuArg[] = [];
-              /*
-              console.log(this.props.data);
-              const currentMenu = this.props.data.find((stateMenu) => {
-                  return stateMenu.name === name;
-              }) ;
-
-              // console.log(this.items);
-              // console.log(this.items.vertex);
-              // const tmpval = "vertex";
-              // const testmenu = this.items[tmpval];
-              // console.log(testmenu);
-              //if (!currentMenu) {
-            //     console.log("erro");
-            //   }
-              if (currentMenu) {
-                items = currentMenu.items;
-              }
-              */
-              items = this.items[name];
-              console.log("items", items);
-              // items = this.items[name];
-              if (items.length !== 0) {
-                items.map((item) => {
+              const currentMenu: IMenu[] = this.menus[name];
+              if (currentMenu.length !== 0) {
+                currentMenu.map((item) => {
                   const text = item.text ? item.text : "default";
                   // tslint:disable-next-line: prefer-switch
                   if (item.menuItemType === "item") {
@@ -130,8 +83,7 @@ export class ContextMenu extends React.PureComponent<IContextMenuProps> {
     );
   }
 
-  private readonly setItem = (name, item): void => {
-    console.log("setItem", name, item);
-    Object.assign(this.items[name], item);
+  private readonly setMenu = (name: string, menu: IMenu[]): void => {
+    Object.assign(this.menus[name], menu);
   }
 }
