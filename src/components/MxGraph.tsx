@@ -3,11 +3,17 @@ import * as React from "react";
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 
+// import {
+//   _extractGraphModelFromEvent,
+//   _pasteText,
+// } from "../utils/Copy";
+import {
+  ClipboardContext,
+} from "../context/ClipboardContext";
 import {
   MxGraphContext
 } from "../context/MxGraphContext";
-import { IMxGraph, ImxCell } from "../types/mxGraph";
-import { clone } from '@babel/types';
+import { ImxCell, IMxGraph } from "../types/mxGraph";
 
 const {
   mxClient,
@@ -39,6 +45,7 @@ interface ICopy {
 }
 
 export class MxGraph extends React.PureComponent<{}, IState> {
+  public static contextType = ClipboardContext;
   private readonly copy: ICopy;
   private readonly textInput = document.createElement("textarea");
   private mouseX: number;
@@ -59,26 +66,19 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     if (this.state.graph) {
       return;
     }
-    this.addCopyEvent(graph, this.textInput, this.copy);
+    this.addCopyEvent(graph);
 
     this.setState({
       graph,
     });
   }
 
-  public addCopyEvent = (graph: IMxGraph, textInput: HTMLTextAreaElement, copy: ICopy) => {
-    // const{ gs, dx, dy, lastPaste, restoreFocus } = copy;
+  // tslint:disable-next-line: max-func-body-length
+  public addCopyEvent = (graph: IMxGraph) => { // , textInput: HTMLTextAreaElement, copy: ICopy) => {
+
+    const { copy, textInput } = this.context;
     copy.gs = graph.gridSize;
-
-    mxClipboard.cellsToString = (cells: ImxCell[]) => {
-      const codec = new mxCodec();
-      const model = new mxGraphModel();
-      const parent = model.getChildAt(model.getRoot(), 0);
-
-      for (const cell of cells) { model.add(parent, cell); }
-
-      return mxUtils.getXml(codec.encode(model));
-    };
+    this.initTextInput(textInput);
 
     mxEvent.addListener(document, "keydown", (evt) => {
       const source = mxEvent.getSource(evt);
@@ -103,59 +103,19 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       }
     });
 
-    const copyCells = (graph, cells) => {
-      if (cells.length > 0) {
-        const clones = graph.cloneCells(cells);
-
-        for (let i = 0; i < clones.length; i += 1) {
-          const state = graph.view.getState(cells[i]);
-          if (state !== null) {
-            const geo = graph.getCellGeometry(clones[i]);
-            if (geo !== null && geo.relative) {
-              geo.relative = false;
-              geo.x = state.x / state.view.scale - state.view.translate.x;
-              geo.y = state.y / state.view.scale - state.view.translate.y;
-            }
-          }
-        }
-        textInput.value = mxClipboard.cellsToString(clones);
-      }
-      textInput.select();
-      copy.lastPaste = textInput.value;
-    };
-
     mxEvent.addListener(textInput, "copy", mxUtils.bind(this, (evt) => {
-      if (graph.isEnabled() && !graph.isSelectionEmpty()) {
-        copyCells(graph, mxUtils.sortCells(graph.model.getTopmostCells(graph.getSelectionCells())));
-        copy.dx = 0;
-        copy.dy = 0;
-      }
+      console.log("copy", evt);
+      this.context.copyFunc(graph, copy, textInput);
     }));
 
     mxEvent.addListener(textInput, "cut", mxUtils.bind(this, (evt) => {
-      if (graph.isEnabled() && !graph.isSelectionEmpty()) {
-        copyCells(graph, graph.removeCells());
-        copy.dx = -copy.gs;
-        copy.dy = -copy.gs;
-      }
+      console.log("cut");
+      this.context.cutFunc(graph, copy, textInput);
     }));
 
     mxEvent.addListener(textInput, "paste", (evt) => {
-      textInput.value = " ";
-      if (graph.isEnabled()) {
-        console.log(evt);
-        const xml = this._extractGraphModelFromEvent(evt);
-        // console.log(xml);
-        if (xml !== null && xml.length > 0) { this._pasteText(graph, xml, copy); console.log("paste"); }
-        else {
-          window.setTimeout(mxUtils.bind(window, () => {
-            console.log("paste");
-            this._pasteText(graph, textInput.value, copy);
-          }), 0);
-        }
-      }
-      // console.log(textInput);
-      textInput.select();
+      console.log("paste");
+      this.context.pasteFunc(evt, graph, copy, textInput, this.mouseX, this.mouseY);
     });
 
   }
@@ -169,7 +129,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   public handleMouseMove = (event: React.MouseEvent) => {
     this.mouseX = event.clientX;
     this.mouseY = event.clientY;
-
   }
 
   public render(): React.ReactNode {
@@ -197,115 +156,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     textInput.style.width = "1px";
     textInput.style.height = "1px";
     textInput.value = " ";
-  }
-
-  private readonly _importXml = (graph: IMxGraph, xml, copy) => {
-    copy.dx = (copy.dx !== null) ? copy.dx : 0;
-    copy.dy = (copy.dy !== null) ? copy.dy : 0;
-    let cells: ImxCell[] = [];
-
-    try {
-      const doc = mxUtils.parseXml(xml);
-      const node = doc.documentElement;
-
-      if (node !== null) {
-        const model = new mxGraphModel();
-        const codec = new mxCodec(node.ownerDocument);
-        codec.decode(node, model);
-
-        const childCount = model.getChildCount(model.getRoot());
-        const targetChildCount = graph.model.getChildCount(graph.model.getRoot());
-
-        // Merges existing layers and adds new layers
-        graph.model.beginUpdate();
-        try {
-          for (let i = 0; i < childCount; i += 1) {
-            let parent = model.getChildAt(model.getRoot(), i);
-            // Adds cells to existing layers if not locked
-            if (targetChildCount > i) {
-              // Inserts into active layer if only one layer is being pasted
-              const target = (childCount === 1) ? graph.getDefaultParent() : graph.model.getChildAt(graph.model.getRoot(), i);
-
-              if (!graph.isCellLocked(target)) {
-                const children = model.getChildren(parent);
-                console.log("children & target", children, target);
-                const cell = graph.importCells(children, 
-                  this.mouseX - children[0].geometry.x - children[0].geometry.width / 2, 
-                  this.mouseY - children[0].geometry.y - children[0].geometry.height / 2, 
-                  target);
-                console.log(cell);
-                if (cell) {
-                  cells = cells.concat(cell);
-                }
-              }
-            }
-            else {
-              // Delta is non cascading, needs separate move for layers
-              parent = graph.importCells([parent], 0, 0, graph.model.getRoot())[0];
-              const children = graph.model.getChildren(parent);
-              graph.moveCells(children, copy.dx, copy.dy);
-              cells = cells.concat(children);
-            }
-          }
-          console.log("cells", cells);
-        }
-        finally {
-          graph.model.endUpdate();
-        }
-      }
-    }
-    catch (e) {
-      // alert(e);
-      throw e;
-    }
-    return cells;
-  }
-
-  private readonly _pasteText = (graph: IMxGraph, text, copy) => {
-    const xml = mxUtils.trim(text);
-    console.log("text", text);
-    const x = graph.container.scrollLeft / graph.view.scale - graph.view.translate.x;
-    const y = graph.container.scrollTop / graph.view.scale - graph.view.translate.y;
-    if (xml.length > 0) {
-      if (copy.lastPaste !== xml) {
-        copy.lastPaste = xml;
-        copy.dx = 0;
-        copy.dy = 0;
-      }
-      else {
-        copy.dx += copy.gs;
-        copy.dy += copy.gs;
-      }
-      // Standard paste via control-v
-      if (xml.substring(0, 14) === "<mxGraphModel>") {
-        console.log("xml", xml, this.mouseX, this.mouseY);
-        const cells = this._importXml(graph, xml, copy);
-        // console.log(window.event);
-        graph.setSelectionCells(cells);
-        // console.log("in", this._importXml(graph, xml, copy));
-        graph.scrollCellToVisible(graph.getSelectionCells());
-      }
-    }
-  }
-
-  private readonly _extractGraphModelFromEvent = (evt) => {
-    let data = null;
-    if (evt !== null) {
-      const provider = (evt.dataTransfer) ? evt.dataTransfer : evt.clipboardData;
-
-      if (provider !== null) {
-        if (document.ducumentMode === 10 || document.documentMode === 11) { data = provider.getData("Text"); }
-        else {
-          data = (mxUtils.indexOf(provider.types, "text/html") >= 0) ? provider.getData("text/html") : null;
-          if (mxUtils.indexOf(provider.types, "text/plain" && (data === null || data.length === 0))) {
-            data = provider.getData("text/plain");
-          }
-        }
-      }
-
-    }
-
-    return data;
   }
 
 }
