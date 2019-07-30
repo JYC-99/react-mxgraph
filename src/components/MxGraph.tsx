@@ -41,22 +41,24 @@ interface ICopy {
 export class MxGraph extends React.PureComponent<{}, IState> {
   private readonly copy: ICopy;
   private readonly textInput = document.createElement("textarea");
+  private mouseX: number;
+  private mouseY: number;
 
   constructor(props: {}) {
     super(props);
     this.state = {
       graph: undefined,
     };
+    this.mouseX = 0;
+    this.mouseY = 0;
     this.copy = {gs: 0, dx: 0, dy: 0, lastPaste: null, restoreFocus: false};
     this.initTextInput(this.textInput);
   }
 
   public setGraph = (graph: IMxGraph) => {
-    console.log("setGraph");
     if (this.state.graph) {
       return;
     }
-    console.log("addcopy");
     this.addCopyEvent(graph, this.textInput, this.copy);
 
     this.setState({
@@ -141,11 +143,13 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     mxEvent.addListener(textInput, "paste", (evt) => {
       textInput.value = " ";
       if (graph.isEnabled()) {
+        console.log(evt);
         const xml = this._extractGraphModelFromEvent(evt);
         // console.log(xml);
-        if (xml !== null && xml.length > 0) { this._pasteText(graph, xml, copy); }
+        if (xml !== null && xml.length > 0) { this._pasteText(graph, xml, copy); console.log("paste"); }
         else {
           window.setTimeout(mxUtils.bind(window, () => {
+            console.log("paste");
             this._pasteText(graph, textInput.value, copy);
           }), 0);
         }
@@ -162,10 +166,16 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     }
   }
 
+  public handleMouseMove = (event: React.MouseEvent) => {
+    this.mouseX = event.clientX;
+    this.mouseY = event.clientY;
+
+  }
+
   public render(): React.ReactNode {
     console.log("render");
     return (
-      <div>
+      <div className="graph" onMouseMove={this.handleMouseMove}>
         <MxGraphContext.Provider
           value={{
             graph: this.state.graph,
@@ -219,7 +229,11 @@ export class MxGraph extends React.PureComponent<{}, IState> {
               if (!graph.isCellLocked(target)) {
                 const children = model.getChildren(parent);
                 console.log("children & target", children, target);
-                const cell = graph.importCells(children, 5, 5, target);
+                const cell = graph.importCells(children, 
+                  this.mouseX - children[0].geometry.x - children[0].geometry.width / 2, 
+                  this.mouseY - children[0].geometry.y - children[0].geometry.height / 2, 
+                  target);
+                console.log(cell);
                 if (cell) {
                   cells = cells.concat(cell);
                 }
@@ -249,6 +263,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
   private readonly _pasteText = (graph: IMxGraph, text, copy) => {
     const xml = mxUtils.trim(text);
+    console.log("text", text);
     const x = graph.container.scrollLeft / graph.view.scale - graph.view.translate.x;
     const y = graph.container.scrollTop / graph.view.scale - graph.view.translate.y;
     if (xml.length > 0) {
@@ -263,7 +278,10 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       }
       // Standard paste via control-v
       if (xml.substring(0, 14) === "<mxGraphModel>") {
-        graph.setSelectionCells(this._importXml(graph, xml, copy));
+        console.log("xml", xml, this.mouseX, this.mouseY);
+        const cells = this._importXml(graph, xml, copy);
+        // console.log(window.event);
+        graph.setSelectionCells(cells);
         // console.log("in", this._importXml(graph, xml, copy));
         graph.scrollCellToVisible(graph.getSelectionCells());
       }
