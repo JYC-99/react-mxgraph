@@ -7,49 +7,17 @@ import {
 } from "../context/MenuContext";
 
 import {
-  IMenu,
-} from "../types/menu";
-
-import {
   createMenu,
 } from "./CreateMenu";
 
 export class Menu extends React.PureComponent<{name: string}> {
-  public menu: IMenu[];
+  public menu: Array<{
+    menuItemType: string;
+    text?: string;
+  }>;
   constructor(props: {name: string}) {
     super(props);
-    this.menu = [
-      {
-        menuItemType: "item",
-        text: `this is a sub menu for ${props.name} to copy` ,
-        // tslint:disable-next-line: ban
-        func(): void {
-          console.log("item exec copy");
-          const str = document.execCommand("copy");
-          console.log(str);
-        },
-      },
-      {
-        menuItemType: "separator",
-      },
-      {
-        menuItemType: "paste",
-        text: `this is a sub menu for ${props.name} to paste` ,
-        // tslint:disable-next-line: ban
-        func(): void {
-          navigator.clipboard.readText().then(
-            result => {
-              console.log("Successfully retrieved text from clipboard", result)
-              return Promise.resolve(result);
-            }
-          )
-          .catch(
-            err => {
-              console.log("Error! read text from clipbaord", err)
-          });
-        },
-      },
-    ];
+    this.menu = [];
   }
 
   public render(): React.ReactNode {
@@ -57,6 +25,7 @@ export class Menu extends React.PureComponent<{name: string}> {
     console.log("render");
     return (
       <MenuItemContext.Provider value={{addItem: this.addItem}}>
+        {this.props.children}
         <MenuContext.Consumer>{(context: IMenuContext) => {
           const { setMenu } = context;
           setMenu(this.props.name, this.menu);
@@ -67,8 +36,10 @@ export class Menu extends React.PureComponent<{name: string}> {
     );
   }
 
-  private readonly addItem = (text: string, func: () => void): void => {
-    this.menu.concat({menuItemType: "item", text, func});
+  private readonly addItem = (name: string, text: string): void => {
+    console.log(text);
+    this.menu = this.menu.concat({menuItemType: name, text });
+    console.log(this.menu);
   }
 }
 

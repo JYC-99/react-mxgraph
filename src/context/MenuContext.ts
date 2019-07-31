@@ -12,7 +12,7 @@ export const MenuContext = React.createContext<IMenuContext>({
 });
 
 export interface IMenuItemContext {
-  addItem(text: string, func: string): void;
+  addItem(name: string, text: string): void;
 }
 
 export const MenuItemContext = React.createContext<IMenuItemContext>({

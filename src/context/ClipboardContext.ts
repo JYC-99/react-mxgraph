@@ -31,9 +31,11 @@ export interface IClipboardContext {
   copy: ICopy;
   textInput: HTMLTextAreaElement;
   copyFunc(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
+  copyFuncForMenu(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   cutFunc(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   pasteFunc(evt: ClipboardEvent, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
   pasteFuncForMenu(result: XMLDocument, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
+  beforeClip(evt: PointerEvent, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
 }
 
 const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HTMLTextAreaElement) => {
@@ -232,6 +234,13 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
       copy.dy = 0;
     }
   },
+  copyFuncForMenu: (graph, copy, textInput) => {
+    if (graph.isEnabled() && !graph.isSelectionEmpty()) {
+      copyCells(graph, mxUtils.sortCells(graph.model.getTopmostCells(graph.getSelectionCells())), copy, textInput);
+      copy.dx = 0;
+      copy.dy = 0;
+    }
+  },
   cutFunc: (graph, copy, textInput) => {
     if (graph.isEnabled() && !graph.isSelectionEmpty()) {
       copyCells(graph, graph.removeCells(), copy, textInput);
@@ -270,5 +279,20 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
       }
     }
     textInput.select();
+  },
+  beforeClip: (evt, graph, copy, textInput) => {
+    // console.log("pointerdown");
+    const source = mxEvent.getSource(evt);
+    if (graph.isEnabled() && !graph.isEditing() && source.nodeName !== "INPUT") {
+      if (!copy.restoreFocus) {
+        textInput.style.position = "absolute";
+        textInput.style.left = `${(graph.container.scrollLeft + 10)}px`;
+        textInput.style.top = `${(graph.container.scrollTop + 10)}px`;
+        graph.container.appendChild(textInput);
+        copy.restoreFocus = true;
+        textInput.focus();
+        textInput.select();
+      }
+    }
   }
 });
