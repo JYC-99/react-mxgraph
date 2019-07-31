@@ -1,6 +1,7 @@
-import * as React from "react";
-import { IMxGraph, ImxCell } from "../types/mxGraph";
+// @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
+import * as React from "react";
+import {  ImxCell, IMxGraph } from "../types/mxGraph";
 const {
   mxUtils,
   mxEvent,
@@ -44,11 +45,11 @@ const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HT
 
     for (let i = 0; i < clones.length; i += 1) {
       const state = graph.view.getState(cells[i]);
-      // tslint:disable-next-line: triple-equals
-      if (state != null) {
+      // tslint:disable-next-line: strict-type-predicates  triple-equals
+      if (state != null) { // must use !=
         const geo = graph.getCellGeometry(clones[i]);
-        // tslint:disable-next-line: triple-equals
-        if (geo != null && geo.relative) {
+        // tslint:disable-next-line: strict-type-predicates  triple-equals
+        if (geo != null && geo.relative) { // must use !=
           geo.relative = false;
           geo.x = state.x / state.view.scale - state.view.translate.x;
           geo.y = state.y / state.view.scale - state.view.translate.y;
@@ -56,11 +57,11 @@ const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HT
       }
     }
     textInput.value = mxClipboard.cellsToString(clones); // mxCell => xml
-    console.log(clones, textInput.value);
   }
   textInput.select();
   copy.lastPaste = textInput.value;
 };
+// tslint:disable-next-line: cyclomatic-complexity
 const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
   copy.dx = (copy.dx !== null) ? copy.dx : 0;
   copy.dy = (copy.dy !== null) ? copy.dy : 0;
@@ -94,7 +95,6 @@ const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
                 mouseX - children[0].geometry.x - children[0].geometry.width / 2,
                 mouseY - children[0].geometry.y - children[0].geometry.height / 2,
                 target);
-              console.log(cell);
               if (cell) {
                 cells = cells.concat(cell);
               }
@@ -103,12 +103,13 @@ const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
           else {
             // Delta is non cascading, needs separate move for layers
             parent = graph.importCells([parent], 0, 0, graph.model.getRoot())[0];
-            const children = graph.model.getChildren(parent);
-            console.log(children);
-            graph.moveCells(children,
-              mouseX - children[0].geometry.x - children[0].geometry.width / 2,
-              mouseY - children[0].geometry.y - children[0].geometry.height / 2);
-            cells = cells.concat(children);
+            if (parent) {
+              const children = graph.model.getChildren(parent);
+              graph.moveCells(children,
+                mouseX - children[0].geometry.x - children[0].geometry.width / 2,
+                mouseY - children[0].geometry.y - children[0].geometry.height / 2);
+              cells = cells.concat(children);
+            }
           }
         }
       }
@@ -142,78 +143,24 @@ const _pasteText = (graph: IMxGraph, text, copy, mouseX, mouseY) => {
     }
     // Standard paste via control-v
     if (xml.substring(0, 14) === "<mxGraphModel>") {
-      // import from XML
-      let cells: ImxCell[] = [];
-      try {
-        const doc = mxUtils.parseXml(xml);
-        const node = doc.documentElement;
-
-        if (node !== null) {
-          const model = new mxGraphModel();
-          const codec = new mxCodec(node.ownerDocument);
-          codec.decode(node, model);
-
-          const childCount = model.getChildCount(model.getRoot());
-          const targetChildCount = graph.model.getChildCount(graph.model.getRoot());
-
-          // Merges existing layers and adds new layers
-          graph.model.beginUpdate();
-          try {
-            for (let i = 0; i < childCount; i += 1) {
-              let parent = model.getChildAt(model.getRoot(), i);
-              // Adds cells to existing layers if not locked
-              console.log("test");
-              if (targetChildCount > i) {
-                // Inserts into active layer if only one layer is being pasted
-                const target = (childCount === 1) ? graph.getDefaultParent() : graph.model.getChildAt(graph.model.getRoot(), i);
-
-                if (!graph.isCellLocked(target)) {
-                  const children = model.getChildren(parent);
-                  const cell = graph.importCells(children,
-                    mouseX - children[0].geometry.x - children[0].geometry.width / 2,
-                    mouseY - children[0].geometry.y - children[0].geometry.height / 2,
-                    target);
-                    console.log(cell, mouseX - children[0].geometry.x - children[0].geometry.width / 2, mouseX);
-                  if (cell) {
-                    cells = cells.concat(cell);
-                  }
-                }
-              }
-              else {
-                // Delta is non cascading, needs separate move for layers
-                parent = graph.importCells([parent], 0, 0, graph.model.getRoot())[0];
-                const children = graph.model.getChildren(parent);
-                graph.moveCells(children,
-                  mouseX - children[0].geometry.x - children[0].geometry.width / 2,
-                  mouseY - children[0].geometry.y - children[0].geometry.height / 2);
-                cells = cells.concat(children);
-              }
-            }
-          }
-          finally {
-            graph.model.endUpdate();
-          }
-        }
-      }
-      catch (e) {
-        // alert(e);
-        throw e;
-      }
-
+      const cells = _importXml(graph, xml, copy, mouseX, mouseY);
       graph.setSelectionCells(cells);
       graph.scrollCellToVisible(graph.getSelectionCells());
     }
   }
 };
-const _extractGraphModelFromEvent = (evt) => {
+const _extractGraphModelFromEvent = (evt: ClipboardEvent) => {
   let data = null;
-  if (evt !== null) {
+
+  // tslint:disable-next-line: triple-equals strict-type-predicates
+  if (evt != null) {
     const provider = (evt.dataTransfer) ? evt.dataTransfer : evt.clipboardData;
     // console.log("...", evt);
     if (provider !== null) {
       if (document.ducumentMode === 10 || document.documentMode === 11) { data = provider.getData("Text"); }
       else {
         data = (mxUtils.indexOf(provider.types, "text/html") >= 0) ? provider.getData("text/html") : null;
+        // tslint:disable-next-line: binary-expression-operand-order
         if (mxUtils.indexOf(provider.types, "text/plain" && (data === null || data.length === 0))) {
           data = provider.getData("text/plain");
         }
@@ -252,6 +199,7 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
     textInput.value = " ";
     if (graph.isEnabled()) {
       const xml = _extractGraphModelFromEvent(evt);
+      // tslint:disable-next-line: no-console
       console.log(xml);
       if (xml !== null && xml.length > 0) {
         _pasteText(graph, xml, copy, mouseX, mouseY);
@@ -268,7 +216,9 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
     textInput.value = " ";
     if (graph.isEnabled()) {
       const xml = result;
-      console.log("for menu", xml);
+      // tslint:disable-next-line: no-console
+      console.log(xml);
+      // tslint:disable-next-line: strict-type-predicates
       if (xml !== null && xml.length > 0) {
         _pasteText(graph, xml, copy, mouseX, mouseY);
       }

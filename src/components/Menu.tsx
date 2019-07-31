@@ -21,8 +21,6 @@ export class Menu extends React.PureComponent<{name: string}> {
   }
 
   public render(): React.ReactNode {
-
-    console.log("render");
     return (
       <MenuItemContext.Provider value={{addItem: this.addItem}}>
         {this.props.children}
@@ -37,9 +35,7 @@ export class Menu extends React.PureComponent<{name: string}> {
   }
 
   private readonly addItem = (name: string, text: string): void => {
-    console.log(text);
     this.menu = this.menu.concat({menuItemType: name, text });
-    console.log(this.menu);
   }
 }
 

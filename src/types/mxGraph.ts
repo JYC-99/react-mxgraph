@@ -28,8 +28,8 @@ export interface IGraphModel {
   beginUpdate(): void;
   endUpdate(): void;
   getTopmostCells(cells: ImxCell[]): ImxCell[];
-  getRoot(): any;
-  getChildCount(root: any): number;
+  getRoot(): ImxCell;
+  getChildCount(root: ImxCell): number;
   getChildren(cell: ImxCell): ImxCell;
 }
 
@@ -73,12 +73,13 @@ export interface IMxGraph {
   insertVertex(parent: IParent, id?: string | null, value?: string, x?: number, y?: number, width?: number, height?: number, style?: string, relative?: string): IVertex;
   insertEdge(parent: IParent, id?: string | null, value?: string, source?: IVertex, target?: IVertex): IEdge;
   importCells(cells: ImxCell[], x: number, y: number, target: ImxCell): ImxCell[] | null;
-  scrollCellToVisible(cell: ImxCell): void;
+  scrollCellToVisible(cells: ImxCell[]): void;
   setSelectionCells(cells: ImxCell[]): void;
   isEnabled(): boolean;
   isEditing(): boolean;
   isSelectionEmpty(): boolean;
-  isCellLocked(target: any): boolean;
+  isCellLocked(target: ImxCell): boolean;
   removeCells(): ImxCell[];
   moveCells(cell: ImxCell, dx: number, dy: number): void;
+  cloneCells(cells: ImxCell[]): ImxCell[];
 }

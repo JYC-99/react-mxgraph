@@ -75,12 +75,14 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
   // tslint:disable-next-line: max-func-body-length
   public addCopyEvent = (graph: IMxGraph) => { // , textInput: HTMLTextAreaElement, copy: ICopy) => {
-
+    // tslint:disable-next-line: deprecation
     const { copy, textInput } = this.context;
     copy.gs = graph.gridSize;
     this.initTextInput(textInput);
 
-    mxEvent.addListener(document, "keydown", (evt) => {
+    mxEvent.addListener(document, "keydown", (evt: KeyboardEvent) => {
+      // tslint:disable-next-line: no-console
+      // console.log("keydown");
       const source = mxEvent.getSource(evt);
       if (graph.isEnabled() && !graph.isMouseDown && !graph.isEditing() && source.nodeName !== "INPUT") {
         if (!copy.restoreFocus) {
@@ -95,7 +97,10 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       }
     });
 
-    mxEvent.addListener(document, "keyup", (evt) => {
+    mxEvent.addListener(document, "keyup", (evt: KeyboardEvent) => {
+      // tslint:disable-next-line: no-console
+      // console.log("keyup");
+      // tslint:disable-next-line: deprecation
       if (copy.restoreFocus && (evt.keyCode === 224 || evt.keyCode === 17 || evt.keyCode === 91)) {
         copy.restoreFocus = false;
         if (!graph.isEditing()) { graph.container.focus(); }
@@ -103,18 +108,18 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       }
     });
 
-    mxEvent.addListener(textInput, "copy", mxUtils.bind(this, (evt) => {
-      console.log("copy", evt);
+    mxEvent.addListener(textInput, "copy", mxUtils.bind(this, (_evt: ClipboardEvent) => {
+      // tslint:disable-next-line: deprecation
       this.context.copyFunc(graph, copy, textInput);
     }));
 
-    mxEvent.addListener(textInput, "cut", mxUtils.bind(this, (evt) => {
-      console.log("cut");
+    mxEvent.addListener(textInput, "cut", mxUtils.bind(this, (_evt: ClipboardEvent) => {
+      // tslint:disable-next-line: deprecation
       this.context.cutFunc(graph, copy, textInput);
     }));
 
-    mxEvent.addListener(textInput, "paste", (evt) => {
-      console.log("paste");
+    mxEvent.addListener(textInput, "paste", (evt: ClipboardEvent) => {
+      // tslint:disable-next-line: deprecation
       this.context.pasteFunc(evt, graph, copy, textInput, this.mouseX, this.mouseY);
     });
 
@@ -132,8 +137,9 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   }
 
   public render(): React.ReactNode {
-    console.log("render");
+
     return (
+      // tslint:disable-next-line: react-a11y-event-has-role
       <div className="graph" onMouseMove={this.handleMouseMove}>
         <MxGraphContext.Provider
           value={{
@@ -145,10 +151,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         </MxGraphContext.Provider>
       </div>
     );
-  }
-
-  public componentDidMount(): void {
-    console.log("did mount", this.state.graph);
   }
 
   private readonly initTextInput = (textInput: HTMLTextAreaElement) => {

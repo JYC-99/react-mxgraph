@@ -30,7 +30,6 @@ import {
 export class ContextMenu extends React.PureComponent {
   public static contextType = ClipboardContext;
   public menus: IMenus;
-  public menuHTMLItems: HTMLTableRowElement[];
 
   constructor(props: {}) {
     super(props);
@@ -39,12 +38,12 @@ export class ContextMenu extends React.PureComponent {
       edge: [],
       canvas: []
     };
-    this.menuHTMLItems = [];
   }
   // tslint:disable-next-line: max-func-body-length
   public render(): React.ReactNode {
+    // tslint:disable-next-line: deprecation
     const { copy, textInput } = this.context;
-    console.log("render");
+
     return (
       <MenuContext.Provider value={{setMenu: this.setMenu}}>
         {this.props.children}
@@ -78,37 +77,39 @@ export class ContextMenu extends React.PureComponent {
                     // tslint:disable-next-line: no-unbound-method no-empty
                     let func = item.func ? item.func : () => {}; // not this
 
+                    // tslint:disable-next-line: prefer-switch
                     if (item.menuItemType === "paste") {
-                      console.log("paste.....");
+
                       func = () => {
-                        navigator.clipboard.readText().then(
-                          result => {
+                        navigator.clipboard.readText()
+                        .then(
+                          // tslint:disable-next-line: promise-function-async
+                          (result) => {
+                            // tslint:disable-next-line: no-console
                             console.log("Successfully retrieved text from clipboard", result);
                             textInput.focus();
+                            // tslint:disable-next-line: deprecation
                             this.context.pasteFuncForMenu(result, graph, copy, textInput, menu.triggerX, menu.triggerY);
 
                             return Promise.resolve(result);
                           }
                         )
                         .catch(
-                          err => {
-                            console.log("Error! read text from clipbaord", err)
+                          (err) => {
+                            throw new Error("Error! read text from clipbaord", err);
                           });
                       };
                     } else if (item.menuItemType === "copy") {
                       func = () => {
-                        console.log("copy");
                         document.execCommand("copy");
                       };
                     } else if (item.menuItemType === "cut") {
                       func = () => {
-                        console.log("cut");
                         document.execCommand("cut");
-                      }
+                      };
                     }
                     const menuItem = menu.addItem(text, null, func);
-                    // this.menuHTMLItems.concat(menuItem);
-                    console.log(menuItem, menu);
+
                     this.addListener(menuItem, graph, copy, textInput);
 
                   } else if (item.menuItemType === "separator") {
@@ -130,12 +131,13 @@ export class ContextMenu extends React.PureComponent {
     );
   }
   private readonly addListener = (targetMenuItem, graph, copy, textInput): void => {
-    mxEvent.addListener(targetMenuItem, "pointerdown", (evt) => {
-      console.log("pointerdown", evt);
+    mxEvent.addListener(targetMenuItem, "pointerdown", (evt: PointerEvent) => {
+
+      // tslint:disable-next-line: deprecation
       this.context.beforeClip(evt, graph, copy, textInput);
     });
-    mxEvent.addListener(targetMenuItem, "pointerup", (_evt) => {
-      console.log("pointerup");
+    mxEvent.addListener(targetMenuItem, "pointerup", (_evt: PointerEvent) => {
+
       if (copy.restoreFocus) {
         copy.restoreFocus = false;
         if (!graph.isEditing()) { graph.container.focus(); }
