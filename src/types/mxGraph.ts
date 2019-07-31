@@ -18,7 +18,9 @@ export interface ImxCell {
   edge: boolean;
 }
 
-export interface IMenu {
+export interface IMxMenu {
+  triggerX: number;
+  triggerY: number;
   // cspell: disable-next-line
   addItem(text: string, sth: null, func: (() => void) | null, submenu?: HTMLTableRowElement): HTMLTableRowElement ;
   addSeparator(): void;
@@ -57,7 +59,7 @@ export interface IMxState {
 export interface IMxGraph {
   popupMenuHandler: {
     autoExpand: boolean;
-    factoryMethod(menu: IMenu, cell: ImxCell | null, evt: () => {}): void;
+    factoryMethod(menu: IMxMenu, cell: ImxCell | null, evt: () => {}): void;
   };
   container: HTMLDivElement;
   view: IView;

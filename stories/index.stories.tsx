@@ -166,6 +166,24 @@ storiesOf("Flow", module)
           actor
           </Item>
         </ItemPanel>
+        <ContextMenu>
+            <VertexMenu >
+              <Command name="copy" text="Copy"/>
+              <Command name="cut" text="Cut"/>
+              <Command name="separator" />
+              <Command name="paste" text="Paste"/>
+            </VertexMenu>
+            <EdgeMenu >
+              <Command name="copy" text="Copy"/>
+              <Command name="cut" text="Cut"/>
+              <Command name="paste" text="Paste"/>
+            </EdgeMenu>
+            <CanvasMenu>
+              <Command name="copy" text="Copy"/>
+              <Command name="cut" text="Cut"/>
+              <Command name="paste" text="Paste"/>
+            </CanvasMenu>
+          </ContextMenu>
       </MxGraph>
     </div>
     );

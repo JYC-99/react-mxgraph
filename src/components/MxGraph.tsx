@@ -19,9 +19,7 @@ const {
   mxClient,
   mxUtils,
   mxEvent,
-  mxClipboard,
   mxGraphModel,
-  mxCodec,
   mxGeometry,
   mxPoint,
   mxTransient,
@@ -36,18 +34,8 @@ interface IState {
   graph?: IMxGraph;
 }
 
-interface ICopy {
-  gs: number;
-  dx: number;
-  dy: number;
-  lastPaste: string | null;
-  restoreFocus: boolean;
-}
-
 export class MxGraph extends React.PureComponent<{}, IState> {
   public static contextType = ClipboardContext;
-  private readonly copy: ICopy;
-  private readonly textInput = document.createElement("textarea");
   private mouseX: number;
   private mouseY: number;
 
@@ -58,8 +46,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     };
     this.mouseX = 0;
     this.mouseY = 0;
-    this.copy = {gs: 0, dx: 0, dy: 0, lastPaste: null, restoreFocus: false};
-    this.initTextInput(this.textInput);
   }
 
   public setGraph = (graph: IMxGraph) => {
@@ -81,30 +67,21 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     this.initTextInput(textInput);
 
     mxEvent.addListener(document, "keydown", (evt: KeyboardEvent) => {
-      // tslint:disable-next-line: no-console
-      // console.log("keydown");
       const source = mxEvent.getSource(evt);
       if (graph.isEnabled() && !graph.isMouseDown && !graph.isEditing() && source.nodeName !== "INPUT") {
-        if (!copy.restoreFocus) {
-          textInput.style.position = "absolute";
-          textInput.style.left = `${(graph.container.scrollLeft + 10)}px`;
-          textInput.style.top = `${(graph.container.scrollTop + 10)}px`;
-          graph.container.appendChild(textInput);
-          copy.restoreFocus = true;
-          textInput.focus();
-          textInput.select();
+        // tslint:disable-next-line: deprecation
+        if (evt.keyCode === 224 /* FF */ || (!mxClient.IS_MAC && evt.keyCode === 17 /* Control */) || (mxClient.IS_MAC && evt.keyCode === 91 /* Meta */)) {
+          // tslint:disable-next-line: deprecation
+          this.context.beforeUsingClipboard(graph, copy, textInput);
         }
       }
     });
 
     mxEvent.addListener(document, "keyup", (evt: KeyboardEvent) => {
-      // tslint:disable-next-line: no-console
-      // console.log("keyup");
       // tslint:disable-next-line: deprecation
       if (copy.restoreFocus && (evt.keyCode === 224 || evt.keyCode === 17 || evt.keyCode === 91)) {
-        copy.restoreFocus = false;
-        if (!graph.isEditing()) { graph.container.focus(); }
-        if (textInput.parentNode) { textInput.parentNode.removeChild(textInput); }
+        // tslint:disable-next-line: deprecation
+        this.context.afterUsingClipboard(graph, copy, textInput);
       }
     });
 
