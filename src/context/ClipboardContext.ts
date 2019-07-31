@@ -33,6 +33,7 @@ export interface IClipboardContext {
   copyFunc(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   cutFunc(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   pasteFunc(evt: ClipboardEvent, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
+  pasteFuncForMenu(result: XMLDocument, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
 }
 
 const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HTMLTextAreaElement) => {
@@ -52,7 +53,8 @@ const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HT
         }
       }
     }
-    textInput.value = mxClipboard.cellsToString(clones);
+    textInput.value = mxClipboard.cellsToString(clones); // mxCell => xml
+    console.log(clones, textInput.value);
   }
   textInput.select();
   copy.lastPaste = textInput.value;
@@ -90,7 +92,7 @@ const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
                 mouseX - children[0].geometry.x - children[0].geometry.width / 2,
                 mouseY - children[0].geometry.y - children[0].geometry.height / 2,
                 target);
-
+              console.log(cell);
               if (cell) {
                 cells = cells.concat(cell);
               }
@@ -100,7 +102,10 @@ const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
             // Delta is non cascading, needs separate move for layers
             parent = graph.importCells([parent], 0, 0, graph.model.getRoot())[0];
             const children = graph.model.getChildren(parent);
-            graph.moveCells(children, copy.dx, copy.dy);
+            console.log(children);
+            graph.moveCells(children,
+              mouseX - children[0].geometry.x - children[0].geometry.width / 2,
+              mouseY - children[0].geometry.y - children[0].geometry.height / 2);
             cells = cells.concat(children);
           }
         }
@@ -155,6 +160,7 @@ const _pasteText = (graph: IMxGraph, text, copy, mouseX, mouseY) => {
             for (let i = 0; i < childCount; i += 1) {
               let parent = model.getChildAt(model.getRoot(), i);
               // Adds cells to existing layers if not locked
+              console.log("test");
               if (targetChildCount > i) {
                 // Inserts into active layer if only one layer is being pasted
                 const target = (childCount === 1) ? graph.getDefaultParent() : graph.model.getChildAt(graph.model.getRoot(), i);
@@ -165,7 +171,7 @@ const _pasteText = (graph: IMxGraph, text, copy, mouseX, mouseY) => {
                     mouseX - children[0].geometry.x - children[0].geometry.width / 2,
                     mouseY - children[0].geometry.y - children[0].geometry.height / 2,
                     target);
-
+                    console.log(cell, mouseX - children[0].geometry.x - children[0].geometry.width / 2, mouseX);
                   if (cell) {
                     cells = cells.concat(cell);
                   }
@@ -175,7 +181,9 @@ const _pasteText = (graph: IMxGraph, text, copy, mouseX, mouseY) => {
                 // Delta is non cascading, needs separate move for layers
                 parent = graph.importCells([parent], 0, 0, graph.model.getRoot())[0];
                 const children = graph.model.getChildren(parent);
-                graph.moveCells(children, copy.dx, copy.dy);
+                graph.moveCells(children,
+                  mouseX - children[0].geometry.x - children[0].geometry.width / 2,
+                  mouseY - children[0].geometry.y - children[0].geometry.height / 2);
                 cells = cells.concat(children);
               }
             }
@@ -199,7 +207,7 @@ const _extractGraphModelFromEvent = (evt) => {
   let data = null;
   if (evt !== null) {
     const provider = (evt.dataTransfer) ? evt.dataTransfer : evt.clipboardData;
-    console.log("...", evt);
+    // console.log("...", evt);
     if (provider !== null) {
       if (document.ducumentMode === 10 || document.documentMode === 11) { data = provider.getData("Text"); }
       else {
@@ -235,6 +243,23 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
     textInput.value = " ";
     if (graph.isEnabled()) {
       const xml = _extractGraphModelFromEvent(evt);
+      console.log(xml);
+      if (xml !== null && xml.length > 0) {
+        _pasteText(graph, xml, copy, mouseX, mouseY);
+      }
+      else {
+        window.setTimeout(mxUtils.bind(window, () => {
+          _pasteText(graph, textInput.value, copy, mouseX, mouseY);
+        }), 0);
+      }
+    }
+    textInput.select();
+  },
+  pasteFuncForMenu: (result, graph, copy, textInput, mouseX, mouseY) => {
+    textInput.value = " ";
+    if (graph.isEnabled()) {
+      const xml = result;
+      console.log("for menu", xml);
       if (xml !== null && xml.length > 0) {
         _pasteText(graph, xml, copy, mouseX, mouseY);
       }

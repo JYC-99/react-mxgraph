@@ -65,6 +65,7 @@ export interface IMxGraph {
   autoscroll: boolean;
   isMouseDown: boolean;
   model: IGraphModel;
+  gridSize: number;
   getModel(): IGraphModel;
   getDefaultParent(): IParent;
   getCellGeometry(cell: ImxCell): IGeometry;
