@@ -25,6 +25,8 @@ interface ICopy {
   dx: number;
   dy: number;
   lastPaste: string | null;
+  lastPasteX: number;
+  lastPasteY: number;
   restoreFocus: boolean;
 }
 
@@ -63,7 +65,7 @@ const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HT
   copy.lastPaste = textInput.value;
 };
 // tslint:disable-next-line: cyclomatic-complexity
-const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
+const _importXml = (graph: IMxGraph, xml: XMLDocument, copy: ICopy, destX: number, destY: number) => {
   copy.dx = (copy.dx !== null) ? copy.dx : 0;
   copy.dy = (copy.dy !== null) ? copy.dy : 0;
   let cells: ImxCell[] = [];
@@ -93,8 +95,8 @@ const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
             if (!graph.isCellLocked(target)) {
               const children = model.getChildren(parent);
               const cell = graph.importCells(children,
-                mouseX - children[0].geometry.x - children[0].geometry.width / 2,
-                mouseY - children[0].geometry.y - children[0].geometry.height / 2,
+                destX - children[0].geometry.x - children[0].geometry.width / 2,
+                destY - children[0].geometry.y - children[0].geometry.height / 2,
                 target);
               if (cell) {
                 cells = cells.concat(cell);
@@ -107,8 +109,8 @@ const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
             if (parent) {
               const children = graph.model.getChildren(parent);
               graph.moveCells(children,
-                mouseX - children[0].geometry.x - children[0].geometry.width / 2,
-                mouseY - children[0].geometry.y - children[0].geometry.height / 2);
+                destX - children[0].geometry.x - children[0].geometry.width / 2,
+                destY - children[0].geometry.y - children[0].geometry.height / 2);
               cells = cells.concat(children);
             }
           }
@@ -127,12 +129,21 @@ const _importXml = (graph: IMxGraph, xml, copy, mouseX, mouseY) => {
 };
 
 // tslint:disable-next-line: cyclomatic-complexity
-const _pasteText = (graph: IMxGraph, text, copy, mouseX, mouseY) => {
+const _pasteText = (graph: IMxGraph, text: string, copy: ICopy, mouseX: number, mouseY: number) => {
   const xml = mxUtils.trim(text);
   // console.log("text", text);
+  let destX = mouseX;
+  let destY = mouseY;
   const x = graph.container.scrollLeft / graph.view.scale - graph.view.translate.x;
   const y = graph.container.scrollTop / graph.view.scale - graph.view.translate.y;
   if (xml.length > 0) {
+    if (copy.lastPasteX < destX - copy.gs || copy.lastPasteX > destX + copy.gs || copy.lastPasteY < destY - copy.gs || copy.lastPasteY >  destY + copy.gs) {
+      copy.lastPasteX = destX;
+      copy.lastPasteY = destY;
+    } else {
+      destX += copy.dx;
+      destY += copy.dy;
+    }
     if (copy.lastPaste !== xml) {
       copy.lastPaste = xml;
       copy.dx = 0;
@@ -142,9 +153,10 @@ const _pasteText = (graph: IMxGraph, text, copy, mouseX, mouseY) => {
       copy.dx += copy.gs;
       copy.dy += copy.gs;
     }
+
     // Standard paste via control-v
     if (xml.substring(0, 14) === "<mxGraphModel>") {
-      const cells = _importXml(graph, xml, copy, mouseX, mouseY);
+      const cells = _importXml(graph, xml, copy, destX, destY);
       graph.setSelectionCells(cells);
       graph.scrollCellToVisible(graph.getSelectionCells());
     }
@@ -173,7 +185,7 @@ const _extractGraphModelFromEvent = (evt: ClipboardEvent) => {
 };
 
 export const ClipboardContext = React.createContext<IClipboardContext>({
-  copy: {gs: 0, dx: 0, dy: 0, lastPaste: null, restoreFocus: false},
+  copy: {gs: 0, dx: 0, dy: 0, lastPasteX: 0, lastPasteY: 0, lastPaste: null, restoreFocus: false},
   textInput: document.createElement("textarea"),
   copyFunc: (graph, copy, textInput) => {
     if (graph.isEnabled() && !graph.isSelectionEmpty()) {
@@ -205,7 +217,6 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
     if (graph.isEnabled()) {
       const xml = _extractGraphModelFromEvent(evt);
       // tslint:disable-next-line: no-console
-      console.log(xml);
       if (xml !== null && xml.length > 0) {
         _pasteText(graph, xml, copy, mouseX, mouseY);
       }

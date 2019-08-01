@@ -9,6 +9,7 @@ import {
   Menu,
   MxGraph,
   VertexMenu,
+  Command,
 } from "../src/index";
 import "./index.scss";
 
@@ -91,11 +92,24 @@ const Demo = () => (
       <Flow
         data={data}
       />
-      <ContextMenu>
-        <VertexMenu />
-        <EdgeMenu />
-        <CanvasMenu />
-      </ContextMenu>
+        <ContextMenu>
+          <VertexMenu >
+            <Command name="copy" text="Copy"/>
+            <Command name="cut" text="Cut"/>
+            <Command name="separator" />
+            <Command name="paste" text="Paste"/>
+          </VertexMenu>
+          <EdgeMenu >
+            <Command name="copy" text="Copy"/>
+            <Command name="cut" text="Cut"/>
+            <Command name="paste" text="Paste"/>
+          </EdgeMenu>
+          <CanvasMenu>
+            <Command name="copy" text="Copy"/>
+            <Command name="cut" text="Cut"/>
+            <Command name="paste" text="Paste"/>
+          </CanvasMenu>
+        </ContextMenu>
     </MxGraph>
   </div>
 
