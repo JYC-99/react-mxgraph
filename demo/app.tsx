@@ -2,9 +2,13 @@ import * as React from "react";
 import { hot } from "react-hot-loader";
 
 import {
+  CanvasMenu,
   ContextMenu,
+  EdgeMenu,
   Flow,
+  Menu,
   MxGraph,
+  VertexMenu,
 } from "../src/index";
 import "./index.scss";
 
@@ -87,9 +91,11 @@ const Demo = () => (
       <Flow
         data={data}
       />
-      <ContextMenu
-        data={menuData}
-      />
+      <ContextMenu>
+        <VertexMenu />
+        <EdgeMenu />
+        <CanvasMenu />
+      </ContextMenu>
     </MxGraph>
   </div>
 

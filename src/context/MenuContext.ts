@@ -1,28 +1,18 @@
 
 import * as React from "react";
-
-export interface IMenuArg {
-  menuItemType: string;
-  text?: string;
-  sth?: null;
-  id?: number;
-  parent?: number;
-  // cspell: disable-next-line
-  submenu?: HTMLTableRowElement;
-  func?(): void | null;
-}
+import { IMenu } from "../types/menu";
 
 export interface IMenuContext {
-  addMenuItem(name: string, item: IMenuArg[]): void;
+  setMenu(name: string, menu: IMenu[]): void;
 }
 
 export const MenuContext = React.createContext<IMenuContext>({
   // tslint:disable-next-line: no-empty
-  addMenuItem: () => {},
+  setMenu: () => {},
 });
 
 export interface IMenuItemContext {
-  addItem(item: IMenuArg): void;
+  addItem(name: string, text: string): void;
 }
 
 export const MenuItemContext = React.createContext<IMenuItemContext>({
