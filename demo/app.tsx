@@ -3,13 +3,16 @@ import { hot } from "react-hot-loader";
 
 import {
   CanvasMenu,
+  Command,
   ContextMenu,
   EdgeMenu,
   Flow,
-  Menu,
+  Item,
+  ItemPanel,
   MxGraph,
   VertexMenu,
-  Command,
+  ToolCommand,
+  Toolbar,
 } from "../src/index";
 import "./index.scss";
 
@@ -45,71 +48,58 @@ const data = {
   }],
 };
 
-const menuData = [
-  {
-    name: "vertex",
-    items: [
-      {
-        menuItemType: "item",
-        text: "this is a vertex",
-        func(): void { alert("item 1"); },
-      },
-      {
-        menuItemType: "separator",
-      },
-      {
-        menuItemType: "item",
-        text: "this is a test vertex item",
-        func(): void { alert("item 2"); },
-      },
-    ]
-  },
-  {
-    name: "edge",
-    items: [
-      {
-        menuItemType: "item",
-        text: "this is a edge",
-        func(): void { alert("item 1"); },
-      },
-    ],
-  },
-  {
-    name: "canvas",
-    items: [
-      {
-        menuItemType: "item",
-        text: "this is a canvas",
-        func(): void { alert("item 1"); },
-      },
-    ],
-  },
-];
-
 const Demo = () => (
   <div>
     <MxGraph>
+      <Toolbar>
+        <ToolCommand name="copy" >Copy</ToolCommand>
+        <ToolCommand name="cut" >Cut</ToolCommand>
+        <ToolCommand name="paste" >Paste</ToolCommand>
+      </Toolbar>
+      {/* <ItemPanel>
+        <Item text="test swimlane" shape={"swimlane"}>
+          swimlane
+        </Item>
+        <Item text="test rectangle">
+          rectangle
+        </Item>
+        <Item text="test ellipse" shape={"ellipse"}>
+          ellipse
+        </Item>
+        <Item text="test rhombus" shape={"rhombus"}>
+        rhombus
+        </Item>
+        <Item text="test triangle" shape={"triangle"}>
+        triangle
+        </Item>
+        <Item text="test cylinder" shape={"cylinder"}>
+        cylinder
+        </Item>
+        <Item text="test actor" shape={"actor"}>
+        actor
+        </Item>
+      </ItemPanel> */}
       <Flow
         data={data}
       />
-        <ContextMenu>
-          <VertexMenu >
-            <Command name="copy" text="Copy"/>
-            <Command name="cut" text="Cut"/>
-            <Command name="separator" />
-            <Command name="paste" text="Paste"/>
-          </VertexMenu>
-          <EdgeMenu >
-            <Command name="copy" text="Copy"/>
-            <Command name="cut" text="Cut"/>
-            <Command name="paste" text="Paste"/>
-          </EdgeMenu>
-          <CanvasMenu>
-            <Command name="copy" text="Copy"/>
-            <Command name="cut" text="Cut"/>
-            <Command name="paste" text="Paste"/>
-          </CanvasMenu>
-        </ContextMenu>
+      <ContextMenu>
+        <VertexMenu >
+          <Command name="copy" text="Copy"/>
+          <Command name="cut" text="Cut"/>
+          <Command name="separator" />
+          <Command name="paste" text="Paste"/>
+        </VertexMenu>
+        <EdgeMenu >
+          <Command name="copy" text="Copy"/>
+          <Command name="cut" text="Cut"/>
+          <Command name="paste" text="Paste"/>
+        </EdgeMenu>
+        <CanvasMenu>
+          <Command name="copy" text="Copy"/>
+          <Command name="cut" text="Cut"/>
+          <Command name="paste" text="Paste"/>
+        </CanvasMenu>
+      </ContextMenu>
     </MxGraph>
   </div>
 

@@ -37,7 +37,7 @@ export interface IClipboardContext {
   copyFuncForMenu(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   cutFunc(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   pasteFunc(evt: ClipboardEvent, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
-  pasteFuncForMenu(result: XMLDocument, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
+  pasteFuncForMenu(result: string, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
   beforeUsingClipboard(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   afterUsingClipboard(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
 }
