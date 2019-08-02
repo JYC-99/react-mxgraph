@@ -66,8 +66,8 @@ const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HT
 };
 // tslint:disable-next-line: cyclomatic-complexity
 const _importXml = (graph: IMxGraph, xml: XMLDocument, copy: ICopy, destX: number, destY: number) => {
-  copy.dx = (copy.dx !== null) ? copy.dx : 0;
-  copy.dy = (copy.dy !== null) ? copy.dy : 0;
+  copy.dx = copy.dx ? copy.dx : 0;
+  copy.dy = copy.dy ? copy.dy : 0;
   let cells: ImxCell[] = [];
 
   try {
@@ -168,7 +168,6 @@ const _extractGraphModelFromEvent = (evt: ClipboardEvent) => {
   // tslint:disable-next-line: triple-equals strict-type-predicates
   if (evt != null) {
     const provider = (evt.dataTransfer) ? evt.dataTransfer : evt.clipboardData;
-    // console.log("...", evt);
     if (provider !== null) {
       if (document.ducumentMode === 10 || document.documentMode === 11) { data = provider.getData("Text"); }
       else {

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { IMxGraph } from "../types/mxGraph";
 import { IMxActions } from "../types/action";
+import { IMxGraph } from "../types/mxGraph";
 
 export interface IMxGraphContext {
   graph?: IMxGraph;

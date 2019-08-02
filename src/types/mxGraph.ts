@@ -26,10 +26,15 @@ export interface IMxMenu {
   addSeparator(): void;
 }
 
+// tslint:disable-next-line: no-empty-interface
+export interface IMxUndoableEdit {
+
+}
+
 export interface IMxUndoManager {
   undo(): void;
   redo(): void;
-  undoableEditHappened(edit: any): any;
+  undoableEditHappened(edit: IMxUndoableEdit): void;
 }
 
 export interface IMxEventObject {
@@ -40,7 +45,7 @@ export interface IMxEventObject {
       changes: [];
     };
   };
-  getProperty(property: any): any;
+  getProperty(property: string): IMxUndoableEdit;
 }
 
 export interface IGraphModel {
@@ -50,6 +55,7 @@ export interface IGraphModel {
   getRoot(): ImxCell;
   getChildCount(root: ImxCell): number;
   getChildren(cell: ImxCell): ImxCell;
+  addListener(action: string, listener: (sender: IGraphModel, evt: IMxEventObject) => void): void;
 }
 
 interface IGeometry {
@@ -65,6 +71,7 @@ interface IView {
     y: number;
   };
   getState(cell: ImxCell): IMxState | null;
+  addListener(action: string, listener: (sender: IGraphModel, evt: IMxEventObject) => void): void;
 }
 
 export interface IMxState {
@@ -86,6 +93,7 @@ export interface IMxGraph {
   model: IGraphModel;
   gridSize: number;
   getModel(): IGraphModel;
+  getView(): IView;
   getDefaultParent(): IParent;
   getCellGeometry(cell: ImxCell): IGeometry;
   getSelectionCells(): ImxCell[];

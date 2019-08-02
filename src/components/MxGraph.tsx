@@ -166,7 +166,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
           .then(
             (result) => {
               // tslint:disable-next-line: no-console
-              console.log("Successfully copied to clipboard", result)
+              console.log("Successfully copied to clipboard", result);
             }
           )
           .catch(
@@ -184,7 +184,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
           .then(
             (result) => {
               // tslint:disable-next-line: no-console
-              console.log("Successfully copied to clipboard", result)
+              console.log("Successfully copied to clipboard", result);
             }
           )
           .catch(
@@ -195,7 +195,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         },
       },
       paste: {
-        getFunc(destX, destY) {
+        getFunc(destX, destY): () => void {
           return () => {
             navigator.clipboard.readText()
             .then(

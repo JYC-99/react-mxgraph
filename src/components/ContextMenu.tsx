@@ -77,7 +77,7 @@ export class ContextMenu extends React.PureComponent {
                       throw new Error("not be initialized in action");
                     }
                     const func = item.menuItemType === "paste" ?
-                      action["paste"].getFunc(menu.triggerX, menu.triggerY) :
+                      action.paste.getFunc(menu.triggerX, menu.triggerY) :
                       action[item.menuItemType].func;
                     const menuItem = menu.addItem(text, null, func);
                     // tslint:disable-next-line: prefer-switch
