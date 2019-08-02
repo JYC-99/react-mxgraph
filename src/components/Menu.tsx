@@ -22,7 +22,7 @@ export class Menu extends React.PureComponent<{name: string}> {
 
   public render(): React.ReactNode {
     return (
-      <MenuItemContext.Provider value={{addItem: this.addItem}}>
+      <MenuItemContext.Provider value={{enabled: true, addItem: this.addItem}}>
         {this.props.children}
         <MenuContext.Consumer>{(context: IMenuContext) => {
           const { setMenu } = context;

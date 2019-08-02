@@ -19,12 +19,14 @@ export class Command extends React.PureComponent<{name: string; text?: string}> 
 
   public render(): React.ReactNode {
     return (
-      <MenuItemContext.Consumer>{(context: IMenuItemContext) => {
-        const { addItem } = context;
-        if (["copy", "cut", "paste", "separator"].indexOf(this.props.name) === -1) {
-          throw new Error("Menu Item Type Error");
+      <MenuItemContext.Consumer>{(menuContext: IMenuItemContext) => {
+        const { addItem } = menuContext;
+        if (menuContext.enabled) {
+          if (["copy", "cut", "paste", "separator"].indexOf(this.props.name) === -1) {
+            throw new Error("Menu Item Type Error");
+          }
+          addItem(this.props.name, this.props.text ? this.props.text : "default");
         }
-        addItem(this.props.name, this.props.text ? this.props.text : "default");
         return null;
       }}</MenuItemContext.Consumer>
     );

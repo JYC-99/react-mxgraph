@@ -56,7 +56,7 @@ const Demo = () => (
         <ToolCommand name="cut" >Cut</ToolCommand>
         <ToolCommand name="paste" >Paste</ToolCommand>
       </Toolbar>
-      {/* <ItemPanel>
+      <ItemPanel>
         <Item text="test swimlane" shape={"swimlane"}>
           swimlane
         </Item>
@@ -78,7 +78,7 @@ const Demo = () => (
         <Item text="test actor" shape={"actor"}>
         actor
         </Item>
-      </ItemPanel> */}
+      </ItemPanel>
       <Flow
         data={data}
       />

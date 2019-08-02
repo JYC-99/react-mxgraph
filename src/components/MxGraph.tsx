@@ -8,11 +8,12 @@ import * as mxGraphJs from "mxgraph-js";
 //   _pasteText,
 // } from "../utils/Copy";
 import {
-  ClipboardContext,
+  ClipboardContext, IClipboardContext,
 } from "../context/ClipboardContext";
 import {
   MxGraphContext
 } from "../context/MxGraphContext";
+import { IMxActions } from "../types/action";
 import { IMxGraph } from "../types/mxGraph";
 
 const {
@@ -38,6 +39,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   public static contextType = ClipboardContext;
   private mouseX: number;
   private mouseY: number;
+  private action: IMxActions | {};
 
   constructor(props: {}) {
     super(props);
@@ -46,6 +48,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     };
     this.mouseX = 0;
     this.mouseY = 0;
+    this.action = {};
   }
 
   public setGraph = (graph: IMxGraph) => {
@@ -53,6 +56,8 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       return;
     }
     this.addCopyEvent(graph);
+    // tslint:disable-next-line: deprecation
+    this.action = this.initAction(graph, this.context);
 
     this.setState({
       graph,
@@ -120,7 +125,8 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         <MxGraphContext.Provider
           value={{
             graph: this.state.graph,
-            setGraph: this.setGraph
+            setGraph: this.setGraph,
+            action: this.action,
           }}
         >
             {this.props.children}
@@ -136,4 +142,66 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     textInput.value = " ";
   }
 
+  private readonly initAction = (graph: IMxGraph, clipboard: IClipboardContext): IMxActions => {
+    return {
+      copy: {
+        func: () => {
+          clipboard.copyFuncForMenu(graph, clipboard.copy, clipboard.textInput);
+          const text = clipboard.textInput.value;
+          navigator.clipboard.writeText(text)
+          .then(
+            (result) => {
+              // tslint:disable-next-line: no-console
+              console.log("Successfully copied to clipboard", result)
+            }
+          )
+          .catch(
+          (err) => {
+            // tslint:disable-next-line: no-console
+            console.log("Error! could not copy text", err);
+          });
+        },
+      },
+      cut: {
+        func: () => {
+          clipboard.cutFunc(graph, clipboard.copy, clipboard.textInput);
+          const text = clipboard.textInput.value;
+          navigator.clipboard.writeText(text)
+          .then(
+            (result) => {
+              // tslint:disable-next-line: no-console
+              console.log("Successfully copied to clipboard", result)
+            }
+          )
+          .catch(
+          (err) => {
+            // tslint:disable-next-line: no-console
+            console.log("Error! could not copy text", err);
+          });
+        },
+      },
+      paste: {
+        func: () => {
+          navigator.clipboard.readText()
+          .then(
+            // tslint:disable-next-line: promise-function-async
+            (result) => {
+              // tslint:disable-next-line: no-console
+              console.log("Successfully retrieved text from clipboard", result);
+              clipboard.textInput.focus(); // no listener
+              // tslint:disable-next-line: deprecation
+              clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput, 150, 150);
+              return Promise.resolve(result);
+            }
+          )
+          .catch(
+            (err) => {
+              throw new Error("Error! read text from clipboard");
+            });
+        },
+      },
+
+    };
+
+  }
 }
