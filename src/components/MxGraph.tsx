@@ -14,7 +14,7 @@ import {
   MxGraphContext
 } from "../context/MxGraphContext";
 import { IMxActions } from "../types/action";
-import { IMxGraph } from "../types/mxGraph";
+import { IMxEventObject, IMxGraph, IMxUndoManager } from "../types/mxGraph";
 
 const {
   mxClient,
@@ -25,6 +25,7 @@ const {
   mxPoint,
   mxTransient,
   mxObjectIdentity,
+  mxUndoManager,
 } = mxGraphJs;
 
 window.mxGeometry = mxGeometry;
@@ -37,6 +38,7 @@ interface IState {
 
 export class MxGraph extends React.PureComponent<{}, IState> {
   public static contextType = ClipboardContext;
+  private undoManager: IMxUndoManager;
   private mouseX: number;
   private mouseY: number;
   private action: IMxActions | {};
@@ -59,11 +61,23 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     // tslint:disable-next-line: deprecation
     this.action = this.initAction(graph, this.context);
 
+    this.undoManager = new mxUndoManager();
+    this.addUndoEvent(graph);
+
     this.setState({
       graph,
     });
   }
 
+  public addUndoEvent = (graph: IMxGraph) => {
+    const listener = (_sender, evt: IMxEventObject) => {
+      this.undoManager.undoableEditHappened(evt.getProperty("edit"));
+    };
+    graph.getModel()
+      .addListener(mxEvent.UNDO, listener);
+    graph.getView()
+      .addListener(mxEvent.UNDO, listener);
+  }
   // tslint:disable-next-line: max-func-body-length
   public addCopyEvent = (graph: IMxGraph) => { // , textInput: HTMLTextAreaElement, copy: ICopy) => {
     // tslint:disable-next-line: deprecation
@@ -181,25 +195,47 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         },
       },
       paste: {
-        func: () => {
-          navigator.clipboard.readText()
-          .then(
-            // tslint:disable-next-line: promise-function-async
-            (result) => {
-              // tslint:disable-next-line: no-console
-              console.log("Successfully retrieved text from clipboard", result);
-              clipboard.textInput.focus(); // no listener
-              // tslint:disable-next-line: deprecation
-              clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput, 150, 150);
-              return Promise.resolve(result);
-            }
-          )
-          .catch(
-            (err) => {
-              throw new Error("Error! read text from clipboard");
-            });
+        getFunc(destX, destY) {
+          return () => {
+            navigator.clipboard.readText()
+            .then(
+              // tslint:disable-next-line: promise-function-async
+              (result) => {
+                // tslint:disable-next-line: no-console
+                console.log("Successfully retrieved text from clipboard", result);
+                clipboard.textInput.focus(); // no listener
+                // tslint:disable-next-line: deprecation
+                clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput, destX, destY);
+                return Promise.resolve(result);
+              }
+            )
+            .catch(
+              (err) => {
+                throw new Error("Error! read text from clipboard");
+              });
+          };
         },
       },
+      undo: {
+        func: () => {
+          this.undoManager.undo();
+        },
+      },
+      redo: {
+        func: () => {
+          this.undoManager.redo();
+        },
+      },
+      zoomIn: {
+        func: () => {
+          graph.zoomIn();
+        },
+      },
+      zoomOut: {
+        func : () => {
+          graph.zoomOut();
+        },
+      }
 
     };
 

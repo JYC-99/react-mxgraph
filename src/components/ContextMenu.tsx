@@ -39,7 +39,7 @@ export class ContextMenu extends React.PureComponent {
 
   constructor(props: {}) {
     super(props);
-    this.menus =  {
+    this.menus = {
       vertex: [],
       edge: [],
       canvas: []
@@ -51,16 +51,17 @@ export class ContextMenu extends React.PureComponent {
     const { copy, textInput } = this.context;
 
     return (
-      <MenuContext.Provider value={{setMenu: this.setMenu}}>
+      <MenuContext.Provider value={{ setMenu: this.setMenu }}>
         {this.props.children}
         <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
           const {
             graph,
+            action,
           } = value;
 
           mxEvent.disableContextMenu(document.body);
 
-          if (graph) {
+          if (graph && action) {
             graph.popupMenuHandler.autoExpand = true;
             graph.popupMenuHandler.factoryMethod = (menu, cell, _evt) => {
               const currentMenu: IMenu[] = this._getMenuFromCell(cell);
@@ -69,19 +70,20 @@ export class ContextMenu extends React.PureComponent {
                 currentMenu.map((item) => {
                   const text = item.text ? item.text : "default";
                   // tslint:disable-next-line: prefer-switch
-                  if (item.menuItemType === "paste" || item.menuItemType === "copy" || item.menuItemType === "cut") {
-
-                    const func = this._getFuncFromType(item.menuItemType, graph, copy, textInput, menu);
+                  if (item.menuItemType === "separator") {
+                    menu.addSeparator();
+                  } else {
+                    if (!action.hasOwnProperty(item.menuItemType)) {
+                      throw new Error("not be initialized in action");
+                    }
+                    const func = item.menuItemType === "paste" ?
+                      action["paste"].getFunc(menu.triggerX, menu.triggerY) :
+                      action[item.menuItemType].func;
                     const menuItem = menu.addItem(text, null, func);
                     // tslint:disable-next-line: prefer-switch
                     if (item.menuItemType === "copy" || item.menuItemType === "cut") {
                       this.addListener(menuItem, graph, copy, textInput);
                     }
-
-                  } else if (item.menuItemType === "separator") {
-                    menu.addSeparator();
-                  } else {
-                    throw new Error("Unknown menu item type");
                   }
                 });
 
@@ -111,41 +113,41 @@ export class ContextMenu extends React.PureComponent {
     });
   }
 
-  private readonly _getFuncFromType = (menuItemType: string, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, menu: IMxMenu) => {
-    // tslint:disable-next-line: no-empty
-    let func = () => { };
-    // tslint:disable-next-line: prefer-switch
-    if (menuItemType === "paste") {
-      func = () => {
-        navigator.clipboard.readText()
-        .then(
-          // tslint:disable-next-line: promise-function-async
-          (result) => {
-            // tslint:disable-next-line: no-console
-            console.log("Successfully retrieved text from clipboard", result);
-            textInput.focus(); // no listener
-            // tslint:disable-next-line: deprecation
-            this.context.pasteFuncForMenu(result, graph, copy, textInput, menu.triggerX, menu.triggerY);
+  // private readonly _getFuncFromType = (menuItemType: string, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, menu: IMxMenu) => {
+  //   // tslint:disable-next-line: no-empty
+  //   let func = () => { };
+  //   // tslint:disable-next-line: prefer-switch
+  //   if (menuItemType === "paste") {
+  //     func = () => {
+  //       navigator.clipboard.readText()
+  //       .then(
+  //         // tslint:disable-next-line: promise-function-async
+  //         (result) => {
+  //           // tslint:disable-next-line: no-console
+  //           console.log("Successfully retrieved text from clipboard", result);
+  //           textInput.focus(); // no listener
+  //           // tslint:disable-next-line: deprecation
+  //           this.context.pasteFuncForMenu(result, graph, copy, textInput, menu.triggerX, menu.triggerY);
 
-            return Promise.resolve(result);
-          }
-        )
-        .catch(
-          (err) => {
-            throw new Error("Error! read text from clipbaord");
-          });
-      };
-    } else if (menuItemType === "copy") {
-      func = () => {
-        document.execCommand("copy");
-      };
-    } else if (menuItemType === "cut") {
-      func = () => {
-        document.execCommand("cut");
-      };
-    }
-    return func;
-  }
+  //           return Promise.resolve(result);
+  //         }
+  //       )
+  //       .catch(
+  //         (err) => {
+  //           throw new Error("Error! read text from clipbaord");
+  //         });
+  //     };
+  //   } else if (menuItemType === "copy") {
+  //     func = () => {
+  //       document.execCommand("copy");
+  //     };
+  //   } else if (menuItemType === "cut") {
+  //     func = () => {
+  //       document.execCommand("cut");
+  //     };
+  //   }
+  //   return func;
+  // }
 
   private readonly _getMenuFromCell = (cell: ImxCell | null) => {
     let name = "item";

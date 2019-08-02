@@ -26,6 +26,23 @@ export interface IMxMenu {
   addSeparator(): void;
 }
 
+export interface IMxUndoManager {
+  undo(): void;
+  redo(): void;
+  undoableEditHappened(edit: any): any;
+}
+
+export interface IMxEventObject {
+  name: string;
+  properties: {
+    edit: {
+      source: IGraphModel;
+      changes: [];
+    };
+  };
+  getProperty(property: any): any;
+}
+
 export interface IGraphModel {
   beginUpdate(): void;
   endUpdate(): void;
@@ -84,4 +101,6 @@ export interface IMxGraph {
   removeCells(): ImxCell[];
   moveCells(cell: ImxCell, dx: number, dy: number): void;
   cloneCells(cells: ImxCell[]): ImxCell[];
+  zoomIn(): void;
+  zoomOut(): void;
 }

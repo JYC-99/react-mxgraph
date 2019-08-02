@@ -51,11 +51,6 @@ const data = {
 const Demo = () => (
   <div>
     <MxGraph>
-      <Toolbar>
-        <ToolCommand name="copy" >Copy</ToolCommand>
-        <ToolCommand name="cut" >Cut</ToolCommand>
-        <ToolCommand name="paste" >Paste</ToolCommand>
-      </Toolbar>
       <ItemPanel>
         <Item text="test swimlane" shape={"swimlane"}>
           swimlane
@@ -82,6 +77,15 @@ const Demo = () => (
       <Flow
         data={data}
       />
+      <Toolbar>
+        <ToolCommand name="copy" >Copy</ToolCommand>
+        <ToolCommand name="cut" >Cut</ToolCommand>
+        <ToolCommand name="paste" >Paste</ToolCommand>
+        <ToolCommand name="undo" >undo</ToolCommand>
+        <ToolCommand name="redo" >redo</ToolCommand>
+        <ToolCommand name="zoomIn" >zoomIn</ToolCommand>
+        <ToolCommand name="zoomOut" >zoomOut</ToolCommand>
+      </Toolbar>
       <ContextMenu>
         <VertexMenu >
           <Command name="copy" text="Copy"/>

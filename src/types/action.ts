@@ -7,7 +7,21 @@ export interface IMxAction {
 export interface IMxActions {
   copy?: IMxAction;
   cut?: IMxAction;
-  paste?: IMxAction;
+  paste: {
+    getFunc(destX: number, destY: number): () => void;
+  };
   redo?: IMxAction;
   undo?: IMxAction;
+  zoomIn: IMxAction;
+  zoomOut: IMxAction;
 }
+
+export const actionType = [
+  "copy",
+  "cut",
+  "paste",
+  "redo",
+  "undo",
+  "zoomIn",
+  "zoomOut",
+];

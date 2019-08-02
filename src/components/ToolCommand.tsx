@@ -25,7 +25,10 @@ export class ToolCommand extends React.PureComponent<{ name: string; text?: stri
           }
 
           const itemType = this.props.name;
-          const func = action[itemType].func;
+          const func = itemType === "paste" ?
+          action["paste"].getFunc(200, 200) :
+          action[itemType].func;
+
           // this.addListener(container, graph, clipboard); do not know if there will be influence
           container.addEventListener("click", (_evt) => { func(); });
           return null;
