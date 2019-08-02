@@ -13,7 +13,7 @@ import {
 import {
   MxGraphContext
 } from "../context/MxGraphContext";
-import { ImxCell, IMxGraph } from "../types/mxGraph";
+import { IMxGraph } from "../types/mxGraph";
 
 const {
   mxClient,
@@ -66,6 +66,11 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     copy.gs = graph.gridSize;
     this.initTextInput(textInput);
 
+    graph.container.onmousemove = (evt) => {
+      this.mouseX = evt.offsetX;
+      this.mouseY = evt.offsetY;
+    };
+
     mxEvent.addListener(document, "keydown", (evt: KeyboardEvent) => {
       const source = mxEvent.getSource(evt);
       if (graph.isEnabled() && !graph.isMouseDown && !graph.isEditing() && source.nodeName !== "INPUT") {
@@ -108,16 +113,10 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     }
   }
 
-  public handleMouseMove = (event: React.MouseEvent) => {
-    this.mouseX = event.clientX;
-    this.mouseY = event.clientY;
-  }
-
   public render(): React.ReactNode {
 
     return (
-      // tslint:disable-next-line: react-a11y-event-has-role
-      <div className="graph" onMouseMove={this.handleMouseMove}>
+      <div className="graph">
         <MxGraphContext.Provider
           value={{
             graph: this.state.graph,
