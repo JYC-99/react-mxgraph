@@ -85,10 +85,14 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     copy.gs = graph.gridSize;
     this.initTextInput(textInput);
 
-    graph.container.onmousemove = (evt) => {
-      this.mouseX = evt.offsetX;
-      this.mouseY = evt.offsetY;
-    };
+    // For jest
+    // tslint:disable-next-line: strict-type-predicates
+    if (graph.container !== undefined) {
+      mxEvent.addListener(graph.container, "mousemove", mxUtils.bind(this, (evt: MouseEvent) => {
+        this.mouseX = evt.offsetX;
+        this.mouseY = evt.offsetY;
+      }));
+    }
 
     mxEvent.addListener(document, "keydown", (evt: KeyboardEvent) => {
       const source = mxEvent.getSource(evt);
@@ -195,7 +199,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         },
       },
       paste: {
-        getFunc(destX, destY): () => void {
+        getFunc(destX?, destY?): () => void {
           return () => {
             navigator.clipboard.readText()
             .then(

@@ -12,8 +12,42 @@ import {
   ItemPanel,
   MxGraph,
   VertexMenu,
+  Toolbar,
+  ToolCommand,
 } from "../src/index";
 import "./index.scss";
+
+const data = {
+  nodes: [{
+    type: "node",
+    size: [70, 70],
+    shape: "flow-circle",
+    color: "#FA8C16",
+    label: "起止节点",
+    x: 55,
+    y: 55,
+    id: "ea1184e8",
+    index: 0,
+  },      {
+    type: "node",
+    size: [70, 70],
+    shape: "flow-circle",
+    color: "#FA8C16",
+    label: "结束节点",
+    x: 55,
+    y: 255,
+    id: "481fbb1a",
+    index: 2,
+  }],
+  edges: [{
+    source: "ea1184e8",
+    sourceAnchor: 2,
+    target: "481fbb1a",
+    targetAnchor: 0,
+    id: "7989ac70",
+    index: 1,
+  }],
+};
 
 storiesOf("Flow", module)
   .add("Basic flow", () => {
@@ -244,6 +278,26 @@ storiesOf("Flow", module)
               <Command name="paste" text="Paste"/>
             </CanvasMenu>
           </ContextMenu>
+        </MxGraph>
+      </div>
+    );
+  })
+  .add("Toolbar", () => {
+    return (
+      <div>
+        <MxGraph>
+          <Flow
+            data={data}
+          />
+          <Toolbar>
+            <ToolCommand name="copy" >Copy</ToolCommand>
+            <ToolCommand name="cut" >Cut</ToolCommand>
+            <ToolCommand name="paste" >Paste</ToolCommand>
+            <ToolCommand name="undo" >undo</ToolCommand>
+            <ToolCommand name="redo" >redo</ToolCommand>
+            <ToolCommand name="zoomIn" >zoomIn</ToolCommand>
+            <ToolCommand name="zoomOut" >zoomOut</ToolCommand>
+          </Toolbar>
         </MxGraph>
       </div>
     );

@@ -113,42 +113,6 @@ export class ContextMenu extends React.PureComponent {
     });
   }
 
-  // private readonly _getFuncFromType = (menuItemType: string, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, menu: IMxMenu) => {
-  //   // tslint:disable-next-line: no-empty
-  //   let func = () => { };
-  //   // tslint:disable-next-line: prefer-switch
-  //   if (menuItemType === "paste") {
-  //     func = () => {
-  //       navigator.clipboard.readText()
-  //       .then(
-  //         // tslint:disable-next-line: promise-function-async
-  //         (result) => {
-  //           // tslint:disable-next-line: no-console
-  //           console.log("Successfully retrieved text from clipboard", result);
-  //           textInput.focus(); // no listener
-  //           // tslint:disable-next-line: deprecation
-  //           this.context.pasteFuncForMenu(result, graph, copy, textInput, menu.triggerX, menu.triggerY);
-
-  //           return Promise.resolve(result);
-  //         }
-  //       )
-  //       .catch(
-  //         (err) => {
-  //           throw new Error("Error! read text from clipbaord");
-  //         });
-  //     };
-  //   } else if (menuItemType === "copy") {
-  //     func = () => {
-  //       document.execCommand("copy");
-  //     };
-  //   } else if (menuItemType === "cut") {
-  //     func = () => {
-  //       document.execCommand("cut");
-  //     };
-  //   }
-  //   return func;
-  // }
-
   private readonly _getMenuFromCell = (cell: ImxCell | null) => {
     let name = "item";
     if (cell === null) {

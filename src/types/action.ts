@@ -8,7 +8,7 @@ export interface IMxActions {
   copy?: IMxAction;
   cut?: IMxAction;
   paste: {
-    getFunc(destX: number, destY: number): () => void;
+    getFunc(destX?: number, destY?: number): () => void;
   };
   redo?: IMxAction;
   undo?: IMxAction;

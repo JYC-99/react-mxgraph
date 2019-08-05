@@ -65,7 +65,7 @@ const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HT
   copy.lastPaste = textInput.value;
 };
 // tslint:disable-next-line: cyclomatic-complexity
-const _importXml = (graph: IMxGraph, xml: XMLDocument, copy: ICopy, destX: number, destY: number) => {
+const _importXml = (graph: IMxGraph, xml: XMLDocument, copy: ICopy, destX?: number, destY?: number) => {
   copy.dx = copy.dx ? copy.dx : 0;
   copy.dy = copy.dy ? copy.dy : 0;
   let cells: ImxCell[] = [];
@@ -95,8 +95,8 @@ const _importXml = (graph: IMxGraph, xml: XMLDocument, copy: ICopy, destX: numbe
             if (!graph.isCellLocked(target)) {
               const children = model.getChildren(parent);
               const cell = graph.importCells(children,
-                destX - children[0].geometry.x - children[0].geometry.width / 2,
-                destY - children[0].geometry.y - children[0].geometry.height / 2,
+                destX ? destX - children[0].geometry.x - children[0].geometry.width / 2 : copy.dx,
+                destY ? destY - children[0].geometry.y - children[0].geometry.height / 2 : copy.dy,
                 target);
               if (cell) {
                 cells = cells.concat(cell);
@@ -109,8 +109,8 @@ const _importXml = (graph: IMxGraph, xml: XMLDocument, copy: ICopy, destX: numbe
             if (parent) {
               const children = graph.model.getChildren(parent);
               graph.moveCells(children,
-                destX - children[0].geometry.x - children[0].geometry.width / 2,
-                destY - children[0].geometry.y - children[0].geometry.height / 2);
+                destX ? destX - children[0].geometry.x - children[0].geometry.width / 2 : copy.dx,
+                destY ? destY - children[0].geometry.y - children[0].geometry.height / 2 : copy.dy);
               cells = cells.concat(children);
             }
           }
@@ -129,7 +129,7 @@ const _importXml = (graph: IMxGraph, xml: XMLDocument, copy: ICopy, destX: numbe
 };
 
 // tslint:disable-next-line: cyclomatic-complexity
-const _pasteText = (graph: IMxGraph, text: string, copy: ICopy, mouseX: number, mouseY: number) => {
+const _pasteText = (graph: IMxGraph, text: string, copy: ICopy, mouseX?: number, mouseY?: number) => {
   const xml = mxUtils.trim(text);
   // console.log("text", text);
   let destX = mouseX;
@@ -137,12 +137,14 @@ const _pasteText = (graph: IMxGraph, text: string, copy: ICopy, mouseX: number, 
   const x = graph.container.scrollLeft / graph.view.scale - graph.view.translate.x;
   const y = graph.container.scrollTop / graph.view.scale - graph.view.translate.y;
   if (xml.length > 0) {
-    if (copy.lastPasteX < destX - copy.gs || copy.lastPasteX > destX + copy.gs || copy.lastPasteY < destY - copy.gs || copy.lastPasteY >  destY + copy.gs) {
-      copy.lastPasteX = destX;
-      copy.lastPasteY = destY;
-    } else {
-      destX += copy.dx;
-      destY += copy.dy;
+    if (destX && destY) {
+      if (copy.lastPasteX < destX - copy.gs || copy.lastPasteX > destX + copy.gs || copy.lastPasteY < destY - copy.gs || copy.lastPasteY >  destY + copy.gs) {
+        copy.lastPasteX = destX;
+        copy.lastPasteY = destY;
+      } else {
+        destX += copy.dx;
+        destY += copy.dy;
+      }
     }
     if (copy.lastPaste !== xml) {
       copy.lastPaste = xml;
