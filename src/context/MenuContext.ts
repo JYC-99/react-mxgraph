@@ -12,10 +12,12 @@ export const MenuContext = React.createContext<IMenuContext>({
 });
 
 export interface IMenuItemContext {
+  enabled: boolean;
   addItem(name: string, text: string): void;
 }
 
 export const MenuItemContext = React.createContext<IMenuItemContext>({
+  enabled: false,
   // tslint:disable-next-line: no-empty
   addItem: () => {},
 });

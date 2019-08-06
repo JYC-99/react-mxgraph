@@ -8,12 +8,13 @@ import * as mxGraphJs from "mxgraph-js";
 //   _pasteText,
 // } from "../utils/Copy";
 import {
-  ClipboardContext,
+  ClipboardContext, IClipboardContext,
 } from "../context/ClipboardContext";
 import {
   MxGraphContext
 } from "../context/MxGraphContext";
-import { ImxCell, IMxGraph } from "../types/mxGraph";
+import { IMxActions } from "../types/action";
+import { IMxEventObject, IMxGraph, IMxUndoManager } from "../types/mxGraph";
 
 const {
   mxClient,
@@ -24,6 +25,7 @@ const {
   mxPoint,
   mxTransient,
   mxObjectIdentity,
+  mxUndoManager,
 } = mxGraphJs;
 
 window.mxGeometry = mxGeometry;
@@ -36,8 +38,10 @@ interface IState {
 
 export class MxGraph extends React.PureComponent<{}, IState> {
   public static contextType = ClipboardContext;
+  private undoManager: IMxUndoManager;
   private mouseX: number;
   private mouseY: number;
+  private action: IMxActions | {};
 
   constructor(props: {}) {
     super(props);
@@ -46,6 +50,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     };
     this.mouseX = 0;
     this.mouseY = 0;
+    this.action = {};
   }
 
   public setGraph = (graph: IMxGraph) => {
@@ -53,18 +58,41 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       return;
     }
     this.addCopyEvent(graph);
+    // tslint:disable-next-line: deprecation
+    this.action = this.initAction(graph, this.context);
+
+    this.undoManager = new mxUndoManager();
+    this.addUndoEvent(graph);
 
     this.setState({
       graph,
     });
   }
 
+  public addUndoEvent = (graph: IMxGraph) => {
+    const listener = (_sender, evt: IMxEventObject) => {
+      this.undoManager.undoableEditHappened(evt.getProperty("edit"));
+    };
+    graph.getModel()
+      .addListener(mxEvent.UNDO, listener);
+    graph.getView()
+      .addListener(mxEvent.UNDO, listener);
+  }
   // tslint:disable-next-line: max-func-body-length
   public addCopyEvent = (graph: IMxGraph) => { // , textInput: HTMLTextAreaElement, copy: ICopy) => {
     // tslint:disable-next-line: deprecation
     const { copy, textInput } = this.context;
     copy.gs = graph.gridSize;
     this.initTextInput(textInput);
+
+    // For jest
+    // tslint:disable-next-line: strict-type-predicates
+    if (graph.container !== undefined) {
+      mxEvent.addListener(graph.container, "mousemove", mxUtils.bind(this, (evt: MouseEvent) => {
+        this.mouseX = evt.offsetX;
+        this.mouseY = evt.offsetY;
+      }));
+    }
 
     mxEvent.addListener(document, "keydown", (evt: KeyboardEvent) => {
       const source = mxEvent.getSource(evt);
@@ -108,20 +136,15 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     }
   }
 
-  public handleMouseMove = (event: React.MouseEvent) => {
-    this.mouseX = event.clientX;
-    this.mouseY = event.clientY;
-  }
-
   public render(): React.ReactNode {
 
     return (
-      // tslint:disable-next-line: react-a11y-event-has-role
-      <div className="graph" onMouseMove={this.handleMouseMove}>
+      <div className="graph">
         <MxGraphContext.Provider
           value={{
             graph: this.state.graph,
-            setGraph: this.setGraph
+            setGraph: this.setGraph,
+            action: this.action,
           }}
         >
             {this.props.children}
@@ -137,4 +160,88 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     textInput.value = " ";
   }
 
+  private readonly initAction = (graph: IMxGraph, clipboard: IClipboardContext): IMxActions => {
+    return {
+      copy: {
+        func: () => {
+          clipboard.copyFuncForMenu(graph, clipboard.copy, clipboard.textInput);
+          const text = clipboard.textInput.value;
+          navigator.clipboard.writeText(text)
+          .then(
+            (result) => {
+              // tslint:disable-next-line: no-console
+              console.log("Successfully copied to clipboard", result);
+            }
+          )
+          .catch(
+          (err) => {
+            // tslint:disable-next-line: no-console
+            console.log("Error! could not copy text", err);
+          });
+        },
+      },
+      cut: {
+        func: () => {
+          clipboard.cutFunc(graph, clipboard.copy, clipboard.textInput);
+          const text = clipboard.textInput.value;
+          navigator.clipboard.writeText(text)
+          .then(
+            (result) => {
+              // tslint:disable-next-line: no-console
+              console.log("Successfully copied to clipboard", result);
+            }
+          )
+          .catch(
+          (err) => {
+            // tslint:disable-next-line: no-console
+            console.log("Error! could not copy text", err);
+          });
+        },
+      },
+      paste: {
+        getFunc(destX?, destY?): () => void {
+          return () => {
+            navigator.clipboard.readText()
+            .then(
+              // tslint:disable-next-line: promise-function-async
+              (result) => {
+                // tslint:disable-next-line: no-console
+                console.log("Successfully retrieved text from clipboard", result);
+                clipboard.textInput.focus(); // no listener
+                // tslint:disable-next-line: deprecation
+                clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput, destX, destY);
+                return Promise.resolve(result);
+              }
+            )
+            .catch(
+              (err) => {
+                throw new Error("Error! read text from clipboard");
+              });
+          };
+        },
+      },
+      undo: {
+        func: () => {
+          this.undoManager.undo();
+        },
+      },
+      redo: {
+        func: () => {
+          this.undoManager.redo();
+        },
+      },
+      zoomIn: {
+        func: () => {
+          graph.zoomIn();
+        },
+      },
+      zoomOut: {
+        func : () => {
+          graph.zoomOut();
+        },
+      }
+
+    };
+
+  }
 }

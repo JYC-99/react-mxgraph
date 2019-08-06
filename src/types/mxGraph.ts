@@ -26,6 +26,28 @@ export interface IMxMenu {
   addSeparator(): void;
 }
 
+// tslint:disable-next-line: no-empty-interface
+export interface IMxUndoableEdit {
+
+}
+
+export interface IMxUndoManager {
+  undo(): void;
+  redo(): void;
+  undoableEditHappened(edit: IMxUndoableEdit): void;
+}
+
+export interface IMxEventObject {
+  name: string;
+  properties: {
+    edit: {
+      source: IGraphModel;
+      changes: [];
+    };
+  };
+  getProperty(property: string): IMxUndoableEdit;
+}
+
 export interface IGraphModel {
   beginUpdate(): void;
   endUpdate(): void;
@@ -33,6 +55,7 @@ export interface IGraphModel {
   getRoot(): ImxCell;
   getChildCount(root: ImxCell): number;
   getChildren(cell: ImxCell): ImxCell;
+  addListener(action: string, listener: (sender: IGraphModel, evt: IMxEventObject) => void): void;
 }
 
 interface IGeometry {
@@ -48,6 +71,7 @@ interface IView {
     y: number;
   };
   getState(cell: ImxCell): IMxState | null;
+  addListener(action: string, listener: (sender: IGraphModel, evt: IMxEventObject) => void): void;
 }
 
 export interface IMxState {
@@ -69,6 +93,7 @@ export interface IMxGraph {
   model: IGraphModel;
   gridSize: number;
   getModel(): IGraphModel;
+  getView(): IView;
   getDefaultParent(): IParent;
   getCellGeometry(cell: ImxCell): IGeometry;
   getSelectionCells(): ImxCell[];
@@ -84,4 +109,6 @@ export interface IMxGraph {
   removeCells(): ImxCell[];
   moveCells(cell: ImxCell, dx: number, dy: number): void;
   cloneCells(cells: ImxCell[]): ImxCell[];
+  zoomIn(): void;
+  zoomOut(): void;
 }

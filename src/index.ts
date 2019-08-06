@@ -5,3 +5,5 @@ export * from "./components/Item";
 export * from "./components/ItemPanel";
 export * from "./components/Menu";
 export * from "./components/Command";
+export * from "./components/Toolbar";
+export * from "./components/ToolCommand";
