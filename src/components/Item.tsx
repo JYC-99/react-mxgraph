@@ -24,6 +24,8 @@ interface IItemProps {
   shape?: string;
 }
 
+import { Shapes } from "../types/shapes";
+
 export class Item extends React.PureComponent<IItemProps> {
   private readonly _containerRef = React.createRef<HTMLDivElement>();
   private readonly item = {
@@ -58,15 +60,10 @@ export class Item extends React.PureComponent<IItemProps> {
   }
 
   private readonly setStyle = (shape: string) => {
-    // cspell: disable-next-line
-    if (["swimlane", "rectangle", "ellipse", "rhombus", "triangle", "cylinder", "actor", ""].indexOf(shape) === -1) {
-      throw new Error("Item Type Error");
-    }
-    switch (shape) {
-      case "":
-        return "shape=rectangle";
-      default:
-        return `shape=${shape}`;
+    if (Shapes.hasOwnProperty(shape)) {
+      return Shapes[shape].style;
+    } else {
+      console.error("error shape type", shape);
     }
   }
 

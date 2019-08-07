@@ -52,9 +52,6 @@ const Demo = () => (
   <div>
     <MxGraph>
       <ItemPanel>
-        <Item text="test swimlane" shape={"swimlane"}>
-          swimlane
-        </Item>
         <Item text="test rectangle">
           rectangle
         </Item>
@@ -64,14 +61,11 @@ const Demo = () => (
         <Item text="test rhombus" shape={"rhombus"}>
         rhombus
         </Item>
-        <Item text="test triangle" shape={"triangle"}>
-        triangle
+        <Item text="test round" shape={"round"}>
+        rounded rectangle
         </Item>
-        <Item text="test cylinder" shape={"cylinder"}>
-        cylinder
-        </Item>
-        <Item text="test actor" shape={"actor"}>
-        actor
+        <Item text="test cloud" shape={"cloud"}>
+        cloud
         </Item>
       </ItemPanel>
       <Flow

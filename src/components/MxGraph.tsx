@@ -15,6 +15,7 @@ import {
 } from "../context/MxGraphContext";
 import { IMxActions } from "../types/action";
 import { IMxEventObject, IMxGraph, IMxUndoManager } from "../types/mxGraph";
+import { init } from "./init";
 
 const {
   mxClient,
@@ -26,6 +27,7 @@ const {
   mxTransient,
   mxObjectIdentity,
   mxUndoManager,
+  mxGraph,
 } = mxGraphJs;
 
 window.mxGeometry = mxGeometry;
@@ -57,6 +59,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     if (this.state.graph) {
       return;
     }
+    init(graph);
     this.addCopyEvent(graph);
     // tslint:disable-next-line: deprecation
     this.action = this.initAction(graph, this.context);
