@@ -7,6 +7,9 @@ const {
     mxCell,
     mxUtils,
     mxGeometry,
+    mxConnectionConstraint,
+    mxPoint,
+    mxRectangleShape,
   } = mxGraphJs;
 
 import {
@@ -19,14 +22,29 @@ import {
   IMxGraph,
 } from "../types/mxGraph";
 
-interface IItemProps {
-  text?: string;
+interface IConfig {
+  width?: number;
+  height?: number;
+  rounded?: 0 | 1;
+  fillColor?: string;
+  shadow?: 0 | 1;
+  strokeWidth?: number; // boarder
+  strokeColor?: string;
+  anchorPoints?: number[][];
+  label?: string;
   shape?: string;
+  fontColor?: string;
+  fontSize?: number;
+  gradientColor?: string;
+}
+
+interface IItemProps {
+  config?: IConfig;
 }
 
 import { Shapes } from "../types/shapes";
 
-export class Item extends React.PureComponent<IItemProps> {
+export class Item extends React.PureComponent<IItemProps>{
   private readonly _containerRef = React.createRef<HTMLDivElement>();
   private readonly item = {
     text: "", width: 100, height: 70, style: "shape=rectangle",
@@ -34,9 +52,13 @@ export class Item extends React.PureComponent<IItemProps> {
 
   constructor(props: IItemProps) {
     super(props);
-
-    this.item.text = this.props.text ? this.props.text : "";
-    this.item.style = this.props.shape ? this.setStyle(this.props.shape) : "shape=rectangle";
+    const config = this.props.config;
+    if (config) {
+      this.item.text = config.label ? config.label : "";
+      this.item.style = config.shape ? this.setStyle(config.shape) : "shape=rectangle";
+      this.item.width = config.width ? config.width : 100;
+      this.item.height = config.height ? config.height : 70;
+    }
   }
 
   public render(): React.ReactNode {
@@ -50,7 +72,11 @@ export class Item extends React.PureComponent<IItemProps> {
           if (!graph || !container) {
             return null;
           }
+          const config = this.props.config;
+          if (config && config.shape && config.shape === "rectangle") {
+            this.initRecAnchorPoints();
 
+          }
           this.addToolbarItem(graph, container);
           return null;
         }}</MxGraphContext.Consumer>
@@ -61,9 +87,20 @@ export class Item extends React.PureComponent<IItemProps> {
 
   private readonly setStyle = (shape: string) => {
     if (Shapes.hasOwnProperty(shape)) {
-      return Shapes[shape].style;
+      if (!this.props.config) {
+        return Shapes[shape].style;
+      } else {
+        const config = this.props.config;
+        let style = "shape=rectangle"; // only for configuring rectangle
+        for (const key of Object.keys(config)) {
+          // tslint:disable-next-line: prefer-switch
+          if (key === "width" || key === "height" || key === "anchorPoints" || key === "text") { continue; }
+          style += `;${key}=${config[key]}`;
+        }
+        return style;
+      }
     } else {
-      console.error("error shape type", shape);
+      throw new Error("error shape type");
     }
   }
 
@@ -96,4 +133,14 @@ export class Item extends React.PureComponent<IItemProps> {
     mxUtils.makeDraggable(elt, graph, func, dragElt, null, null, graph.autoscroll, true);
   }
 
+  private initRecAnchorPoints(): void {
+    if (this.props.config && this.props.config.anchorPoints) {
+      const arr = this.props.config.anchorPoints;
+      const constr = [];
+      for (const pt of arr) {
+        constr.push(new mxConnectionConstraint(new mxPoint(pt[0], pt[1]), true));
+      }
+      mxRectangleShape.prototype.constraints = constr;
+    }
+  }
 }

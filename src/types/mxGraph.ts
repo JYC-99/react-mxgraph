@@ -30,6 +30,10 @@ export interface IMxMenu {
 export interface IMxUndoableEdit {
 
 }
+// tslint:disable-next-line: no-empty-interface
+export interface IMxConnectionConstraint {
+
+}
 
 export interface IMxUndoManager {
   undo(): void;

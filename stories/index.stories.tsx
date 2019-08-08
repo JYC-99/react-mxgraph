@@ -28,7 +28,7 @@ const data = {
     y: 55,
     id: "ea1184e8",
     index: 0,
-  },      {
+  }, {
     type: "node",
     size: [70, 70],
     shape: "flow-circle",
@@ -85,7 +85,6 @@ storiesOf("Flow", module)
         index: 1,
       }],
     };
-
     return (
       <MxGraph>
         <Flow
@@ -106,7 +105,7 @@ storiesOf("Flow", module)
         y: 55,
         id: "ea1184e8",
         index: 0,
-      },      {
+      }, {
         type: "node",
         size: [70, 70],
         shape: "flow-circle",
@@ -152,7 +151,7 @@ storiesOf("Flow", module)
         y: 55,
         id: "ea1184e8",
         index: 0,
-      },      {
+      }, {
         type: "node",
         size: [70, 70],
         shape: "flow-circle",
@@ -175,85 +174,54 @@ storiesOf("Flow", module)
 
     return (
       <div>
-      <MxGraph>
-        <Flow data={data} />
-        <ItemPanel>
-          <Item text="test swimlane" shape={"swimlane"}>
-            swimlane
+        <MxGraph>
+          <Flow data={data} />
+          <ItemPanel>
+            <Item text="test swimlane" shape={"swimlane"}>
+              swimlane
           </Item>
-          <Item text="test rectangle">
-            rectangle
+            <Item text="test rectangle">
+              rectangle
           </Item>
-          <Item text="test ellipse" shape={"ellipse"}>
-            ellipse
+            <Item text="test ellipse" shape={"ellipse"}>
+              ellipse
           </Item>
-          <Item text="test rhombus" shape={"rhombus"}>
-          rhombus
+            <Item text="test rhombus" shape={"rhombus"}>
+              rhombus
           </Item>
-          <Item text="test triangle" shape={"triangle"}>
-          triangle
+            <Item text="test triangle" shape={"triangle"}>
+              triangle
           </Item>
-          <Item text="test cylinder" shape={"cylinder"}>
-          cylinder
+            <Item text="test cylinder" shape={"cylinder"}>
+              cylinder
           </Item>
-          <Item text="test actor" shape={"actor"}>
-          actor
+            <Item text="test actor" shape={"actor"}>
+              actor
           </Item>
-        </ItemPanel>
-        <ContextMenu>
+          </ItemPanel>
+          <ContextMenu>
             <VertexMenu >
-              <Command name="copy" text="Copy"/>
-              <Command name="cut" text="Cut"/>
+              <Command name="copy" text="Copy" />
+              <Command name="cut" text="Cut" />
               <Command name="separator" />
-              <Command name="paste" text="Paste"/>
+              <Command name="paste" text="Paste" />
             </VertexMenu>
             <EdgeMenu >
-              <Command name="copy" text="Copy"/>
-              <Command name="cut" text="Cut"/>
-              <Command name="paste" text="Paste"/>
+              <Command name="copy" text="Copy" />
+              <Command name="cut" text="Cut" />
+              <Command name="paste" text="Paste" />
             </EdgeMenu>
             <CanvasMenu>
-              <Command name="copy" text="Copy"/>
-              <Command name="cut" text="Cut"/>
-              <Command name="paste" text="Paste"/>
+              <Command name="copy" text="Copy" />
+              <Command name="cut" text="Cut" />
+              <Command name="paste" text="Paste" />
             </CanvasMenu>
           </ContextMenu>
-      </MxGraph>
-    </div>
+        </MxGraph>
+      </div>
     );
   })
   .add("Command", () => {
-    const data = {
-      nodes: [{
-        type: "node",
-        size: [70, 70],
-        shape: "flow-circle",
-        color: "#FA8C16",
-        label: "起止节点",
-        x: 55,
-        y: 55,
-        id: "ea1184e8",
-        index: 0,
-      },      {
-        type: "node",
-        size: [70, 70],
-        shape: "flow-circle",
-        color: "#FA8C16",
-        label: "结束节点",
-        x: 55,
-        y: 255,
-        id: "481fbb1a",
-        index: 2,
-      }],
-      edges: [{
-        source: "ea1184e8",
-        sourceAnchor: 2,
-        target: "481fbb1a",
-        targetAnchor: 0,
-        id: "7989ac70",
-        index: 1,
-      }],
-    };
     return (
       <div>
         <MxGraph>
@@ -262,20 +230,24 @@ storiesOf("Flow", module)
           />
           <ContextMenu>
             <VertexMenu >
-              <Command name="copy" text="Copy"/>
-              <Command name="cut" text="Cut"/>
+              <Command name="copy" text="Copy" />
+              <Command name="cut" text="Cut" />
               <Command name="separator" />
-              <Command name="paste" text="Paste"/>
+              <Command name="deleteCell" text="Delete" />
             </VertexMenu>
             <EdgeMenu >
-              <Command name="copy" text="Copy"/>
-              <Command name="cut" text="Cut"/>
-              <Command name="paste" text="Paste"/>
+              <Command name="copy" text="Copy" />
+              <Command name="cut" text="Cut" />
+              <Command name="separator" />
+              <Command name="deleteCell" text="Delete" />
             </EdgeMenu>
             <CanvasMenu>
-              <Command name="copy" text="Copy"/>
-              <Command name="cut" text="Cut"/>
-              <Command name="paste" text="Paste"/>
+              <Command name="paste" text="Paste" />
+              <Command name="separator" />
+              <Command name="undo" text="Undo" />
+              <Command name="redo" text="Redo" />
+              <Command name="separator" />
+              <Command name="fit" text="Fit" />
             </CanvasMenu>
           </ContextMenu>
         </MxGraph>
@@ -297,6 +269,32 @@ storiesOf("Flow", module)
             <ToolCommand name="redo" >redo</ToolCommand>
             <ToolCommand name="zoomIn" >zoomIn</ToolCommand>
             <ToolCommand name="zoomOut" >zoomOut</ToolCommand>
+          </Toolbar>
+        </MxGraph>
+      </div>
+    );
+  }).add("RegisterShape", () => {
+    return (
+      <div>
+        <MxGraph>
+          <ItemPanel>
+            <Item config={{ shape: "rectangle", label: "rec", width: 100, height: 50, fillColor: "white", anchorPoints: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]] }}>
+              rectangle
+            </Item>
+            <Item config={{
+              shape: "rectangle", rounded: 1, label: "rec", width: 100, height: 30, fillColor: "white", anchorPoints: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
+              fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey"
+            }}
+            >
+              rectangle2
+            </Item>
+          </ItemPanel>
+          <Flow
+            data={data}
+          />
+          <Toolbar>
+            <ToolCommand name="undo" >undo</ToolCommand>
+            <ToolCommand name="redo" >redo</ToolCommand>
           </Toolbar>
         </MxGraph>
       </div>

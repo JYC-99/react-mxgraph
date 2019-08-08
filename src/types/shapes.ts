@@ -9,6 +9,8 @@ export interface IShapeMap {
   ellipse: IShape;
   rhombus: IShape;
   cloud: IShape;
+  roundRec?: IShape;
+  box?: IShape;
 }
 
 export const Shapes: IShapeMap = {
@@ -17,4 +19,6 @@ export const Shapes: IShapeMap = {
   ellipse: { style: "shape=ellipse;fillColor=#FAF0E6;perimeter=ellipsePerimeter", },
   rhombus: { style: "shape=rhombus;fillColor=#F0FFF0;perimeter=rhombusPerimeter", },
   cloud: { style: "shape=cloud;fillColor=#F0FFF0;perimeter=ellipsePerimeter"},
-}
+  // roundRec: { style: "shape=terminator;fillColor=#E6E6FA;"},
+  // box: { style: "shape=box;fillColor=#E6E6FA;"},
+};

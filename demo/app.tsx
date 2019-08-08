@@ -52,19 +52,20 @@ const Demo = () => (
   <div>
     <MxGraph>
       <ItemPanel>
-        <Item text="test rectangle">
+        <Item config={{shape: "rectangle", label: "rec", width: 100, height: 50, fillColor: "white", anchorPoints: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]]}}>
           rectangle
         </Item>
-        <Item text="test ellipse" shape={"ellipse"}>
+        <Item config={{shape: "rectangle", rounded: 1, label: "rec", width: 100, height: 30, fillColor: "white", anchorPoints: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
+      fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey"}}>
+          rectangle
+        </Item>
+        <Item config={{shape: "ellipse"}}>
           ellipse
         </Item>
-        <Item text="test rhombus" shape={"rhombus"}>
+        <Item config={{shape: "rhombus"}}>
         rhombus
         </Item>
-        <Item text="test round" shape={"round"}>
-        rounded rectangle
-        </Item>
-        <Item text="test cloud" shape={"cloud"}>
+        <Item config={{shape: "cloud"}}>
         cloud
         </Item>
       </ItemPanel>
