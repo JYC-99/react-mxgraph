@@ -94,110 +94,60 @@ storiesOf("Flow", module)
     );
   })
   .add("Context menu", () => {
-    const data = {
-      nodes: [{
-        type: "node",
-        size: [70, 70],
-        shape: "flow-circle",
-        color: "#FA8C16",
-        label: "起止节点",
-        x: 55,
-        y: 55,
-        id: "ea1184e8",
-        index: 0,
-      }, {
-        type: "node",
-        size: [70, 70],
-        shape: "flow-circle",
-        color: "#FA8C16",
-        label: "结束节点",
-        x: 55,
-        y: 255,
-        id: "481fbb1a",
-        index: 2,
-      }],
-      edges: [{
-        source: "ea1184e8",
-        sourceAnchor: 2,
-        target: "481fbb1a",
-        targetAnchor: 0,
-        id: "7989ac70",
-        index: 1,
-      }],
-    };
     return (
       <MxGraph>
         <Flow
           data={data}
         />
         <ContextMenu>
-          <VertexMenu />
-          <EdgeMenu />
-          <CanvasMenu />
+          <VertexMenu >
+            <Command name="copy" text="Copy" />
+            <Command name="cut" text="Cut" />
+            <Command name="separator" />
+            <Command name="deleteCell" text="Delete" />
+          </VertexMenu>
+          <EdgeMenu >
+            <Command name="copy" text="Copy" />
+            <Command name="cut" text="Cut" />
+            <Command name="separator" />
+            <Command name="deleteCell" text="Delete" />
+          </EdgeMenu>
+          <CanvasMenu>
+            <Command name="paste" text="Paste" />
+            <Command name="separator" />
+            <Command name="undo" text="Undo" />
+            <Command name="redo" text="Redo" />
+            <Command name="separator" />
+            <Command name="fit" text="Fit" />
+            <Command name="zoomIn" text="ZoomIn" />
+            <Command name="zoomOut" text="ZoomOut" />
+          </CanvasMenu>
         </ContextMenu>
       </MxGraph>
     );
   })
   // tslint:disable-next-line: max-func-body-length
   .add("Item Panel", () => {
-    const data = {
-      nodes: [{
-        type: "node",
-        size: [70, 70],
-        shape: "flow-circle",
-        color: "#FA8C16",
-        label: "起止节点",
-        x: 55,
-        y: 55,
-        id: "ea1184e8",
-        index: 0,
-      }, {
-        type: "node",
-        size: [70, 70],
-        shape: "flow-circle",
-        color: "#FA8C16",
-        label: "结束节点",
-        x: 55,
-        y: 255,
-        id: "481fbb1a",
-        index: 2,
-      }],
-      edges: [{
-        source: "ea1184e8",
-        sourceAnchor: 2,
-        target: "481fbb1a",
-        targetAnchor: 0,
-        id: "7989ac70",
-        index: 1,
-      }],
-    };
-
     return (
       <div>
         <MxGraph>
           <Flow data={data} />
           <ItemPanel>
-            <Item text="test swimlane" shape={"swimlane"}>
-              swimlane
-          </Item>
-            <Item text="test rectangle">
+            <Item config={{ shape: "rectangle", label: "rec", width: 100, height: 50, fillColor: "white", anchorPoints: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]] }}>
               rectangle
-          </Item>
-            <Item text="test ellipse" shape={"ellipse"}>
-              ellipse
-          </Item>
-            <Item text="test rhombus" shape={"rhombus"}>
-              rhombus
-          </Item>
-            <Item text="test triangle" shape={"triangle"}>
-              triangle
-          </Item>
-            <Item text="test cylinder" shape={"cylinder"}>
-              cylinder
-          </Item>
-            <Item text="test actor" shape={"actor"}>
-              actor
-          </Item>
+            </Item>
+            <Item config={{
+              shape: "rectangle", rounded: 1, label: "rec", width: 100, height: 30, fillColor: "white", anchorPoints: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
+              fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey"
+            }}
+            >
+              <svg width="100" height="30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" style={{fill: "white", stroke: "black"}}/>
+              </svg>
+            </Item>
+            <Item config={{label: "ellipse", shape: "ellipse"}}>ellipse</Item>
+            <Item config={{label: "rhombus", shape: "rhombus"}}>rhombus</Item>
+            <Item config={{label: "cloud", shape: "cloud"}}>cloud</Item>
           </ItemPanel>
           <ContextMenu>
             <VertexMenu >
@@ -215,6 +165,7 @@ storiesOf("Flow", module)
               <Command name="copy" text="Copy" />
               <Command name="cut" text="Cut" />
               <Command name="paste" text="Paste" />
+              <Command name="zoomIn" text="ZoomIn"/>
             </CanvasMenu>
           </ContextMenu>
         </MxGraph>

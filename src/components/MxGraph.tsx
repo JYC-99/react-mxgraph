@@ -175,12 +175,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
   private readonly setMouseEvent = (graph: IMxGraph): void => {
     function updateStyle(state, hover): void {
-      // Sets rounded style for both cases since the rounded style
-      // is not set in the default style and is therefore inherited
-      // once it is set, whereas the above overrides the default value
-      // state.style[mxConstants.STYLE_ROUNDED] = (hover) ? "1" :
-      //   (state.style[mxConstants.STYLE_ROUNDED]) ? state.style[mxConstants.STYLE_ROUNDED] : "0";
-      console.log(state.style);
       state.style.strokeColor = (hover) ? "#1976d2" : state.style.strokeColor;
       state.style.strokeWidth = 1;
       state.style.shadow = (hover) ? 0 : state.style.shadow;
@@ -204,9 +198,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
           let tmp = graph.view.getState(me.getCell());
 
           // Ignores everything but vertices
-          if (graph.isMouseDown || (tmp && !
-            // tslint:disable-next-line: newline-per-chained-call
-            graph.getModel().isVertex(tmp.cell) && !graph.getModel().isEdge(tmp.cell))) {
+          if (graph.isMouseDown || (tmp && !graph.getModel().isVertex(tmp.cell) && !graph.getModel().isEdge(tmp.cell))) {
             tmp = null;
           }
 
@@ -244,7 +236,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
             updateStyle(state, false);
             state.shape.apply(state);
             state.shape.redraw();
-
             if (state.text) {
               state.text.apply(state);
               state.text.redraw();

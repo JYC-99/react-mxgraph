@@ -67,6 +67,7 @@ export class ContextMenu extends React.PureComponent {
               const currentMenu: IMenu[] = this._getMenuFromCell(cell);
               if (currentMenu.length !== 0) {
 
+                // tslint:disable-next-line: cyclomatic-complexity
                 currentMenu.map((item) => {
                   const text = item.text ? item.text : "default";
                   // tslint:disable-next-line: prefer-switch
@@ -80,6 +81,15 @@ export class ContextMenu extends React.PureComponent {
                       action.paste.getFunc(menu.triggerX, menu.triggerY) :
                       action[item.menuItemType].func;
                     const menuItem = menu.addItem(text, null, func);
+                    const td = menuItem.firstChild.nextSibling.nextSibling;
+                    const span = document.createElement('span');
+                    span.style.color = "gray";
+                    const shortCutText = item.menuItemType === "paste" ? "Ctrl+V" :
+                    item.menuItemType === "copy" ? "Ctrl+C" :
+                    item.menuItemType === "cut" ? "Ctrl+X" : 
+                    item.menuItemType === "undo" ? "Ctrl+Z" : "";
+                    mxUtils.write(span, shortCutText);
+                    td.appendChild(span);
                     // tslint:disable-next-line: prefer-switch
                     if (item.menuItemType === "copy" || item.menuItemType === "cut") {
                       this.addListener(menuItem, graph, copy, textInput);

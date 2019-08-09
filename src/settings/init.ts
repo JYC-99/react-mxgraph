@@ -19,7 +19,7 @@ const {
   mxCellState,
   mxCloud,
   mxRhombus,
-  mxGraphHandler,
+  Graph
 } = mxGraphJs;
 
 // tslint:disable-next-line: export-name
@@ -117,12 +117,12 @@ function initConnection(graph: IMxGraph): void {
     };
   }
 
-  graph.connectionHandler.createEdgeState = function(me): IMxState {
-    const edge = graph.createEdge(null, null, null, null, null, "edgeStyle=orthogonalEdgeStyle;resizable=0");
-    // tslint:disable-next-line: no-invalid-this
-    console.log(edge);
-    return new mxCellState(this.graph.view, edge, this.graph.getCellStyle(edge));
-  };
+  // graph.connectionHandler.createEdgeState = function(me): IMxState {
+  //   const edge = graph.createEdge(null, null, null, null, null, "edgeStyle=orthogonalEdgeStyle;resizable=0");
+  //   // tslint:disable-next-line: no-invalid-this
+  //   console.log(edge);
+  //   return new mxCellState(this.graph.view, edge, this.graph.getCellStyle(edge));
+  // };
 
 }
 
@@ -238,6 +238,92 @@ function initStyleSheet(graph: IMxGraph): void {
 
   mxConstants.SHADOW_OPACITY = 0.1;
 }
+// override  mxConstraintHandler.prototype.highlightColor = mxConstants.DEFAULT_VALID_COLOR
+mxConstraintHandler.prototype.highlightColor = "#29b6f6";
+function initHighlightShape(graph): void {
+  graph.defaultEdgeStyle = {
+    'edgeStyle': 'orthogonalEdgeStyle', 'rounded': '0', 'html': '1',
+			'jettySize': 'auto', 'orthogonalLoop': '1'
+  }
+  graph.currentEdgeStyle = graph.defaultEdgeStyle;
+  graph.createCurrentEdgeStyle = function()
+  {
+    var style = 'edgeStyle=' + (this.currentEdgeStyle['edgeStyle'] || 'none') + ';';
+    
+    if (this.currentEdgeStyle['shape'] != null)
+    {
+      style += 'shape=' + this.currentEdgeStyle['shape'] + ';';
+    }
+    
+    if (this.currentEdgeStyle['curved'] != null)
+    {
+      style += 'curved=' + this.currentEdgeStyle['curved'] + ';';
+    }
+    
+    if (this.currentEdgeStyle['rounded'] != null)
+    {
+      style += 'rounded=' + this.currentEdgeStyle['rounded'] + ';';
+    }
+
+    if (this.currentEdgeStyle['comic'] != null)
+    {
+      style += 'comic=' + this.currentEdgeStyle['comic'] + ';';
+    }
+    
+    // Special logic for custom property of elbowEdgeStyle
+    if (this.currentEdgeStyle['edgeStyle'] == 'elbowEdgeStyle' && this.currentEdgeStyle['elbow'] != null)
+    {
+      style += 'elbow=' + this.currentEdgeStyle['elbow'] + ';';
+    }
+    
+    if (this.currentEdgeStyle['html'] != null)
+    {
+      style += 'html=' + this.currentEdgeStyle['html'] + ';';
+    }
+    else
+    {
+      style += 'html=1;';
+    }
+    
+    return style;
+  };
+  // mxConstants.HIGHLIGHT_OPACITY = 30;
+  mxConstraintHandler.prototype.createHighlightShape = function() {
+    var hl = new mxEllipse(null, this.highlightColor, this.highlightColor, 0);
+    hl.opacity = mxConstants.HIGHLIGHT_OPACITY;
+    
+    return hl;
+  };
+  // Uses current edge style for connect preview 
+  mxConnectionHandler.prototype.createEdgeState = function(me) {
+    var style = this.graph.createCurrentEdgeStyle();
+    var edge = this.graph.createEdge(null, null, null, null, null, style);
+    var state = new mxCellState(this.graph.view, edge, this.graph.getCellStyle(edge));   
+    for (var key in this.graph.currentEdgeStyle) {
+      state.style[key] = this.graph.currentEdgeStyle[key];
+    }
+    return state;
+  };
+
+  // Overrides edge preview to use current edge shape and default style
+  mxConnectionHandler.prototype.livePreview = true;
+  mxConnectionHandler.prototype.cursor = 'crosshair';
+  // Overrides dashed state with current edge style
+  var connectionHandlerCreateShape = mxConnectionHandler.prototype.createShape;
+  mxConnectionHandler.prototype.createShape = function() {
+    var shape = connectionHandlerCreateShape.apply(this, arguments);
+    shape.isDashed = this.graph.currentEdgeStyle[mxConstants.STYLE_DASHED] == '1';
+    return shape;
+  }
+
+  // Overrides live preview to keep current style
+  mxConnectionHandler.prototype.updatePreview = function(valid)
+  {
+    // do not change color of preview
+  };
+
+
+}
 
 export function init(graph: IMxGraph): void {
   mxGraph.prototype.tolerance = 8;
@@ -250,4 +336,6 @@ export function init(graph: IMxGraph): void {
   initConnection(graph);
   // initVertexHandle();
   initEdgeHandle();
+
+  initHighlightShape(graph);
 }
