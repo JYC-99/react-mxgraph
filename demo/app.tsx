@@ -48,6 +48,11 @@ const data = {
   }],
 };
 
+const shortCutStyle = {
+  color: "silver",
+  fontSize: 10,
+};
+
 const Demo = () => (
   <div>
     <MxGraph>
@@ -56,7 +61,7 @@ const Demo = () => (
           rectangle
         </Item>
         <Item config={{shape: "rectangle", rounded: 1, label: "rec", width: 100, height: 30, fillColor: "white", anchorPoints: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
-      fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey"}}>
+      fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1}}>
           rectangle
         </Item>
         <Item config={{shape: "ellipse"}}>
@@ -73,13 +78,15 @@ const Demo = () => (
         data={data}
       />
       <Toolbar>
-        <ToolCommand name="copy" >Copy</ToolCommand>
-        <ToolCommand name="cut" >Cut</ToolCommand>
-        <ToolCommand name="paste" >Paste</ToolCommand>
-        <ToolCommand name="undo" >undo</ToolCommand>
+        <ToolCommand name="copy" >Copy  <span style={shortCutStyle}>Ctrl + C</span></ToolCommand>
+        <ToolCommand name="cut" >Cut  <span style={shortCutStyle}>Ctrl + X</span></ToolCommand>
+        <ToolCommand name="paste" >Paste  <span style={shortCutStyle}>Ctrl + V</span></ToolCommand>
+        <ToolCommand name="undo" >undo <span style={shortCutStyle}>Ctrl + Z</span></ToolCommand>
         <ToolCommand name="redo" >redo</ToolCommand>
         <ToolCommand name="zoomIn" >zoomIn</ToolCommand>
         <ToolCommand name="zoomOut" >zoomOut</ToolCommand>
+        <ToolCommand name="deleteCell" >delete select cell  <span style={shortCutStyle}>Backspace</span></ToolCommand>
+        <ToolCommand name="fit" >fit</ToolCommand>
       </Toolbar>
       <ContextMenu>
         <VertexMenu >

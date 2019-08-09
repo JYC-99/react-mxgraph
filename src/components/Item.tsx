@@ -36,6 +36,13 @@ interface IConfig {
   fontColor?: string;
   fontSize?: number;
   gradientColor?: string;
+  gradientDirection?: string;
+  opacity?: number;
+  arcSize?: number; // 0~50
+  labelBackgroundColor?: string;
+  labelBorderColor?: string;
+  textOpacity?: number; // 0~100
+  fontFamily?: string;
 }
 
 interface IItemProps {
@@ -87,7 +94,7 @@ export class Item extends React.PureComponent<IItemProps>{
 
   private readonly setStyle = (shape: string) => {
     if (Shapes.hasOwnProperty(shape)) {
-      if (!this.props.config) {
+      if (!this.props.config || (this.props.config.shape && this.props.config.shape !== "rectangle")) {
         return Shapes[shape].style;
       } else {
         const config = this.props.config;
