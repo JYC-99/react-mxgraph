@@ -12,7 +12,6 @@ import {
 import { init } from "../settings/init";
 import { IMxActions } from "../types/action";
 import { IMxEventObject, IMxGraph, IMxUndoManager } from "../types/mxGraph";
-import { thisTypeAnnotation } from '@babel/types';
 
 const {
   mxClient,
@@ -198,7 +197,8 @@ export class MxGraph extends React.PureComponent<{}, IState> {
           let tmp = graph.view.getState(me.getCell());
 
           // Ignores everything but vertices
-          if (graph.isMouseDown || (tmp && !graph.getModel().isVertex(tmp.cell) && !graph.getModel().isEdge(tmp.cell))) {
+          const model = graph.getModel();
+          if (graph.isMouseDown || (tmp && !model.isVertex(tmp.cell) && !model.isEdge(tmp.cell))) {
             tmp = null;
           }
 

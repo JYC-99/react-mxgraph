@@ -82,11 +82,11 @@ export class ContextMenu extends React.PureComponent {
                       action[item.menuItemType].func;
                     const menuItem = menu.addItem(text, null, func);
                     const td = menuItem.firstChild.nextSibling.nextSibling;
-                    const span = document.createElement('span');
+                    const span = document.createElement("span");
                     span.style.color = "gray";
                     const shortCutText = item.menuItemType === "paste" ? "Ctrl+V" :
                     item.menuItemType === "copy" ? "Ctrl+C" :
-                    item.menuItemType === "cut" ? "Ctrl+X" : 
+                    item.menuItemType === "cut" ? "Ctrl+X" :
                     item.menuItemType === "undo" ? "Ctrl+Z" : "";
                     mxUtils.write(span, shortCutText);
                     td.appendChild(span);

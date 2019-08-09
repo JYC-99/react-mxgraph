@@ -128,7 +128,7 @@ function initConnection(graph: IMxGraph): void {
 
 // override to disallow resizing of edge
 // tslint:disable-next-statement
-function initEdgeHandle() {
+function initEdgeHandle(): void {
   // tslint:disable
   mxEdgeHandler.prototype.isHandleVisible = (index) => {
     return false;
@@ -215,7 +215,7 @@ function initEdgeHandle() {
 function initStyleSheet(graph: IMxGraph): void {
   const edgeStyle = graph.getStylesheet()
                      .getDefaultEdgeStyle();
-  edgeStyle.strokeColor = "grey"; //"#1685a9";
+  edgeStyle.strokeColor = "grey"; // "#1685a9";
   edgeStyle.fontColor = "#000000";
   edgeStyle.fontStyle = "0";
   edgeStyle.fontStyle = "0";
@@ -224,7 +224,8 @@ function initStyleSheet(graph: IMxGraph): void {
   // style[mxConstants.STYLE_ROUNDED] = true;
   edgeStyle[mxConstants.STYLE_CURVED] = "1";
 
-  const vertexStyle = graph.getStylesheet().getDefaultVertexStyle();
+  const vertexStyle = graph.getStylesheet()
+                        .getDefaultVertexStyle();
   vertexStyle.strokeColor = "grey";
   vertexStyle.fillColor = "white";
   vertexStyle.fontColor = "#424242";
@@ -238,9 +239,11 @@ function initStyleSheet(graph: IMxGraph): void {
 
   mxConstants.SHADOW_OPACITY = 0.1;
 }
-// override  mxConstraintHandler.prototype.highlightColor = mxConstants.DEFAULT_VALID_COLOR
-mxConstraintHandler.prototype.highlightColor = "#29b6f6";
+
+// tslint:disable
 function initHighlightShape(graph): void {
+  // override  mxConstraintHandler.prototype.highlightColor = mxConstants.DEFAULT_VALID_COLOR
+  mxConstraintHandler.prototype.highlightColor = "#29b6f6";
   graph.defaultEdgeStyle = {
     'edgeStyle': 'orthogonalEdgeStyle', 'rounded': '0', 'html': '1',
 			'jettySize': 'auto', 'orthogonalLoop': '1'
@@ -322,7 +325,7 @@ function initHighlightShape(graph): void {
     // do not change color of preview
   };
 
-
+// tslint:enable
 }
 
 export function init(graph: IMxGraph): void {
