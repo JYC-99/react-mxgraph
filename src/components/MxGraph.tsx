@@ -3,16 +3,13 @@ import * as React from "react";
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 
-// import {
-//   _extractGraphModelFromEvent,
-//   _pasteText,
-// } from "../utils/Copy";
 import {
   ClipboardContext, IClipboardContext,
 } from "../context/ClipboardContext";
 import {
   MxGraphContext
 } from "../context/MxGraphContext";
+import { init } from "../settings/init";
 import { IMxActions } from "../types/action";
 import { IMxEventObject, IMxGraph, IMxUndoManager } from "../types/mxGraph";
 
@@ -26,6 +23,7 @@ const {
   mxTransient,
   mxObjectIdentity,
   mxUndoManager,
+  mxGraph,
 } = mxGraphJs;
 
 window.mxGeometry = mxGeometry;
@@ -57,6 +55,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     if (this.state.graph) {
       return;
     }
+    init(graph);
     this.addCopyEvent(graph);
     // tslint:disable-next-line: deprecation
     this.action = this.initAction(graph, this.context);
@@ -239,7 +238,17 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         func : () => {
           graph.zoomOut();
         },
-      }
+      },
+      deleteCell: {
+        func: () => {
+          graph.removeCells();
+        },
+      },
+      fit: {
+        func: () => {
+          graph.fit();
+        }
+      },
 
     };
 

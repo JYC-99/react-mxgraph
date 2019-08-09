@@ -14,6 +14,8 @@ export interface IMxActions {
   undo?: IMxAction;
   zoomIn: IMxAction;
   zoomOut: IMxAction;
+  deleteCell: IMxAction;
+  fit: IMxAction;
 }
 
 export const actionType = [
@@ -24,4 +26,6 @@ export const actionType = [
   "undo",
   "zoomIn",
   "zoomOut",
+  "deleteCell",
+  "fit",
 ];
