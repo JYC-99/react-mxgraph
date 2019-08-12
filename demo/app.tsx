@@ -13,6 +13,7 @@ import {
   VertexMenu,
   ToolCommand,
   Toolbar,
+  Minimap,
 } from "../src/index";
 import "./index.scss";
 
@@ -106,6 +107,7 @@ const Demo = () => (
           <Command name="paste" text="Paste"/>
         </CanvasMenu>
       </ContextMenu>
+      <Minimap/>
     </MxGraph>
   </div>
 

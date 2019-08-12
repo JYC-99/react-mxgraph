@@ -14,6 +14,7 @@ import {
   VertexMenu,
   Toolbar,
   ToolCommand,
+  Minimap,
 } from "../src/index";
 import "./index.scss";
 
@@ -205,7 +206,7 @@ storiesOf("Flow", module)
       </div>
     );
   })
-  .add("Toolbar", () => {
+  .add("Toolbar & Minimap", () => {
     return (
       <div>
         <MxGraph>
@@ -221,6 +222,7 @@ storiesOf("Flow", module)
             <ToolCommand name="zoomIn" >zoomIn</ToolCommand>
             <ToolCommand name="zoomOut" >zoomOut</ToolCommand>
           </Toolbar>
+          <Minimap width="100px" height="100px" />
         </MxGraph>
       </div>
     );

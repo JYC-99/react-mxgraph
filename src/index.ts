@@ -7,3 +7,4 @@ export * from "./components/Menu";
 export * from "./components/Command";
 export * from "./components/Toolbar";
 export * from "./components/ToolCommand";
+export * from "./components/Minimap";

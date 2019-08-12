@@ -9534,7 +9534,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
 </div>
 `;
 
-exports[`Storyshots Flow Toolbar 1`] = `
+exports[`Storyshots Flow Toolbar & Minimap 1`] = `
 <div>
   <div
     id="story-root"
@@ -9570,6 +9570,15 @@ exports[`Storyshots Flow Toolbar 1`] = `
             zoomOut
           </div>
         </div>
+        <div
+          className="minimap-container"
+          style={
+            Object {
+              "height": "100px",
+              "width": "100px",
+            }
+          }
+        />
       </div>
     </div>
   </div>
@@ -10894,6 +10903,91 @@ exports[`Storyshots Flow Toolbar 1`] = `
                 <div
                   style={
                     Object {
+                      "paddingLeft": 48,
+                      "paddingRight": 3,
+                    }
+                  }
+                >
+                  <span
+                    style={
+                      Object {
+                        "color": "#444",
+                      }
+                    }
+                  >
+                    &lt;
+                    Minimap
+                  </span>
+                  <span>
+                    <span>
+                       
+                      <span
+                        style={Object {}}
+                      >
+                        width
+                      </span>
+                      <span>
+                        =
+                        <span
+                          style={Object {}}
+                        >
+                          "
+                          <span
+                            style={
+                              Object {
+                                "color": "#22a",
+                                "wordBreak": "break-word",
+                              }
+                            }
+                          >
+                            100px
+                          </span>
+                          "
+                        </span>
+                      </span>
+                    </span>
+                    <span>
+                       
+                      <span
+                        style={Object {}}
+                      >
+                        height
+                      </span>
+                      <span>
+                        =
+                        <span
+                          style={Object {}}
+                        >
+                          "
+                          <span
+                            style={
+                              Object {
+                                "color": "#22a",
+                                "wordBreak": "break-word",
+                              }
+                            }
+                          >
+                            100px
+                          </span>
+                          "
+                        </span>
+                      </span>
+                       
+                    </span>
+                  </span>
+                  <span
+                    style={
+                      Object {
+                        "color": "#444",
+                      }
+                    }
+                  >
+                    /&gt;
+                  </span>
+                </div>
+                <div
+                  style={
+                    Object {
                       "paddingLeft": 33,
                       "paddingRight": 3,
                     }
@@ -10981,6 +11075,22 @@ exports[`Storyshots Flow Toolbar 1`] = `
           >
             "
             Flow
+            " Component
+          </h3>
+          <small>
+            No propTypes defined!
+          </small>
+        </div>
+        <div>
+          <h3
+            style={
+              Object {
+                "margin": "20px 0 0 0",
+              }
+            }
+          >
+            "
+            Minimap
             " Component
           </h3>
           <small>
