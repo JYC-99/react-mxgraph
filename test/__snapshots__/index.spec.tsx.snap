@@ -3338,92 +3338,1410 @@ exports[`Storyshots Flow Context menu 1`] = `
                     &gt;
                   </span>
                 </div>
-                <div
-                  style={
-                    Object {
-                      "paddingLeft": 48,
-                      "paddingRight": 3,
-                    }
-                  }
-                >
-                  <span
+                <div>
+                  <div
                     style={
                       Object {
-                        "color": "#444",
+                        "paddingLeft": 48,
+                        "paddingRight": 3,
                       }
                     }
                   >
-                    &lt;
-                    _class
-                  </span>
-                  <span />
-                  <span
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      _class
+                    </span>
+                    <span />
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &gt;
+                    </span>
+                  </div>
+                  <div
                     style={
                       Object {
-                        "color": "#444",
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
                       }
                     }
                   >
-                    /&gt;
-                  </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              copy
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Copy
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              cut
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Cut
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              separator
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              deleteCell
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Delete
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 48,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;/
+                      _class
+                      &gt;
+                    </span>
+                  </div>
                 </div>
-                <div
-                  style={
-                    Object {
-                      "paddingLeft": 48,
-                      "paddingRight": 3,
-                    }
-                  }
-                >
-                  <span
+                <div>
+                  <div
                     style={
                       Object {
-                        "color": "#444",
+                        "paddingLeft": 48,
+                        "paddingRight": 3,
                       }
                     }
                   >
-                    &lt;
-                    _class
-                  </span>
-                  <span />
-                  <span
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      _class
+                    </span>
+                    <span />
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &gt;
+                    </span>
+                  </div>
+                  <div
                     style={
                       Object {
-                        "color": "#444",
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
                       }
                     }
                   >
-                    /&gt;
-                  </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              copy
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Copy
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              cut
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Cut
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              separator
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              deleteCell
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Delete
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 48,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;/
+                      _class
+                      &gt;
+                    </span>
+                  </div>
                 </div>
-                <div
-                  style={
-                    Object {
-                      "paddingLeft": 48,
-                      "paddingRight": 3,
-                    }
-                  }
-                >
-                  <span
+                <div>
+                  <div
                     style={
                       Object {
-                        "color": "#444",
+                        "paddingLeft": 48,
+                        "paddingRight": 3,
                       }
                     }
                   >
-                    &lt;
-                    _class
-                  </span>
-                  <span />
-                  <span
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      _class
+                    </span>
+                    <span />
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &gt;
+                    </span>
+                  </div>
+                  <div
                     style={
                       Object {
-                        "color": "#444",
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
                       }
                     }
                   >
-                    /&gt;
-                  </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              paste
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Paste
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              separator
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              undo
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Undo
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              redo
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Redo
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              separator
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              fit
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              Fit
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              zoomIn
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              ZoomIn
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              zoomOut
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              ZoomOut
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 48,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;/
+                      _class
+                      &gt;
+                    </span>
+                  </div>
                 </div>
                 <div
                   style={
@@ -3505,6 +4823,22 @@ exports[`Storyshots Flow Context menu 1`] = `
         >
           Prop Types
         </h1>
+        <div>
+          <h3
+            style={
+              Object {
+                "margin": "20px 0 0 0",
+              }
+            }
+          >
+            "
+            Command
+            " Component
+          </h3>
+          <small>
+            No propTypes defined!
+          </small>
+        </div>
         <div>
           <h3
             style={
@@ -3624,10 +4958,25 @@ exports[`Storyshots Flow Item Panel 1`] = `
           className="testPanel"
         >
           <div>
-            swimlane
+            rectangle
           </div>
           <div>
-            rectangle
+            <svg
+              height="30"
+              width="100"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="30"
+                style={
+                  Object {
+                    "fill": "white",
+                    "stroke": "black",
+                  }
+                }
+                width="100"
+              />
+            </svg>
           </div>
           <div>
             ellipse
@@ -3636,13 +4985,7 @@ exports[`Storyshots Flow Item Panel 1`] = `
             rhombus
           </div>
           <div>
-            triangle
-          </div>
-          <div>
-            cylinder
-          </div>
-          <div>
-            actor
+            cloud
           </div>
         </div>
       </div>
@@ -4284,150 +5627,120 @@ exports[`Storyshots Flow Item Panel 1`] = `
                           <span
                             style={Object {}}
                           >
-                            text
+                            config
                           </span>
                           <span>
                             =
                             <span
                               style={Object {}}
                             >
-                              "
+                              {
                               <span
                                 style={
                                   Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                    "color": "#666",
                                   }
                                 }
                               >
-                                test swimlane
-                              </span>
-                              "
-                            </span>
-                          </span>
-                        </span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            shape
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                {
+                                <span>
+                                  <span>
+                                    <br />
+                                      
+                                      
+                                  </span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    shape
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
                                   }
-                                }
-                              >
-                                swimlane
-                              </span>
-                              "
-                            </span>
-                          </span>
-                          
-                        </span>
-                      </span>
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &gt;
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 78,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        swimlane
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;/
-                        Item
-                        &gt;
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;
-                        Item
-                      </span>
-                      <span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            text
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                >
+                                  'rectangle'
+                                </span>
+                                ,
+                                <span>
+                                  <span>
+                                    <br />
+                                      
+                                      
+                                  </span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    label
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
                                   }
+                                >
+                                  'rec'
+                                </span>
+                                ,
+                                <span>
+                                  <span>
+                                    <br />
+                                      
+                                      
+                                  </span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    width
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#a11",
+                                    }
+                                  }
+                                >
+                                  100
+                                </span>
+                                ,
+                                <span>
+                                  <span>
+                                    <br />
+                                      
+                                      
+                                  </span>
+                                  …
+                                </span>
+                                <span>
+                                  <br />
+                                    
+                                </span>
                                 }
-                              >
-                                test rectangle
                               </span>
-                              "
+                              }
                             </span>
                           </span>
                           
@@ -4507,52 +5820,536 @@ exports[`Storyshots Flow Item Panel 1`] = `
                           <span
                             style={Object {}}
                           >
-                            text
+                            config
                           </span>
                           <span>
                             =
                             <span
                               style={Object {}}
                             >
-                              "
+                              {
                               <span
                                 style={
                                   Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                    "color": "#666",
                                   }
                                 }
                               >
-                                test ellipse
+                                {
+                                <span>
+                                  <span>
+                                    <br />
+                                      
+                                      
+                                  </span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    shape
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  'rectangle'
+                                </span>
+                                ,
+                                <span>
+                                  <span>
+                                    <br />
+                                      
+                                      
+                                  </span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    rounded
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#a11",
+                                    }
+                                  }
+                                >
+                                  1
+                                </span>
+                                ,
+                                <span>
+                                  <span>
+                                    <br />
+                                      
+                                      
+                                  </span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    label
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  'rec'
+                                </span>
+                                ,
+                                <span>
+                                  <span>
+                                    <br />
+                                      
+                                      
+                                  </span>
+                                  …
+                                </span>
+                                <span>
+                                  <br />
+                                    
+                                </span>
+                                }
                               </span>
-                              "
+                              }
                             </span>
                           </span>
+                          
                         </span>
+                      </span>
+                      <span
+                        style={
+                          Object {
+                            "color": "#444",
+                          }
+                        }
+                      >
+                        &gt;
+                      </span>
+                    </div>
+                    <div>
+                      <div
+                        style={
+                          Object {
+                            "paddingLeft": 78,
+                            "paddingRight": 3,
+                          }
+                        }
+                      >
+                        <span
+                          style={
+                            Object {
+                              "color": "#444",
+                            }
+                          }
+                        >
+                          &lt;
+                          svg
+                        </span>
+                        <span>
+                          <span>
+                             
+                            <span
+                              style={Object {}}
+                            >
+                              width
+                            </span>
+                            <span>
+                              =
+                              <span
+                                style={Object {}}
+                              >
+                                "
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  100
+                                </span>
+                                "
+                              </span>
+                            </span>
+                          </span>
+                          <span>
+                             
+                            <span
+                              style={Object {}}
+                            >
+                              height
+                            </span>
+                            <span>
+                              =
+                              <span
+                                style={Object {}}
+                              >
+                                "
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  30
+                                </span>
+                                "
+                              </span>
+                            </span>
+                          </span>
+                          <span>
+                             
+                            <span
+                              style={Object {}}
+                            >
+                              xmlns
+                            </span>
+                            <span>
+                              =
+                              <span
+                                style={Object {}}
+                              >
+                                "
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  http://www.w3.org/2000/svg
+                                </span>
+                                "
+                              </span>
+                            </span>
+                            
+                          </span>
+                        </span>
+                        <span
+                          style={
+                            Object {
+                              "color": "#444",
+                            }
+                          }
+                        >
+                          &gt;
+                        </span>
+                      </div>
+                      <div
+                        style={
+                          Object {
+                            "paddingLeft": 93,
+                            "paddingRight": 3,
+                          }
+                        }
+                      >
+                        <span
+                          style={
+                            Object {
+                              "color": "#444",
+                            }
+                          }
+                        >
+                          &lt;
+                          rect
+                        </span>
+                        <span>
+                          <span>
+                             
+                            <span
+                              style={Object {}}
+                            >
+                              width
+                            </span>
+                            <span>
+                              =
+                              <span
+                                style={Object {}}
+                              >
+                                "
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  100
+                                </span>
+                                "
+                              </span>
+                            </span>
+                          </span>
+                          <span>
+                             
+                            <span
+                              style={Object {}}
+                            >
+                              height
+                            </span>
+                            <span>
+                              =
+                              <span
+                                style={Object {}}
+                              >
+                                "
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  30
+                                </span>
+                                "
+                              </span>
+                            </span>
+                          </span>
+                          <span>
+                             
+                            <span
+                              style={Object {}}
+                            >
+                              style
+                            </span>
+                            <span>
+                              =
+                              <span
+                                style={Object {}}
+                              >
+                                {
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#666",
+                                    }
+                                  }
+                                >
+                                  {
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#666",
+                                        }
+                                      }
+                                    >
+                                      fill
+                                    </span>
+                                  </span>
+                                  : 
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#22a",
+                                        "wordBreak": "break-word",
+                                      }
+                                    }
+                                  >
+                                    'white'
+                                  </span>
+                                  ,
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#666",
+                                        }
+                                      }
+                                    >
+                                      stroke
+                                    </span>
+                                  </span>
+                                  : 
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#22a",
+                                        "wordBreak": "break-word",
+                                      }
+                                    }
+                                  >
+                                    'black'
+                                  </span>
+                                  }
+                                </span>
+                                }
+                              </span>
+                            </span>
+                             
+                          </span>
+                        </span>
+                        <span
+                          style={
+                            Object {
+                              "color": "#444",
+                            }
+                          }
+                        >
+                          /&gt;
+                        </span>
+                      </div>
+                      <div
+                        style={
+                          Object {
+                            "paddingLeft": 78,
+                            "paddingRight": 3,
+                          }
+                        }
+                      >
+                        <span
+                          style={
+                            Object {
+                              "color": "#444",
+                            }
+                          }
+                        >
+                          &lt;/
+                          svg
+                          &gt;
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      style={
+                        Object {
+                          "paddingLeft": 63,
+                          "paddingRight": 3,
+                        }
+                      }
+                    >
+                      <span
+                        style={
+                          Object {
+                            "color": "#444",
+                          }
+                        }
+                      >
+                        &lt;/
+                        Item
+                        &gt;
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      style={
+                        Object {
+                          "paddingLeft": 63,
+                          "paddingRight": 3,
+                        }
+                      }
+                    >
+                      <span
+                        style={
+                          Object {
+                            "color": "#444",
+                          }
+                        }
+                      >
+                        &lt;
+                        Item
+                      </span>
+                      <span>
                         <span>
                            
                           <span
                             style={Object {}}
                           >
-                            shape
+                            config
                           </span>
                           <span>
                             =
                             <span
                               style={Object {}}
                             >
-                              "
+                              {
                               <span
                                 style={
                                   Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                    "color": "#666",
                                   }
                                 }
                               >
-                                ellipse
+                                {
+                                <span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    label
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  'ellipse'
+                                </span>
+                                ,
+                                <span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    shape
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  'ellipse'
+                                </span>
+                                }
                               </span>
-                              "
+                              }
                             </span>
                           </span>
                           
@@ -4632,52 +6429,70 @@ exports[`Storyshots Flow Item Panel 1`] = `
                           <span
                             style={Object {}}
                           >
-                            text
+                            config
                           </span>
                           <span>
                             =
                             <span
                               style={Object {}}
                             >
-                              "
+                              {
                               <span
                                 style={
                                   Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                    "color": "#666",
                                   }
                                 }
                               >
-                                test rhombus
-                              </span>
-                              "
-                            </span>
-                          </span>
-                        </span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            shape
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                {
+                                <span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    label
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
                                   }
+                                >
+                                  'rhombus'
+                                </span>
+                                ,
+                                <span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    shape
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
+                                  }
+                                >
+                                  'rhombus'
+                                </span>
                                 }
-                              >
-                                rhombus
                               </span>
-                              "
+                              }
                             </span>
                           </span>
                           
@@ -4757,177 +6572,70 @@ exports[`Storyshots Flow Item Panel 1`] = `
                           <span
                             style={Object {}}
                           >
-                            text
+                            config
                           </span>
                           <span>
                             =
                             <span
                               style={Object {}}
                             >
-                              "
+                              {
                               <span
                                 style={
                                   Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                    "color": "#666",
                                   }
                                 }
                               >
-                                test triangle
-                              </span>
-                              "
-                            </span>
-                          </span>
-                        </span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            shape
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                {
+                                <span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    label
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
                                   }
-                                }
-                              >
-                                triangle
-                              </span>
-                              "
-                            </span>
-                          </span>
-                          
-                        </span>
-                      </span>
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &gt;
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 78,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        triangle
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;/
-                        Item
-                        &gt;
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;
-                        Item
-                      </span>
-                      <span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            text
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                >
+                                  'cloud'
+                                </span>
+                                ,
+                                <span>
+                                  <span
+                                    style={
+                                      Object {
+                                        "color": "#666",
+                                      }
+                                    }
+                                  >
+                                    shape
+                                  </span>
+                                </span>
+                                : 
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#22a",
+                                      "wordBreak": "break-word",
+                                    }
                                   }
+                                >
+                                  'cloud'
+                                </span>
                                 }
-                              >
-                                test cylinder
                               </span>
-                              "
-                            </span>
-                          </span>
-                        </span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            shape
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
-                                  }
-                                }
-                              >
-                                cylinder
-                              </span>
-                              "
+                              }
                             </span>
                           </span>
                           
@@ -4958,132 +6666,7 @@ exports[`Storyshots Flow Item Panel 1`] = `
                           }
                         }
                       >
-                        cylinder
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;/
-                        Item
-                        &gt;
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;
-                        Item
-                      </span>
-                      <span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            text
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
-                                  }
-                                }
-                              >
-                                test actor
-                              </span>
-                              "
-                            </span>
-                          </span>
-                        </span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            shape
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
-                                  }
-                                }
-                              >
-                                actor
-                              </span>
-                              "
-                            </span>
-                          </span>
-                          
-                        </span>
-                      </span>
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &gt;
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 78,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        actor
+                        cloud
                       </span>
                     </div>
                     <div
@@ -6096,6 +7679,91 @@ exports[`Storyshots Flow Item Panel 1`] = `
                                 }
                               >
                                 Paste
+                              </span>
+                              "
+                            </span>
+                          </span>
+                           
+                        </span>
+                      </span>
+                      <span
+                        style={
+                          Object {
+                            "color": "#444",
+                          }
+                        }
+                      >
+                        /&gt;
+                      </span>
+                    </div>
+                    <div
+                      style={
+                        Object {
+                          "paddingLeft": 78,
+                          "paddingRight": 3,
+                        }
+                      }
+                    >
+                      <span
+                        style={
+                          Object {
+                            "color": "#444",
+                          }
+                        }
+                      >
+                        &lt;
+                        Command
+                      </span>
+                      <span>
+                        <span>
+                           
+                          <span
+                            style={Object {}}
+                          >
+                            name
+                          </span>
+                          <span>
+                            =
+                            <span
+                              style={Object {}}
+                            >
+                              "
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
+                                  }
+                                }
+                              >
+                                zoomIn
+                              </span>
+                              "
+                            </span>
+                          </span>
+                        </span>
+                        <span>
+                           
+                          <span
+                            style={Object {}}
+                          >
+                            text
+                          </span>
+                          <span>
+                            =
+                            <span
+                              style={Object {}}
+                            >
+                              "
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
+                                  }
+                                }
+                              >
+                                ZoomIn
                               </span>
                               "
                             </span>
