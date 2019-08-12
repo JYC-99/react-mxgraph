@@ -318,11 +318,13 @@ function initHighlightShape(graph): void {
     shape.isDashed = this.graph.currentEdgeStyle[mxConstants.STYLE_DASHED] == '1';
     return shape;
   }
-
+  mxConstants.VALID_COLOR = "#54cb30";
+  mxConstants.INVALID_COLOR = "#c63530";
   // Overrides live preview to keep current style
   mxConnectionHandler.prototype.updatePreview = function(valid)
   {
     // do not change color of preview
+    this.shape.stroke = this.getEdgeColor(valid);
   };
 
 // tslint:enable

@@ -185,7 +185,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         previousStyle: null,
         mouseDown(_sender, me): void {
           if (this.currentState) {
-            // console.log(me.getCell());
             this.dragLeave(me.getEvent(), this.currentState);
             this.currentState = null;
           }
@@ -201,7 +200,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
           if (graph.isMouseDown || (tmp && !model.isVertex(tmp.cell) && !model.isEdge(tmp.cell))) {
             tmp = null;
           }
-
           if (tmp !== this.currentState) {
             if (this.currentState) {
               this.dragLeave(me.getEvent(), this.currentState);
@@ -234,11 +232,13 @@ export class MxGraph extends React.PureComponent<{}, IState> {
           if (state) {
             state.style = this.previousStyle;
             updateStyle(state, false);
-            state.shape.apply(state);
-            state.shape.redraw();
-            if (state.text) {
-              state.text.apply(state);
-              state.text.redraw();
+            if (state.shape) {
+              state.shape.apply(state);
+              state.shape.redraw();
+              if (state.text) {
+                state.text.apply(state);
+                state.text.redraw();
+              }
             }
           }
         }
