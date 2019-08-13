@@ -99,7 +99,6 @@ const Demo = () => (
           <Command name="paste" text="Paste"/>
         </CanvasMenu>
       </ContextMenu>
-<<<<<<< HEAD
       <DetailPanel > 
         <NodePanel >
           <TextEditor name="cell" />
@@ -112,9 +111,6 @@ const Demo = () => (
         fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1}} extend="rectangle" />
       <RegisterNode name="rounded2" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
         fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50}} extend="rectangle" />
-=======
-      <Minimap/>
->>>>>>> add minimap
     </MxGraph>
   </div>
 
