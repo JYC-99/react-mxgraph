@@ -15,6 +15,11 @@ import {
   Toolbar,
   ToolCommand,
   Minimap,
+  DetailPanel,
+  NodePanel,
+  EdgePanel,
+  CanvasPanel,
+  TextEditor,
 } from "../src/index";
 import "./index.scss";
 
@@ -206,7 +211,7 @@ storiesOf("Flow", module)
       </div>
     );
   })
-  .add("Toolbar & Minimap", () => {
+  .add("Toolbar", () => {
     return (
       <div>
         <MxGraph>
@@ -222,7 +227,6 @@ storiesOf("Flow", module)
             <ToolCommand name="zoomIn" >zoomIn</ToolCommand>
             <ToolCommand name="zoomOut" >zoomOut</ToolCommand>
           </Toolbar>
-          <Minimap width="100px" height="100px" />
         </MxGraph>
       </div>
     );
@@ -249,6 +253,23 @@ storiesOf("Flow", module)
             <ToolCommand name="undo" >undo</ToolCommand>
             <ToolCommand name="redo" >redo</ToolCommand>
           </Toolbar>
+        </MxGraph>
+      </div>
+    );
+  }).add("textEditor", () => {
+    return (
+      <div>
+        <MxGraph>
+          <Flow data={data} />
+          <DetailPanel>
+            <NodePanel>
+              <TextEditor />
+            </NodePanel>
+            <EdgePanel>
+              <TextEditor />
+            </EdgePanel>
+            <CanvasPanel />
+          </DetailPanel>
         </MxGraph>
       </div>
     );

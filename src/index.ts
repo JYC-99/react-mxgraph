@@ -8,5 +8,6 @@ export * from "./components/Command";
 export * from "./components/Toolbar";
 export * from "./components/ToolCommand";
 export * from "./components/Minimap";
-export * from "./components/NodePanel";
+export * from "./components/Panel";
 export * from "./components/DetailPanel";
+export * from "./components/TextEditor";

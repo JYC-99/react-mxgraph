@@ -12,46 +12,69 @@ import {
   MxGraphContext,
 } from "../context/MxGraphContext";
 import { IMxGraph, ImxCell } from "../types/mxGraph";
+import {
+  ISpecialPanelContext,
+  SpecialPanelContext,
+} from "../context/PanelContext"
 
-interface ITextEditor {
-  name: string;
-  cell: ImxCell;
-}
 
-export class TextEditor extends React.PureComponent<ITextEditor, { value: string }> {
+export class TextEditor extends React.PureComponent<{}, { value: string }> {
   public _graph: IMxGraph;
-  constructor(props: ITextEditor) {
+  private _cells: ImxCell[];
+  private _first: boolean;
+  private _isEditing: boolean;
+  constructor(props: {}) {
     super(props);
     this.state = {
-      value: "",
+      value: "...",
     };
+    this._first = true;
+    this._isEditing = false;
   }
   public render(): React.ReactNode {
     return (
-      <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
-        const {
-          graph,
-        } = value;
-        if (graph) {
-          this._graph = graph;
-          return (
-            
-            <input type="text" placeholder={this.props.name} value={this.state.value} onFocus={this.startEditing} onChange={this._onChange} onBlur={this.stopEditing} />
-          );
+      <SpecialPanelContext.Consumer>{(panelValue: ISpecialPanelContext) => {
+        const { enabled, cells } = panelValue;
+        if (!enabled) {
+          return null;
         }
-      }}</MxGraphContext.Consumer>
+        this._cells = cells;
+        return (
+          <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
+            const {
+              graph,
+            } = value;
+            if (graph) {
+              if (this._first) { // initial after first render
+                this._graph = graph;
+                this._first = false;
+              }
+              return (
+                <input type="text" placeholder="placeholder" value={this._getInputValue()} onFocus={this.startEditing} onChange={this._onChange} onBlur={this.stopEditing} />
+              );
+            }
+          }}</MxGraphContext.Consumer>
+        );
+
+      }}
+      </SpecialPanelContext.Consumer>
     );
   }
   private readonly _onChange = (event) => {
-    console.log(event);
-    console.log(this.props.cell);
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
-  
+
+  private readonly _getInputValue = (): string => {
+    return this._isEditing ? this.state.value : this._getCellValue();
+  }
+
   private readonly stopEditing = () => {
     const graph = this._graph;
-    const cell = graph.getSelectionCell();
-    if (cell) {
+    const cells = this._cells;
+    if (!cells) {
+      throw new Error("no cells to get value");
+    }
+    for (const cell of cells) {
       const model = graph.getModel();
       model.beginUpdate();
       try {
@@ -59,15 +82,33 @@ export class TextEditor extends React.PureComponent<ITextEditor, { value: string
       } finally {
         model.endUpdate();
       }
-    } else {
-      console.log(cell, this.state.value);
     }
   }
+  private readonly _getCellValue = () => {
+    const cells = this._cells;
+    const model = this._graph.getModel();
+    if (!cells) {
+      throw new Error("no cells to get value");
+    }
+    if (cells.length) {
+      return model.getValue(cells[0]);
+    } else {
+      throw new Error("canvas has no value");
+    }
+  }
+
   private readonly startEditing = () => {
-    const graph = this._graph;
-    const cell = graph.getSelectionCell();
-    const model = graph.getModel();
-    const value = model.getValue(cell);
-    this.setState({value,});
+    const cells = this._cells;
+    if (!cells) {
+      throw new Error("no cells to get value");
+    }
+    if (cells.length) {
+      console.log(cells);
+      const value = this._getCellValue();
+      this.setState({ value, });
+    } else {
+      throw new Error("canvas cannot edit text");
+    }
+    this._isEditing = true;
   }
 }
