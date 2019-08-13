@@ -117,6 +117,7 @@ export interface IMxGraph {
   importCells(cells: ImxCell[], x: number, y: number, target: ImxCell): ImxCell[] | null;
   scrollCellToVisible(cells: ImxCell[]): void;
   setSelectionCells(cells: ImxCell[]): void;
+  setHtmlLabels(bl: boolean): void;
   isEnabled(): boolean;
   isEditing(): boolean;
   isSelectionEmpty(): boolean;

@@ -321,5 +321,6 @@ export function init(graph: IMxGraph): void {
 
   initHighlightShape(graph);
   // html in-place editor
-  initMxCellEditor(graph);
+  graph.setHtmlLabels(true);
+  // initMxCellEditor(graph);
 }

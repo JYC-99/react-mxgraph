@@ -14,7 +14,6 @@ import {
   VertexMenu,
   Toolbar,
   ToolCommand,
-  Minimap,
   DetailPanel,
   NodePanel,
   EdgePanel,

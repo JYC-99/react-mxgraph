@@ -11,12 +11,11 @@ import {
   IMxGraphContext,
   MxGraphContext,
 } from "../context/MxGraphContext";
-import { IMxGraph, ImxCell } from "../types/mxGraph";
 import {
   ISpecialPanelContext,
   SpecialPanelContext,
-} from "../context/PanelContext"
-
+} from "../context/PanelContext";
+import { ImxCell, IMxGraph } from "../types/mxGraph";
 
 export class TextEditor extends React.PureComponent<{}, { value: string }> {
   public _graph: IMxGraph;
@@ -103,7 +102,6 @@ export class TextEditor extends React.PureComponent<{}, { value: string }> {
       throw new Error("no cells to get value");
     }
     if (cells.length) {
-      console.log(cells);
       const value = this._getCellValue();
       this.setState({ value, });
     } else {
