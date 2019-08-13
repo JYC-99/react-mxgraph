@@ -15,17 +15,17 @@ const {
 function initGetLabel(graph: IMxGraph): void {
   graph.setHtmlLabels(true);
   // Truncates the label to the size of the vertex
-  graph.getLabel = function(cell)
-  {
-    var result = mxGraph.prototype.getLabel.apply(this, arguments);
+  // graph.getLabel = function(cell)
+  // {
+  //   var result = mxGraph.prototype.getLabel.apply(this, arguments);
     
-    // if (result != null && this.isReplacePlaceholders(cell) && cell.getAttribute('placeholder') == null)
-    // {
-    //   result = this.replacePlaceholders(cell, result);
-    // }
+  //   // if (result != null && this.isReplacePlaceholders(cell) && cell.getAttribute('placeholder') == null)
+  //   // {
+  //   //   result = this.replacePlaceholders(cell, result);
+  //   // }
     
-    return result;
-  };
+  //   return result;
+  // };
 }
 
 function initDblClick(graph: IMxGraph): void {
@@ -62,15 +62,7 @@ function initDblClick(graph: IMxGraph): void {
   };
 }
 
-
-// tslint:disable
-export function initMxCellEditor(graph: IMxGraph): void {
-  initGetLabel(graph);
-  /**
-		 * HTML in-place editor
-		 */
-  mxCellEditor.prototype.escapeCancelsEditing = false;
-
+function initStartEditing(): void {
   var mxCellEditorStartEditing = mxCellEditor.prototype.startEditing;
   mxCellEditor.prototype.startEditing = function (cell, trigger) {
     mxCellEditorStartEditing.apply(this, arguments);
@@ -125,9 +117,9 @@ export function initMxCellEditor(graph: IMxGraph): void {
     }
   }
 
-  /**
-   * HTML in-place editor
-   */
+}
+
+function initEditorListener() {
   var cellEditorInstallListeners = mxCellEditor.prototype.installListeners;
   mxCellEditor.prototype.installListeners = function (elt) {
     cellEditorInstallListeners.apply(this, arguments);
@@ -217,6 +209,130 @@ export function initMxCellEditor(graph: IMxGraph): void {
       }));
     }
   };
+}
+
+function initResize() {
+  var mxCellEditorResize = mxCellEditor.prototype.resize;
+  mxCellEditor.prototype.resize = function (state, trigger) {
+    var state = this.graph.getView().getState(this.editingCell);
+
+    if (this.codeViewMode && state != null) {
+      var scale = state.view.scale;
+      this.bounds = mxRectangle.fromRectangle(state);
+
+      // General placement of code editor if cell has no size
+      // LATER: Fix HTML editor bounds for edge labels
+      if (this.bounds.width == 0 && this.bounds.height == 0) {
+        this.bounds.width = 160 * scale;
+        this.bounds.height = 60 * scale;
+
+        var m = (state.text != null) ? state.text.margin : null;
+
+        if (m == null) {
+          m = mxUtils.getAlignmentAsPoint(mxUtils.getValue(state.style, mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER),
+            mxUtils.getValue(state.style, mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_MIDDLE));
+        }
+
+        this.bounds.x += m.x * this.bounds.width;
+        this.bounds.y += m.y * this.bounds.height;
+      }
+
+      this.textarea.style.width = Math.round((this.bounds.width - 4) / scale) + 'px';
+      this.textarea.style.height = Math.round((this.bounds.height - 4) / scale) + 'px';
+      this.textarea.style.overflow = 'auto';
+
+      // Adds scrollbar offset if visible
+      if (this.textarea.clientHeight < this.textarea.offsetHeight) {
+        this.textarea.style.height = Math.round((this.bounds.height / scale)) + (this.textarea.offsetHeight - this.textarea.clientHeight) + 'px';
+        this.bounds.height = parseInt(this.textarea.style.height) * scale;
+      }
+
+      if (this.textarea.clientWidth < this.textarea.offsetWidth) {
+        this.textarea.style.width = Math.round((this.bounds.width / scale)) + (this.textarea.offsetWidth - this.textarea.clientWidth) + 'px';
+        this.bounds.width = parseInt(this.textarea.style.width) * scale;
+      }
+
+      this.textarea.style.left = Math.round(this.bounds.x) + 'px';
+      this.textarea.style.top = Math.round(this.bounds.y) + 'px';
+
+      if (mxClient.IS_VML) {
+        this.textarea.style.zoom = scale;
+      }
+      else {
+        mxUtils.setPrefixedStyle(this.textarea.style, 'transform', 'scale(' + scale + ',' + scale + ')');
+      }
+    }
+    else {
+      this.textarea.style.height = '';
+      this.textarea.style.overflow = '';
+      mxCellEditorResize.apply(this, arguments);
+    }
+  };
+
+}
+
+function initGetValue() {
+  var mxCellEditorGetInitialValue = mxCellEditor.prototype.getInitialValue;
+  mxCellEditor.prototype.getInitialValue = function (state, trigger) {
+    if (mxUtils.getValue(state.style, 'html', '0') == '0') {
+      return mxCellEditorGetInitialValue.apply(this, arguments);
+    }
+    else {
+      var result = this.graph.getEditingValue(state.cell, trigger)
+
+      if (mxUtils.getValue(state.style, 'nl2Br', '1') == '1') {
+        result = result.replace(/\n/g, '<br/>');
+      }
+
+      result = this.graph.sanitizeHtml(result);
+
+      return result;
+    }
+  };
+
+  var mxCellEditorGetCurrentValue = mxCellEditor.prototype.getCurrentValue;
+  mxCellEditor.prototype.getCurrentValue = function (state) {
+    if (mxUtils.getValue(state.style, 'html', '0') == '0') {
+      return mxCellEditorGetCurrentValue.apply(this, arguments);
+    }
+    else {
+      var result = this.graph.sanitizeHtml(this.textarea.innerHTML);
+
+      if (mxUtils.getValue(state.style, 'nl2Br', '1') == '1') {
+        result = result.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>');
+      }
+      else {
+        result = result.replace(/\r\n/g, '').replace(/\n/g, '');
+      }
+
+      return result;
+    }
+  };
+
+  var mxCellEditorApplyValue = mxCellEditor.prototype.applyValue;
+  mxCellEditor.prototype.applyValue = function (state, value) {
+    // Removes empty relative child labels in edges
+    this.graph.getModel().beginUpdate();
+
+    try {
+      mxCellEditorApplyValue.apply(this, arguments);
+
+      if (this.graph.isCellDeletable(state.cell)) {
+        var stroke = mxUtils.getValue(state.style, mxConstants.STYLE_STROKECOLOR, mxConstants.NONE);
+        var fill = mxUtils.getValue(state.style, mxConstants.STYLE_FILLCOLOR, mxConstants.NONE);
+
+        if (mxUtils.trim(value || '') == '' && stroke == mxConstants.NONE && fill == mxConstants.NONE) {
+          this.graph.removeCells([state.cell], false);
+        }
+      }
+    }
+    finally {
+      this.graph.getModel().endUpdate();
+    }
+  };
+}
+
+function initStopEditing() {
   mxCellEditor.prototype.toggleViewMode = function () {
     var state = this.graph.view.getState(this.editingCell);
     var nl2Br = state != null && mxUtils.getValue(state.style, 'nl2Br', '1') != '0';
@@ -311,101 +427,6 @@ export function initMxCellEditor(graph: IMxGraph): void {
     this.switchSelectionState = tmp;
     this.resize();
   };
-
-  var mxCellEditorResize = mxCellEditor.prototype.resize;
-  mxCellEditor.prototype.resize = function (state, trigger) {
-    var state = this.graph.getView().getState(this.editingCell);
-
-    if (this.codeViewMode && state != null) {
-      var scale = state.view.scale;
-      this.bounds = mxRectangle.fromRectangle(state);
-
-      // General placement of code editor if cell has no size
-      // LATER: Fix HTML editor bounds for edge labels
-      if (this.bounds.width == 0 && this.bounds.height == 0) {
-        this.bounds.width = 160 * scale;
-        this.bounds.height = 60 * scale;
-
-        var m = (state.text != null) ? state.text.margin : null;
-
-        if (m == null) {
-          m = mxUtils.getAlignmentAsPoint(mxUtils.getValue(state.style, mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER),
-            mxUtils.getValue(state.style, mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_MIDDLE));
-        }
-
-        this.bounds.x += m.x * this.bounds.width;
-        this.bounds.y += m.y * this.bounds.height;
-      }
-
-      this.textarea.style.width = Math.round((this.bounds.width - 4) / scale) + 'px';
-      this.textarea.style.height = Math.round((this.bounds.height - 4) / scale) + 'px';
-      this.textarea.style.overflow = 'auto';
-
-      // Adds scrollbar offset if visible
-      if (this.textarea.clientHeight < this.textarea.offsetHeight) {
-        this.textarea.style.height = Math.round((this.bounds.height / scale)) + (this.textarea.offsetHeight - this.textarea.clientHeight) + 'px';
-        this.bounds.height = parseInt(this.textarea.style.height) * scale;
-      }
-
-      if (this.textarea.clientWidth < this.textarea.offsetWidth) {
-        this.textarea.style.width = Math.round((this.bounds.width / scale)) + (this.textarea.offsetWidth - this.textarea.clientWidth) + 'px';
-        this.bounds.width = parseInt(this.textarea.style.width) * scale;
-      }
-
-      this.textarea.style.left = Math.round(this.bounds.x) + 'px';
-      this.textarea.style.top = Math.round(this.bounds.y) + 'px';
-
-      if (mxClient.IS_VML) {
-        this.textarea.style.zoom = scale;
-      }
-      else {
-        mxUtils.setPrefixedStyle(this.textarea.style, 'transform', 'scale(' + scale + ',' + scale + ')');
-      }
-    }
-    else {
-      this.textarea.style.height = '';
-      this.textarea.style.overflow = '';
-      mxCellEditorResize.apply(this, arguments);
-    }
-  };
-
-  var mxCellEditorGetInitialValue = mxCellEditor.prototype.getInitialValue;
-  mxCellEditor.prototype.getInitialValue = function (state, trigger) {
-    if (mxUtils.getValue(state.style, 'html', '0') == '0') {
-      return mxCellEditorGetInitialValue.apply(this, arguments);
-    }
-    else {
-      var result = this.graph.getEditingValue(state.cell, trigger)
-
-      if (mxUtils.getValue(state.style, 'nl2Br', '1') == '1') {
-        result = result.replace(/\n/g, '<br/>');
-      }
-
-      result = this.graph.sanitizeHtml(result);
-
-      return result;
-    }
-  };
-
-  var mxCellEditorGetCurrentValue = mxCellEditor.prototype.getCurrentValue;
-  mxCellEditor.prototype.getCurrentValue = function (state) {
-    if (mxUtils.getValue(state.style, 'html', '0') == '0') {
-      return mxCellEditorGetCurrentValue.apply(this, arguments);
-    }
-    else {
-      var result = this.graph.sanitizeHtml(this.textarea.innerHTML);
-
-      if (mxUtils.getValue(state.style, 'nl2Br', '1') == '1') {
-        result = result.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>');
-      }
-      else {
-        result = result.replace(/\r\n/g, '').replace(/\n/g, '');
-      }
-
-      return result;
-    }
-  };
-
   var mxCellEditorStopEditing = mxCellEditor.prototype.stopEditing;
   mxCellEditor.prototype.stopEditing = function (cancel) {
     // Restores default view mode before applying value
@@ -423,28 +444,24 @@ export function initMxCellEditor(graph: IMxGraph): void {
       // ignore
     }
   };
+}
+// tslint:disable
+export function initMxCellEditor(graph: IMxGraph): void {
+  initGetLabel(graph);
+  /**
+		 * HTML in-place editor
+		 */
+  // mxCellEditor.prototype.escapeCancelsEditing = false;
 
-  var mxCellEditorApplyValue = mxCellEditor.prototype.applyValue;
-  mxCellEditor.prototype.applyValue = function (state, value) {
-    // Removes empty relative child labels in edges
-    this.graph.getModel().beginUpdate();
+  // initStartEditing();
 
-    try {
-      mxCellEditorApplyValue.apply(this, arguments);
+  // initEditorListener();
 
-      if (this.graph.isCellDeletable(state.cell)) {
-        var stroke = mxUtils.getValue(state.style, mxConstants.STYLE_STROKECOLOR, mxConstants.NONE);
-        var fill = mxUtils.getValue(state.style, mxConstants.STYLE_FILLCOLOR, mxConstants.NONE);
+  // initResize();
+  
+  // initGetValue();
 
-        if (mxUtils.trim(value || '') == '' && stroke == mxConstants.NONE && fill == mxConstants.NONE) {
-          this.graph.removeCells([state.cell], false);
-        }
-      }
-    }
-    finally {
-      this.graph.getModel().endUpdate();
-    }
-  };
+  // initStopEditing();
 
   /**
    * Returns the background color to be used for the editing box. This returns

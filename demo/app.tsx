@@ -14,6 +14,8 @@ import {
   ToolCommand,
   Toolbar,
   Minimap,
+  NodePanel,
+  DetailPanel,
 } from "../src/index";
 import "./index.scss";
 
@@ -107,7 +109,9 @@ const Demo = () => (
           <Command name="paste" text="Paste"/>
         </CanvasMenu>
       </ContextMenu>
-      <Minimap/>
+      <Minimap />
+      <NodePanel />
+      <DetailPanel >detail panel</DetailPanel>
     </MxGraph>
   </div>
 

@@ -20,6 +20,7 @@ const {
   mxCellState,
   mxCloud,
   mxRhombus,
+  mxGraphSelectionModel,
 } = mxGraphJs;
 
 // tslint:disable-next-line: export-name
