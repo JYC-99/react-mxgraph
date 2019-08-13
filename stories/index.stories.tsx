@@ -342,4 +342,21 @@ storiesOf("Flow", module)
         </MxGraph>
       </div>
     );
+  }).add("textEditor", () => {
+    return (
+      <div>
+        <MxGraph>
+          <Flow data={data} />
+          <DetailPanel>
+            <NodePanel>
+              <TextEditor />
+            </NodePanel>
+            <EdgePanel>
+              <TextEditor />
+            </EdgePanel>
+            <CanvasPanel />
+          </DetailPanel>
+        </MxGraph>
+      </div>
+    );
   });
