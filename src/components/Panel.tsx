@@ -14,11 +14,7 @@ class Panel extends React.PureComponent<{name: string}> {
         } = value;
         if (name && cells && name === this.props.name) {
           return (
-<<<<<<< HEAD
             <SpecialPanelContext.Provider value={{enabled: true, cells, }}>
-=======
-            <SpecialPanelContext.Provider value={{enabled: true, cells,}}>
->>>>>>> add context of panel
               <div className="node-panel-container" >
                 {`${name} panel:`}
                 {this.props.children}
