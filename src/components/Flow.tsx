@@ -74,7 +74,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         const height = node.size ? node.size[1] : 200;
 
         return {
-          vertex: graph.insertVertex(parent, null, node.label, node.x, node.y, width, height),
+          vertex: graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height),
           id: node.id
         };
       });
@@ -84,7 +84,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         const target = vertexes.find((v) => v.id === edge.target);
 
         if (source && target) {
-          graph.insertEdge(parent, null, "", source.vertex, target.vertex);
+          graph.insertEdge(parent, edge.id, "", source.vertex, target.vertex);
         }
       });
     } finally {
@@ -92,5 +92,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         .getModel()
         .endUpdate();
     }
+
+    console.log(graph.getModel().cells);
   }
 }
