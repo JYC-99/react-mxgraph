@@ -20,6 +20,7 @@ import {
   DetailPanel,
   TextEditor,
   RegisterNode,
+  PropsComponent,
 } from "../src/index";
 import "./index.scss";
 
@@ -63,6 +64,7 @@ const shortCutStyle = {
 const Demo = () => (
   <div>
     <MxGraph>
+      <PropsComponent />
       <ItemPanel>
         <Item shape="rounded" size="70*30" model={{color: "#FA8C16", label: "Item 1", }}>Rounded</Item>
         <Item shape="rounded2" size="200*60" model={{color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
