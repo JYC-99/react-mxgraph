@@ -70,8 +70,6 @@ export class Item extends React.PureComponent<IItem>{
   private readonly setStyle = (config) => {
     let style = "";
     for (const key of Object.keys(config)) {
-      // tslint:disable-next-line: prefer-switch
-      if (key === "width" || key === "height" || key === "anchorPoints" || key === "text") { continue; }
       if (key === "points") {
         style += `;${key}=${JSON.stringify(config[key])}`;
       } else {

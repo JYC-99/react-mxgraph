@@ -10,27 +10,10 @@ const {
   mxEllipse,
   mxUtils,
   mxConstants,
+  mxStylesheet,
 } = mxGraphJs;
 
-interface IConfig {
-  rounded?: 0 | 1;
-  fillColor?: string;
-  shadow?: 0 | 1;
-  strokeWidth?: number; // boarder
-  strokeColor?: string;
-  shape?: string;
-  fontColor?: string;
-  fontSize?: number;
-  gradientColor?: string;
-  gradientDirection?: string;
-  opacity?: number;
-  arcSize?: number; // 0~50
-  labelBackgroundColor?: string;
-  labelBorderColor?: string;
-  textOpacity?: number; // 0~100
-  fontFamily?: string;
-  points?: number[][];
-}
+import { IConfig } from "../types/shapes";
 
 type ExtendableShape = "rectangle" | "ellipse";
 
@@ -63,24 +46,13 @@ export class RegisterNode extends React.PureComponent<IRegisterNodeProps> {
   public render(): React.ReactNode {
     return (
       <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
-        const { graph } = value;
-        if (graph) {
-          const style = graph.getStylesheet()
-                             .createDefaultVertexStyle(); // default
-          style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
-          style[mxConstants.STYLE_PERIMETER] = "rectanglePerimeter";
-          style[mxConstants.STYLE_ROUNDED] = true;
-          this.setStyle(style);
-          graph.getStylesheet()
-               .putCellStyle(this.props.name, style);
+        const { customShape } = value;
+        if (!customShape) {
+          throw new Error("no custome shape in mxgraph component");
         }
+        customShape.push({name: this.props.name, styleConfig: this.props.config});
         return null;
       }}</MxGraphContext.Consumer>
     );
-  }
-
-  private readonly setStyle = (style: IStylesheet) => {
-    Object.assign(style, this.props.config);
-
   }
 }

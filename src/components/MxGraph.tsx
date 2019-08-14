@@ -12,6 +12,7 @@ import {
 import { init } from "../settings/init";
 import { IMxActions } from "../types/action";
 import { IMxEventObject, IMxGraph, IMxUndoManager } from "../types/mxGraph";
+import { ICustomShape } from "../types/shapes";
 
 const {
   mxClient,
@@ -42,6 +43,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   private mouseX: number;
   private mouseY: number;
   private action: IMxActions;
+  private readonly customShape: ICustomShape[];
 
   constructor(props: {}) {
     super(props);
@@ -50,6 +52,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     };
     this.mouseX = 0;
     this.mouseY = 0;
+    this.customShape = [];
   }
 
   public setGraph = (graph: IMxGraph) => {
@@ -65,6 +68,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     this.addCopyEvent(graph);
     this.setKeyHandler(graph);
     this.setMouseEvent(graph);
+    this.registerNode(graph);
     this.setState({
       graph,
     });
@@ -147,6 +151,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
             graph: this.state.graph,
             setGraph: this.setGraph,
             action: this.action,
+            customShape: this.customShape,
           }}
         >
           {this.props.children}
@@ -169,6 +174,19 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     });
     keyHandler.bindKey(8, (evt) => {
       this.action.deleteCell.func();
+    });
+  }
+
+  private readonly registerNode = (graph: IMxGraph): void => {
+    this.customShape.forEach((shape) => {
+      const style = graph.getStylesheet()
+                       .createDefaultVertexStyle(); // default
+      style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
+      style[mxConstants.STYLE_PERIMETER] = "rectanglePerimeter";
+      style[mxConstants.STYLE_ROUNDED] = true;
+      Object.assign(style, shape.styleConfig);
+      graph.getStylesheet()
+      .putCellStyle(shape.name, style);
     });
   }
 

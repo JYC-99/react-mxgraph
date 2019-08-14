@@ -96,6 +96,7 @@ interface IMxSelectionModel {
 export interface IStylesheet {
   createDefaultVertexStyle(): IStylesheet;
   putCellStyle(customName: string, customStyle: IStylesheet): void;
+  getCellStyle(name: string): IStylesheet;
 }
 
 export interface IMxGraph {

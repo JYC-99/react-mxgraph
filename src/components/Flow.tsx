@@ -12,6 +12,8 @@ import {
 } from "../context/MxGraphContext";
 import { IMxGraph } from "../types/mxGraph";
 
+import { BuiltInShapes, setStyle } from "../types/shapes";
+
 interface IFlowProps {
   data: ICanvasData;
 }
@@ -32,11 +34,49 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
     return (
       <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
         const {
+          graph,
           setGraph,
         } = value;
 
         this._setGraph = setGraph;
 
+        if (graph) {
+
+          graph
+            .getModel()
+            .beginUpdate();
+
+          try {
+            const parent = graph.getDefaultParent();
+
+            const vertexes = this.props.data.nodes.map((node) => {
+              const width = node.size ? node.size[0] : 200;
+              const height = node.size ? node.size[1] : 200;
+              const style = node.shape ? (BuiltInShapes.hasOwnProperty(node.shape)
+                ? BuiltInShapes[node.shape].style
+                : setStyle(graph.getStylesheet()
+                  .getCellStyle(node.shape))) : null;
+              console.log(style);
+              return {
+                vertex: graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style),
+                id: node.id
+              };
+            });
+
+            this.props.data.edges.forEach((edge) => {
+              const source = vertexes.find((v) => v.id === edge.source);
+              const target = vertexes.find((v) => v.id === edge.target);
+
+              if (source && target) {
+                graph.insertEdge(parent, edge.id, "", source.vertex, target.vertex);
+              }
+            });
+          } finally {
+            graph
+              .getModel()
+              .endUpdate();
+          }
+        }
         return (
           <div className="flow-container" ref={this._containerRef} />
         );
@@ -62,37 +102,6 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
 
     setGraph(graph);
 
-    graph
-      .getModel()
-      .beginUpdate();
 
-    try {
-      const parent = graph.getDefaultParent();
-
-      const vertexes = this.props.data.nodes.map((node) => {
-        const width = node.size ? node.size[0] : 200;
-        const height = node.size ? node.size[1] : 200;
-
-        return {
-          vertex: graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height),
-          id: node.id
-        };
-      });
-
-      this.props.data.edges.forEach((edge) => {
-        const source = vertexes.find((v) => v.id === edge.source);
-        const target = vertexes.find((v) => v.id === edge.target);
-
-        if (source && target) {
-          graph.insertEdge(parent, edge.id, "", source.vertex, target.vertex);
-        }
-      });
-    } finally {
-      graph
-        .getModel()
-        .endUpdate();
-    }
-
-    console.log(graph.getModel().cells);
   }
 }
