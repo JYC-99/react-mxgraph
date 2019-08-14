@@ -39,7 +39,7 @@ const data = {
     y: 55,
     id: "ea1184e8",
     index: 0,
-  }, {
+  },      {
     type: "node",
     size: [70, 70],
     shape: "flow-circle",
