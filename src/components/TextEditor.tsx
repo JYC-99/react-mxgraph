@@ -64,7 +64,8 @@ export class TextEditor extends React.PureComponent<{}, { value: string }> {
   }
 
   private readonly _getInputValue = (): string => {
-    return this._isEditing ? this.state.value : this._getCellValue();
+    const value = this._isEditing ? this.state.value : this._getCellValue();
+    return value === null ? "" : value;
   }
 
   private readonly stopEditing = () => {
@@ -82,6 +83,7 @@ export class TextEditor extends React.PureComponent<{}, { value: string }> {
         model.endUpdate();
       }
     }
+    this._isEditing = false;
   }
   private readonly _getCellValue = () => {
     const cells = this._cells;

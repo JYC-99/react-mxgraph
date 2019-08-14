@@ -4958,27 +4958,6 @@ exports[`Storyshots Flow Item Panel 1`] = `
           className="testPanel"
         >
           <div>
-            rectangle
-          </div>
-          <div>
-            <svg
-              height="30"
-              width="100"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="30"
-                style={
-                  Object {
-                    "fill": "white",
-                    "stroke": "black",
-                  }
-                }
-                width="100"
-              />
-            </svg>
-          </div>
-          <div>
             ellipse
           </div>
           <div>
@@ -5627,729 +5606,25 @@ exports[`Storyshots Flow Item Panel 1`] = `
                           <span
                             style={Object {}}
                           >
-                            config
+                            shape
                           </span>
                           <span>
                             =
                             <span
                               style={Object {}}
                             >
-                              {
+                              "
                               <span
                                 style={
                                   Object {
-                                    "color": "#666",
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
                                   }
                                 }
                               >
-                                {
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    shape
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'rectangle'
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    label
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'rec'
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    width
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#a11",
-                                    }
-                                  }
-                                >
-                                  100
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  …
-                                </span>
-                                <span>
-                                  <br />
-                                    
-                                </span>
-                                }
+                                ellipse
                               </span>
-                              }
-                            </span>
-                          </span>
-                          
-                        </span>
-                      </span>
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &gt;
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 78,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        rectangle
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;/
-                        Item
-                        &gt;
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;
-                        Item
-                      </span>
-                      <span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            config
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              {
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#666",
-                                  }
-                                }
-                              >
-                                {
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    shape
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'rectangle'
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    rounded
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#a11",
-                                    }
-                                  }
-                                >
-                                  1
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    label
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'rec'
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  …
-                                </span>
-                                <span>
-                                  <br />
-                                    
-                                </span>
-                                }
-                              </span>
-                              }
-                            </span>
-                          </span>
-                          
-                        </span>
-                      </span>
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &gt;
-                      </span>
-                    </div>
-                    <div>
-                      <div
-                        style={
-                          Object {
-                            "paddingLeft": 78,
-                            "paddingRight": 3,
-                          }
-                        }
-                      >
-                        <span
-                          style={
-                            Object {
-                              "color": "#444",
-                            }
-                          }
-                        >
-                          &lt;
-                          svg
-                        </span>
-                        <span>
-                          <span>
-                             
-                            <span
-                              style={Object {}}
-                            >
-                              width
-                            </span>
-                            <span>
-                              =
-                              <span
-                                style={Object {}}
-                              >
-                                "
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  100
-                                </span>
-                                "
-                              </span>
-                            </span>
-                          </span>
-                          <span>
-                             
-                            <span
-                              style={Object {}}
-                            >
-                              height
-                            </span>
-                            <span>
-                              =
-                              <span
-                                style={Object {}}
-                              >
-                                "
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  30
-                                </span>
-                                "
-                              </span>
-                            </span>
-                          </span>
-                          <span>
-                             
-                            <span
-                              style={Object {}}
-                            >
-                              xmlns
-                            </span>
-                            <span>
-                              =
-                              <span
-                                style={Object {}}
-                              >
-                                "
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  http://www.w3.org/2000/svg
-                                </span>
-                                "
-                              </span>
-                            </span>
-                            
-                          </span>
-                        </span>
-                        <span
-                          style={
-                            Object {
-                              "color": "#444",
-                            }
-                          }
-                        >
-                          &gt;
-                        </span>
-                      </div>
-                      <div
-                        style={
-                          Object {
-                            "paddingLeft": 93,
-                            "paddingRight": 3,
-                          }
-                        }
-                      >
-                        <span
-                          style={
-                            Object {
-                              "color": "#444",
-                            }
-                          }
-                        >
-                          &lt;
-                          rect
-                        </span>
-                        <span>
-                          <span>
-                             
-                            <span
-                              style={Object {}}
-                            >
-                              width
-                            </span>
-                            <span>
-                              =
-                              <span
-                                style={Object {}}
-                              >
-                                "
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  100
-                                </span>
-                                "
-                              </span>
-                            </span>
-                          </span>
-                          <span>
-                             
-                            <span
-                              style={Object {}}
-                            >
-                              height
-                            </span>
-                            <span>
-                              =
-                              <span
-                                style={Object {}}
-                              >
-                                "
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  30
-                                </span>
-                                "
-                              </span>
-                            </span>
-                          </span>
-                          <span>
-                             
-                            <span
-                              style={Object {}}
-                            >
-                              style
-                            </span>
-                            <span>
-                              =
-                              <span
-                                style={Object {}}
-                              >
-                                {
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#666",
-                                    }
-                                  }
-                                >
-                                  {
-                                  <span>
-                                    <span
-                                      style={
-                                        Object {
-                                          "color": "#666",
-                                        }
-                                      }
-                                    >
-                                      fill
-                                    </span>
-                                  </span>
-                                  : 
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#22a",
-                                        "wordBreak": "break-word",
-                                      }
-                                    }
-                                  >
-                                    'white'
-                                  </span>
-                                  ,
-                                  <span>
-                                    <span
-                                      style={
-                                        Object {
-                                          "color": "#666",
-                                        }
-                                      }
-                                    >
-                                      stroke
-                                    </span>
-                                  </span>
-                                  : 
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#22a",
-                                        "wordBreak": "break-word",
-                                      }
-                                    }
-                                  >
-                                    'black'
-                                  </span>
-                                  }
-                                </span>
-                                }
-                              </span>
-                            </span>
-                             
-                          </span>
-                        </span>
-                        <span
-                          style={
-                            Object {
-                              "color": "#444",
-                            }
-                          }
-                        >
-                          /&gt;
-                        </span>
-                      </div>
-                      <div
-                        style={
-                          Object {
-                            "paddingLeft": 78,
-                            "paddingRight": 3,
-                          }
-                        }
-                      >
-                        <span
-                          style={
-                            Object {
-                              "color": "#444",
-                            }
-                          }
-                        >
-                          &lt;/
-                          svg
-                          &gt;
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;/
-                        Item
-                        &gt;
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;
-                        Item
-                      </span>
-                      <span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            config
-                          </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              {
-                              <span
-                                style={
-                                  Object {
-                                    "color": "#666",
-                                  }
-                                }
-                              >
-                                {
-                                <span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    label
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'ellipse'
-                                </span>
-                                ,
-                                <span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    shape
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'ellipse'
-                                </span>
-                                }
-                              </span>
-                              }
+                              "
                             </span>
                           </span>
                           
@@ -6429,70 +5704,25 @@ exports[`Storyshots Flow Item Panel 1`] = `
                           <span
                             style={Object {}}
                           >
-                            config
+                            shape
                           </span>
                           <span>
                             =
                             <span
                               style={Object {}}
                             >
-                              {
+                              "
                               <span
                                 style={
                                   Object {
-                                    "color": "#666",
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
                                   }
                                 }
                               >
-                                {
-                                <span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    label
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'rhombus'
-                                </span>
-                                ,
-                                <span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    shape
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'rhombus'
-                                </span>
-                                }
+                                rhombus
                               </span>
-                              }
+                              "
                             </span>
                           </span>
                           
@@ -6572,70 +5802,25 @@ exports[`Storyshots Flow Item Panel 1`] = `
                           <span
                             style={Object {}}
                           >
-                            config
+                            shape
                           </span>
                           <span>
                             =
                             <span
                               style={Object {}}
                             >
-                              {
+                              "
                               <span
                                 style={
                                   Object {
-                                    "color": "#666",
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
                                   }
                                 }
                               >
-                                {
-                                <span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    label
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'cloud'
-                                </span>
-                                ,
-                                <span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    shape
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#22a",
-                                      "wordBreak": "break-word",
-                                    }
-                                  }
-                                >
-                                  'cloud'
-                                </span>
-                                }
+                                cloud
                               </span>
-                              }
+                              "
                             </span>
                           </span>
                           
@@ -8067,23 +7252,15 @@ exports[`Storyshots Flow RegisterShape 1`] = `
           className="testPanel"
         >
           <div>
-            rectangle
+            Rounded
           </div>
           <div>
-            rectangle2
+            Rounded2
           </div>
         </div>
         <div
           className="flow-container"
         />
-        <div>
-          <div>
-            undo
-          </div>
-          <div>
-            redo
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -8250,7 +7427,61 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                           <span
                             style={Object {}}
                           >
-                            config
+                            shape
+                          </span>
+                          <span>
+                            =
+                            <span
+                              style={Object {}}
+                            >
+                              "
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
+                                  }
+                                }
+                              >
+                                rounded
+                              </span>
+                              "
+                            </span>
+                          </span>
+                        </span>
+                        <span>
+                           
+                          <span
+                            style={Object {}}
+                          >
+                            size
+                          </span>
+                          <span>
+                            =
+                            <span
+                              style={Object {}}
+                            >
+                              "
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
+                                  }
+                                }
+                              >
+                                70*30
+                              </span>
+                              "
+                            </span>
+                          </span>
+                        </span>
+                        <span>
+                           
+                          <span
+                            style={Object {}}
+                          >
+                            model
                           </span>
                           <span>
                             =
@@ -8267,11 +7498,6 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                               >
                                 {
                                 <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
                                   <span
                                     style={
                                       Object {
@@ -8279,7 +7505,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                                       }
                                     }
                                   >
-                                    shape
+                                    color
                                   </span>
                                 </span>
                                 : 
@@ -8291,15 +7517,10 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                                     }
                                   }
                                 >
-                                  'rectangle'
+                                  '#FA8C16'
                                 </span>
                                 ,
                                 <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
                                   <span
                                     style={
                                       Object {
@@ -8319,47 +7540,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                                     }
                                   }
                                 >
-                                  'rec'
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    width
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#a11",
-                                    }
-                                  }
-                                >
-                                  100
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  …
-                                </span>
-                                <span>
-                                  <br />
-                                    
+                                  'Item 1'
                                 </span>
                                 }
                               </span>
@@ -8394,7 +7575,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                           }
                         }
                       >
-                        rectangle
+                        Rounded
                       </span>
                     </div>
                     <div
@@ -8443,7 +7624,61 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                           <span
                             style={Object {}}
                           >
-                            config
+                            shape
+                          </span>
+                          <span>
+                            =
+                            <span
+                              style={Object {}}
+                            >
+                              "
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
+                                  }
+                                }
+                              >
+                                rounded2
+                              </span>
+                              "
+                            </span>
+                          </span>
+                        </span>
+                        <span>
+                           
+                          <span
+                            style={Object {}}
+                          >
+                            size
+                          </span>
+                          <span>
+                            =
+                            <span
+                              style={Object {}}
+                            >
+                              "
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#22a",
+                                    "wordBreak": "break-word",
+                                  }
+                                }
+                              >
+                                200*60
+                              </span>
+                              "
+                            </span>
+                          </span>
+                        </span>
+                        <span>
+                           
+                          <span
+                            style={Object {}}
+                          >
+                            model
                           </span>
                           <span>
                             =
@@ -8460,11 +7695,6 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                               >
                                 {
                                 <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
                                   <span
                                     style={
                                       Object {
@@ -8472,7 +7702,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                                       }
                                     }
                                   >
-                                    shape
+                                    color
                                   </span>
                                 </span>
                                 : 
@@ -8484,42 +7714,10 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                                     }
                                   }
                                 >
-                                  'rectangle'
+                                  '#FA8C16'
                                 </span>
                                 ,
                                 <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  <span
-                                    style={
-                                      Object {
-                                        "color": "#666",
-                                      }
-                                    }
-                                  >
-                                    rounded
-                                  </span>
-                                </span>
-                                : 
-                                <span
-                                  style={
-                                    Object {
-                                      "color": "#a11",
-                                    }
-                                  }
-                                >
-                                  1
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
                                   <span
                                     style={
                                       Object {
@@ -8539,20 +7737,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                                     }
                                   }
                                 >
-                                  'rec'
-                                </span>
-                                ,
-                                <span>
-                                  <span>
-                                    <br />
-                                      
-                                      
-                                  </span>
-                                  …
-                                </span>
-                                <span>
-                                  <br />
-                                    
+                                  'Item 1'
                                 </span>
                                 }
                               </span>
@@ -8587,7 +7772,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                           }
                         }
                       >
-                        rectangle2
+                        Rounded2
                       </span>
                     </div>
                     <div
@@ -9105,252 +8290,689 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                     /&gt;
                   </span>
                 </div>
-                <div>
-                  <div
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": 48,
+                      "paddingRight": 3,
+                    }
+                  }
+                >
+                  <span
                     style={
                       Object {
-                        "paddingLeft": 48,
-                        "paddingRight": 3,
+                        "color": "#444",
                       }
                     }
                   >
-                    <span
-                      style={
-                        Object {
-                          "color": "#444",
-                        }
-                      }
-                    >
-                      &lt;
-                      Toolbar
-                    </span>
-                    <span />
-                    <span
-                      style={
-                        Object {
-                          "color": "#444",
-                        }
-                      }
-                    >
-                      &gt;
-                    </span>
-                  </div>
-                  <div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
+                    &lt;
+                    RegisterNode
+                  </span>
+                  <span>
+                    <span>
+                       
                       <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
+                        style={Object {}}
                       >
-                        &lt;
-                        ToolCommand
+                        name
                       </span>
                       <span>
-                        <span>
-                           
+                        =
+                        <span
+                          style={Object {}}
+                        >
+                          "
                           <span
-                            style={Object {}}
+                            style={
+                              Object {
+                                "color": "#22a",
+                                "wordBreak": "break-word",
+                              }
+                            }
                           >
-                            name
+                            rounded
                           </span>
-                          <span>
-                            =
-                            <span
-                              style={Object {}}
-                            >
-                              "
+                          "
+                        </span>
+                      </span>
+                    </span>
+                    <span>
+                       
+                      <span
+                        style={Object {}}
+                      >
+                        config
+                      </span>
+                      <span>
+                        =
+                        <span
+                          style={Object {}}
+                        >
+                          {
+                          <span
+                            style={
+                              Object {
+                                "color": "#666",
+                              }
+                            }
+                          >
+                            {
+                            <span>
+                              <span>
+                                <br />
+                                  
+                                  
+                              </span>
                               <span
                                 style={
                                   Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                    "color": "#666",
                                   }
                                 }
                               >
-                                undo
+                                rounded
                               </span>
-                              "
                             </span>
-                          </span>
-                          
-                        </span>
-                      </span>
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &gt;
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 78,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        undo
-                      </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;/
-                        ToolCommand
-                        &gt;
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;
-                        ToolCommand
-                      </span>
-                      <span>
-                        <span>
-                           
-                          <span
-                            style={Object {}}
-                          >
-                            name
-                          </span>
-                          <span>
-                            =
+                            : 
                             <span
-                              style={Object {}}
+                              style={
+                                Object {
+                                  "color": "#a11",
+                                }
+                              }
                             >
-                              "
+                              1
+                            </span>
+                            ,
+                            <span>
+                              <span>
+                                <br />
+                                  
+                                  
+                              </span>
                               <span
                                 style={
                                   Object {
-                                    "color": "#22a",
-                                    "wordBreak": "break-word",
+                                    "color": "#666",
                                   }
                                 }
                               >
-                                redo
+                                fillColor
                               </span>
-                              "
                             </span>
+                            : 
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              'white'
+                            </span>
+                            ,
+                            <span>
+                              <span>
+                                <br />
+                                  
+                                  
+                              </span>
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#666",
+                                  }
+                                }
+                              >
+                                points
+                              </span>
+                            </span>
+                            : 
+                            <span
+                              style={
+                                Object {
+                                  "color": "#666",
+                                }
+                              }
+                            >
+                              [
+                              <span>
+                                <span>
+                                  <br />
+                                      
+                                    
+                                </span>
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#666",
+                                    }
+                                  }
+                                >
+                                  [
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0.5
+                                    </span>
+                                  </span>
+                                  ,
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0
+                                    </span>
+                                  </span>
+                                  ]
+                                </span>
+                              </span>
+                              ,
+                              <span>
+                                <span>
+                                  <br />
+                                      
+                                    
+                                </span>
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#666",
+                                    }
+                                  }
+                                >
+                                  [
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0.5
+                                    </span>
+                                  </span>
+                                  ,
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      1
+                                    </span>
+                                  </span>
+                                  ]
+                                </span>
+                              </span>
+                              ,
+                              <span>
+                                <span>
+                                  <br />
+                                      
+                                    
+                                </span>
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#666",
+                                    }
+                                  }
+                                >
+                                  [
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0
+                                    </span>
+                                  </span>
+                                  ,
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0.5
+                                    </span>
+                                  </span>
+                                  ]
+                                </span>
+                              </span>
+                              ,
+                              <span>
+                                <span>
+                                  <br />
+                                      
+                                    
+                                </span>
+                                …
+                              </span>
+                              <span>
+                                <br />
+                                    
+                              </span>
+                              ]
+                            </span>
+                            ,
+                            <span>
+                              <span>
+                                <br />
+                                  
+                                  
+                              </span>
+                              …
+                            </span>
+                            <span>
+                              <br />
+                                
+                            </span>
+                            }
                           </span>
-                          
+                          }
                         </span>
                       </span>
+                    </span>
+                    <span>
+                       
                       <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
+                        style={Object {}}
                       >
-                        &gt;
+                        extend
                       </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 78,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        redo
+                      <span>
+                        =
+                        <span
+                          style={Object {}}
+                        >
+                          "
+                          <span
+                            style={
+                              Object {
+                                "color": "#22a",
+                                "wordBreak": "break-word",
+                              }
+                            }
+                          >
+                            rectangle
+                          </span>
+                          "
+                        </span>
                       </span>
-                    </div>
-                    <div
-                      style={
-                        Object {
-                          "paddingLeft": 63,
-                          "paddingRight": 3,
-                        }
-                      }
-                    >
-                      <span
-                        style={
-                          Object {
-                            "color": "#444",
-                          }
-                        }
-                      >
-                        &lt;/
-                        ToolCommand
-                        &gt;
-                      </span>
-                    </div>
-                  </div>
-                  <div
+                       
+                    </span>
+                  </span>
+                  <span
                     style={
                       Object {
-                        "paddingLeft": 48,
-                        "paddingRight": 3,
+                        "color": "#444",
                       }
                     }
                   >
-                    <span
-                      style={
-                        Object {
-                          "color": "#444",
-                        }
+                    /&gt;
+                  </span>
+                </div>
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": 48,
+                      "paddingRight": 3,
+                    }
+                  }
+                >
+                  <span
+                    style={
+                      Object {
+                        "color": "#444",
                       }
-                    >
-                      &lt;/
-                      Toolbar
-                      &gt;
+                    }
+                  >
+                    &lt;
+                    RegisterNode
+                  </span>
+                  <span>
+                    <span>
+                       
+                      <span
+                        style={Object {}}
+                      >
+                        name
+                      </span>
+                      <span>
+                        =
+                        <span
+                          style={Object {}}
+                        >
+                          "
+                          <span
+                            style={
+                              Object {
+                                "color": "#22a",
+                                "wordBreak": "break-word",
+                              }
+                            }
+                          >
+                            rounded2
+                          </span>
+                          "
+                        </span>
+                      </span>
                     </span>
-                  </div>
+                    <span>
+                       
+                      <span
+                        style={Object {}}
+                      >
+                        config
+                      </span>
+                      <span>
+                        =
+                        <span
+                          style={Object {}}
+                        >
+                          {
+                          <span
+                            style={
+                              Object {
+                                "color": "#666",
+                              }
+                            }
+                          >
+                            {
+                            <span>
+                              <span>
+                                <br />
+                                  
+                                  
+                              </span>
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#666",
+                                  }
+                                }
+                              >
+                                rounded
+                              </span>
+                            </span>
+                            : 
+                            <span
+                              style={
+                                Object {
+                                  "color": "#a11",
+                                }
+                              }
+                            >
+                              1
+                            </span>
+                            ,
+                            <span>
+                              <span>
+                                <br />
+                                  
+                                  
+                              </span>
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#666",
+                                  }
+                                }
+                              >
+                                fillColor
+                              </span>
+                            </span>
+                            : 
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              'white'
+                            </span>
+                            ,
+                            <span>
+                              <span>
+                                <br />
+                                  
+                                  
+                              </span>
+                              <span
+                                style={
+                                  Object {
+                                    "color": "#666",
+                                  }
+                                }
+                              >
+                                points
+                              </span>
+                            </span>
+                            : 
+                            <span
+                              style={
+                                Object {
+                                  "color": "#666",
+                                }
+                              }
+                            >
+                              [
+                              <span>
+                                <span>
+                                  <br />
+                                      
+                                    
+                                </span>
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#666",
+                                    }
+                                  }
+                                >
+                                  [
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0.5
+                                    </span>
+                                  </span>
+                                  ,
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0
+                                    </span>
+                                  </span>
+                                  ]
+                                </span>
+                              </span>
+                              ,
+                              <span>
+                                <span>
+                                  <br />
+                                      
+                                    
+                                </span>
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#666",
+                                    }
+                                  }
+                                >
+                                  [
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0.5
+                                    </span>
+                                  </span>
+                                  ,
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      1
+                                    </span>
+                                  </span>
+                                  ]
+                                </span>
+                              </span>
+                              ,
+                              <span>
+                                <span>
+                                  <br />
+                                      
+                                    
+                                </span>
+                                <span
+                                  style={
+                                    Object {
+                                      "color": "#666",
+                                    }
+                                  }
+                                >
+                                  [
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0
+                                    </span>
+                                  </span>
+                                  ,
+                                  <span>
+                                    <span
+                                      style={
+                                        Object {
+                                          "color": "#a11",
+                                        }
+                                      }
+                                    >
+                                      0.5
+                                    </span>
+                                  </span>
+                                  ]
+                                </span>
+                              </span>
+                              ,
+                              <span>
+                                <span>
+                                  <br />
+                                      
+                                    
+                                </span>
+                                …
+                              </span>
+                              <span>
+                                <br />
+                                    
+                              </span>
+                              ]
+                            </span>
+                            ,
+                            <span>
+                              <span>
+                                <br />
+                                  
+                                  
+                              </span>
+                              …
+                            </span>
+                            <span>
+                              <br />
+                                
+                            </span>
+                            }
+                          </span>
+                          }
+                        </span>
+                      </span>
+                    </span>
+                    <span>
+                       
+                      <span
+                        style={Object {}}
+                      >
+                        extend
+                      </span>
+                      <span>
+                        =
+                        <span
+                          style={Object {}}
+                        >
+                          "
+                          <span
+                            style={
+                              Object {
+                                "color": "#22a",
+                                "wordBreak": "break-word",
+                              }
+                            }
+                          >
+                            rectangle
+                          </span>
+                          "
+                        </span>
+                      </span>
+                       
+                    </span>
+                  </span>
+                  <span
+                    style={
+                      Object {
+                        "color": "#444",
+                      }
+                    }
+                  >
+                    /&gt;
+                  </span>
                 </div>
                 <div
                   style={
@@ -9505,23 +9127,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
             }
           >
             "
-            ToolCommand
-            " Component
-          </h3>
-          <small>
-            No propTypes defined!
-          </small>
-        </div>
-        <div>
-          <h3
-            style={
-              Object {
-                "margin": "20px 0 0 0",
-              }
-            }
-          >
-            "
-            Toolbar
+            RegisterNode
             " Component
           </h3>
           <small>

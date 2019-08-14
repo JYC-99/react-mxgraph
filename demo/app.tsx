@@ -19,6 +19,7 @@ import {
   CanvasPanel,
   DetailPanel,
   TextEditor,
+  RegisterNode,
 } from "../src/index";
 import "./index.scss";
 
@@ -63,22 +64,8 @@ const Demo = () => (
   <div>
     <MxGraph>
       <ItemPanel>
-        <Item config={{shape: "rectangle", label: "rec", width: 100, height: 50, fillColor: "white", anchorPoints: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]]}}>
-          rectangle
-        </Item>
-        <Item config={{shape: "rectangle", rounded: 1, label: "rec", width: 100, height: 30, fillColor: "white", anchorPoints: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
-      fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1}}>
-          rectangle
-        </Item>
-        <Item config={{shape: "ellipse"}}>
-          ellipse
-        </Item>
-        <Item config={{shape: "rhombus"}}>
-        rhombus
-        </Item>
-        <Item config={{shape: "cloud"}}>
-        cloud
-        </Item>
+        <Item shape="rounded" size="70*30" model={{color: "#FA8C16", label: "Item 1", }}>Rounded</Item>
+        <Item shape="rounded2" size="200*60" model={{color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
       </ItemPanel>
       <Flow
         data={data}
@@ -120,6 +107,10 @@ const Demo = () => (
           <TextEditor name="cell" />
         </EdgePanel>
       </DetailPanel>
+      <RegisterNode name="rounded" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
+        fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1}} extend="rectangle" />
+      <RegisterNode name="rounded2" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
+        fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50}} extend="rectangle" />
     </MxGraph>
   </div>
 

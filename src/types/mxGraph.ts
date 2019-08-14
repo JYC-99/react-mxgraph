@@ -59,7 +59,7 @@ export interface IGraphModel {
   getRoot(): ImxCell;
   getChildCount(root: ImxCell): number;
   getChildren(cell: ImxCell): ImxCell;
-  getValue(cell: ImxCell): string;
+  getValue(cell: ImxCell): string | null;
   addListener(action: string, listener: (sender: IGraphModel, evt: IMxEventObject) => void): void;
   isVertex(cell: ImxCell): boolean;
   isEdge(cell: ImxCell): boolean;
@@ -93,6 +93,11 @@ interface IMxSelectionModel {
   graph: IMxGraph;
 }
 
+export interface IStylesheet {
+  createDefaultVertexStyle(): IStylesheet;
+  putCellStyle(customName: string, customStyle: IStylesheet): void;
+}
+
 export interface IMxGraph {
   popupMenuHandler: {
     autoExpand: boolean;
@@ -109,6 +114,7 @@ export interface IMxGraph {
   getView(): IView;
   getDefaultParent(): IParent;
   getCellGeometry(cell: ImxCell): IGeometry;
+  getStylesheet(): IStylesheet;
   getSelectionCells(): ImxCell[];
   getSelectionCell(): ImxCell;
   getSelectionModel(): IMxSelectionModel;

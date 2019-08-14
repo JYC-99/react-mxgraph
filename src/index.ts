@@ -11,3 +11,4 @@ export * from "./components/Minimap";
 export * from "./components/Panel";
 export * from "./components/DetailPanel";
 export * from "./components/TextEditor";
+export * from "./components/RegisterNode";
