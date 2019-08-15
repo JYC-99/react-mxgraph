@@ -1,5 +1,6 @@
 import * as React from "react";
 import { IMxActions } from "../types/action";
+import { ICustomCommand } from "../types/command";
 import { ICanvasData, ICanvasEdge, ICanvasNode } from "../types/flow";
 import { ImxCell, IMxGraph } from "../types/mxGraph";
 import { ICustomShape } from "../types/shapes";
@@ -8,6 +9,7 @@ export interface IMxGraphContext {
   graph?: IMxGraph;
   action?: IMxActions;
   customShape?: ICustomShape[];
+  customCommand?: ICustomCommand[];
   setGraph(graph: IMxGraph): void;
   readData(graph: IMxGraph, data: ICanvasData): void;
   insertEdge(parent: ImxCell, graph: IMxGraph, edge: ICanvasEdge, source: ImxCell, target: ImxCell): ImxCell;
@@ -20,6 +22,7 @@ export const MxGraphContext = React.createContext<IMxGraphContext>({
   setGraph: () => { },
   action: undefined,
   customShape: undefined,
+  customCommand: undefined,
   // tslint:disable-next-line: no-empty
   readData: () => { },
   // tslint:disable-next-line: no-empty

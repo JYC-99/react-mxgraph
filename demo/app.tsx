@@ -4,6 +4,7 @@ import { hot } from "react-hot-loader";
 import {
   CanvasMenu,
   Command,
+  CustomCommand,
   ContextMenu,
   EdgeMenu,
   Flow,
@@ -104,6 +105,7 @@ const Demo = () => (
       </ItemPanel>
       <Flow
         data={data}
+        shortcut={{moveRight: true}}
       />
       <Toolbar>
         <ToolCommand name="copy" >Copy  <span style={shortCutStyle}>Ctrl + C</span></ToolCommand>
@@ -150,6 +152,7 @@ const Demo = () => (
         rounded: 1, fillColor: "white", points: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
         fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50
       }} extend="rectangle" />
+      <CustomCommand />
     </MxGraph>
   </div>
 

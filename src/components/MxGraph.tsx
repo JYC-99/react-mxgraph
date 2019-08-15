@@ -11,6 +11,7 @@ import {
 } from "../context/MxGraphContext";
 import { init } from "../settings/init";
 import { IMxActions } from "../types/action";
+import { customShortcutDictionary, ICustomCommand } from "../types/command";
 import { ICanvasData, ICanvasNode } from "../types/flow";
 import {
   ImxCell,
@@ -51,7 +52,9 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   private mouseY: number;
   private action: IMxActions;
   private readonly customShape: ICustomShape[];
+  private readonly customCommand: ICustomCommand[];
   private readonly dictionary: object;
+  private _firstUpdate: boolean;
 
   constructor(props: {}) {
     super(props);
@@ -61,7 +64,9 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     this.mouseX = 0;
     this.mouseY = 0;
     this.customShape = [];
+    this.customCommand = [];
     this.dictionary = {};
+    this._firstUpdate = true;
   }
 
   public setGraph = (graph: IMxGraph) => {
@@ -78,6 +83,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     this.setKeyHandler(graph);
     this.setMouseEvent(graph);
     this.registerNode(graph);
+
     this.setState({
       graph,
     });
@@ -151,8 +157,11 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     }
   }
 
-  public render(): React.ReactNode {
+  public componentDidUpdate(): void {
+    if (this._firstUpdate && this.state.graph) { this.registerCommand(this.state.graph); this._firstUpdate = false; }
+  }
 
+  public render(): React.ReactNode {
     return (
       <div className="graph">
         <MxGraphContext.Provider
@@ -161,6 +170,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
             setGraph: this.setGraph,
             action: this.action,
             customShape: this.customShape,
+            customCommand: this.customCommand,
             readData: this.readData,
             insertVertex: this.insertVertex,
             insertEdge: this.insertEdge,
@@ -189,6 +199,14 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     });
   }
 
+  private readonly addCustomKeyEvent = (graph: IMxGraph, func: () => void, key: string): void => {
+    mxEvent.addListener(document, "keydown", (event: KeyboardEvent) => {
+      if (graph.isEnabled() && !graph.isMouseDown && !graph.isEditing() && event.key === key) {
+        func();
+      }
+    });
+  }
+
   private readonly registerNode = (graph: IMxGraph): void => {
     this.customShape.forEach((shape) => {
       const style = graph.getStylesheet()
@@ -202,41 +220,35 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     });
   }
 
+  private readonly registerCommand = (graph: IMxGraph): void => {
+    this.customCommand.forEach((command) => {
+      const config = command.config;
+      if (customShortcutDictionary.hasOwnProperty(command.name) && customShortcutDictionary[command.name] && config.enable) {
+        if (config.shortcutCodes) {
+          config.shortcutCodes.forEach((shortcutCode) => {
+            // tslint:disable-next-line: no-unbound-method
+            this.addCustomKeyEvent(graph, config.execute, shortcutCode);
+          });
+        }
+      }
+    });
+  }
+
   private readonly saveShapeForNode = (id: string, shape?: string): void => {
     if (shape) { shapeDictionary[id] = shape; }
   }
 
   private readonly insertVertex = (parent: ImxCell, graph: IMxGraph, node: ICanvasNode): IVertex => {
     this.saveShapeForNode(node.id, node.shape);
-    graph
-      .getModel()
-      .beginUpdate();
-
-    try {
-      const width = node.size ? node.size[0] : 200;
-      const height = node.size ? node.size[1] : 200;
-      const style = node.shape ? (BuiltInShapes.hasOwnProperty(node.shape) ? BuiltInShapes[node.shape].style : setStyle(graph.getStylesheet()
-        .getCellStyle(node.shape))) : null;
-      return graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style);
-    } finally {
-      graph
-        .getModel()
-        .endUpdate();
-    }
+    const width = node.size ? node.size[0] : 200;
+    const height = node.size ? node.size[1] : 200;
+    const style = node.shape ? (BuiltInShapes.hasOwnProperty(node.shape) ? BuiltInShapes[node.shape].style : setStyle(graph.getStylesheet()
+      .getCellStyle(node.shape))) : null;
+    return graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style);
   }
 
   private readonly insertEdge = (parent: ImxCell, graph: IMxGraph, edge: ICanvasEdge, source: ImxCell, target: ImxCell): IEdge => {
-    graph
-    .getModel()
-    .beginUpdate();
-
-    try {
-      graph.insertEdge(parent, edge.id, "", source, target);
-    } finally {
-      graph
-        .getModel()
-        .endUpdate();
-    }
+    return graph.insertEdge(parent, edge.id, "", source, target);
   }
 
   private readonly readData = (graph: IMxGraph, data: ICanvasData): void => {
@@ -345,6 +357,11 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         }
       });
 
+  }
+
+  private readonly addAction = (action: IMxActions, name: string, func: () => void): void => {
+    action[name] = new Object();
+    action[name].func = func;
   }
 
   private readonly initAction = (graph: IMxGraph, clipboard: IClipboardContext): IMxActions => {

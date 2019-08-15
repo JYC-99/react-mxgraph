@@ -6,6 +6,9 @@ import {
   CanvasMenu,
   CanvasPanel,
   Command,
+  RegisterCommand,
+  IPropsAPI,
+  withPropsApi,
   ContextMenu,
   DetailPanel,
   EdgeMenu,
@@ -35,7 +38,7 @@ const data = {
     y: 55,
     id: "ea1184e8",
     index: 0,
-  },      {
+  }, {
     type: "node",
     size: [70, 70],
     shape: "flow-circle",
@@ -160,7 +163,7 @@ storiesOf("Flow", module)
               <Command name="copy" text="Copy" />
               <Command name="cut" text="Cut" />
               <Command name="paste" text="Paste" />
-              <Command name="zoomIn" text="ZoomIn"/>
+              <Command name="zoomIn" text="ZoomIn" />
             </CanvasMenu>
           </ContextMenu>
         </MxGraph>
@@ -224,14 +227,18 @@ storiesOf("Flow", module)
       <div>
         <MxGraph>
           <ItemPanel>
-            <Item shape="rounded" size="70*30" model={{color: "#FA8C16", label: "Item 1", }}>Rounded</Item>
-            <Item shape="rounded2" size="200*60" model={{color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
+            <Item shape="rounded" size="70*30" model={{ color: "#FA8C16", label: "Item 1", }}>Rounded</Item>
+            <Item shape="rounded2" size="200*60" model={{ color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
           </ItemPanel>
-          <Flow data={data}/>
-          <RegisterNode name="rounded" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
-            fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1}} extend="rectangle" />
-          <RegisterNode name="rounded2" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
-            fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50}} extend="rectangle" />
+          <Flow data={data} />
+          <RegisterNode name="rounded" config={{
+            rounded: 1, fillColor: "white", points: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
+            fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1
+          }} extend="rectangle" />
+          <RegisterNode name="rounded2" config={{
+            rounded: 1, fillColor: "white", points: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
+            fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50
+          }} extend="rectangle" />
         </MxGraph>
       </div>
     );
@@ -286,10 +293,52 @@ storiesOf("Flow", module)
     };
     return (
       <div>
-      <MxGraph>
-        <Flow data={data} />
-        <PropsComponent data={data2}/>
-      </MxGraph>
-    </div>
+        <MxGraph>
+          <Flow data={data} />
+          <PropsComponent data={data2} />
+        </MxGraph>
+      </div>
     )
+  }).add("registerCommand", () => {
+
+    interface IProps {
+      propsAPI: IPropsAPI;
+    }
+
+    class ACommand extends React.PureComponent<IProps> {
+      public render(): React.ReactNode {
+        const { propsAPI } = this.props;
+        const { save, update, getSelected } = propsAPI;
+
+        const config = {
+          enable(): boolean {
+            return true;
+          },
+          execute(): void {
+            const chart = save();
+            const selectedNodes = getSelected();
+            selectedNodes.map((node) => {
+              update(node, { x: node.geometry.x + 2 });
+            });
+          },
+          shortcutCodes: ["ArrowRight"],
+        };
+
+        return <RegisterCommand name="moveRight" config={config} />;
+      }
+    }
+
+    const CustomCommand = withPropsApi(ACommand);
+    return (
+      <div>
+        <MxGraph>
+          <Flow
+            data={data}
+            shortcut={{ moveRight: true }}
+          />
+          <p>select a cell then press arrowright to move it to right</p>
+          <CustomCommand />
+        </MxGraph>
+      </div>
+    );
   });
