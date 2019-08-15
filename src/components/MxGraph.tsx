@@ -11,8 +11,15 @@ import {
 } from "../context/MxGraphContext";
 import { init } from "../settings/init";
 import { IMxActions } from "../types/action";
-import { IMxEventObject, IMxGraph, IMxUndoManager } from "../types/mxGraph";
-import { ICustomShape } from "../types/shapes";
+import { ICanvasData, ICanvasNode } from "../types/flow";
+import {
+  ImxCell,
+  IMxEventObject,
+  IMxGraph,
+  IMxUndoManager,
+  IVertex,
+} from "../types/mxGraph";
+import { BuiltInShapes, ICustomShape, setStyle, shapeDictionary } from "../types/shapes";
 
 const {
   mxClient,
@@ -44,6 +51,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   private mouseY: number;
   private action: IMxActions;
   private readonly customShape: ICustomShape[];
+  private readonly dictionary: object;
 
   constructor(props: {}) {
     super(props);
@@ -53,6 +61,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     this.mouseX = 0;
     this.mouseY = 0;
     this.customShape = [];
+    this.dictionary = {};
   }
 
   public setGraph = (graph: IMxGraph) => {
@@ -152,6 +161,9 @@ export class MxGraph extends React.PureComponent<{}, IState> {
             setGraph: this.setGraph,
             action: this.action,
             customShape: this.customShape,
+            readData: this.readData,
+            insertVertex: this.insertVertex,
+            insertEdge: this.insertEdge,
           }}
         >
           {this.props.children}
@@ -180,14 +192,85 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   private readonly registerNode = (graph: IMxGraph): void => {
     this.customShape.forEach((shape) => {
       const style = graph.getStylesheet()
-                       .createDefaultVertexStyle(); // default
+        .createDefaultVertexStyle(); // default
       style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
       style[mxConstants.STYLE_PERIMETER] = "rectanglePerimeter";
       style[mxConstants.STYLE_ROUNDED] = true;
       Object.assign(style, shape.styleConfig);
       graph.getStylesheet()
-      .putCellStyle(shape.name, style);
+        .putCellStyle(shape.name, style);
     });
+  }
+
+  private readonly saveShapeForNode = (id: string, shape?: string): void => {
+    if (shape) { shapeDictionary[id] = shape; }
+  }
+
+  private readonly insertVertex = (parent: ImxCell, graph: IMxGraph, node: ICanvasNode): IVertex => {
+    this.saveShapeForNode(node.id, node.shape);
+    graph
+      .getModel()
+      .beginUpdate();
+
+    try {
+      const width = node.size ? node.size[0] : 200;
+      const height = node.size ? node.size[1] : 200;
+      const style = node.shape ? (BuiltInShapes.hasOwnProperty(node.shape) ? BuiltInShapes[node.shape].style : setStyle(graph.getStylesheet()
+        .getCellStyle(node.shape))) : null;
+      return graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style);
+    } finally {
+      graph
+        .getModel()
+        .endUpdate();
+    }
+  }
+
+  private readonly insertEdge = (parent: ImxCell, graph: IMxGraph, edge: ICanvasEdge, source: ImxCell, target: ImxCell): IEdge => {
+    graph
+    .getModel()
+    .beginUpdate();
+
+    try {
+      graph.insertEdge(parent, edge.id, "", source, target);
+    } finally {
+      graph
+        .getModel()
+        .endUpdate();
+    }
+  }
+
+  private readonly readData = (graph: IMxGraph, data: ICanvasData): void => {
+    graph
+      .getModel()
+      .beginUpdate();
+
+    try {
+      const parent = graph.getDefaultParent();
+
+      const vertexes = data.nodes.map((node) => {
+        const width = node.size ? node.size[0] : 200;
+        const height = node.size ? node.size[1] : 200;
+        const style = node.shape ? (BuiltInShapes.hasOwnProperty(node.shape) ? BuiltInShapes[node.shape].style : setStyle(graph.getStylesheet()
+          .getCellStyle(node.shape))) : null;
+        return {
+          vertex: graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style),
+          id: node.id
+        };
+      });
+
+      data.edges.forEach((edge) => {
+        const source = vertexes.find((v) => v.id === edge.source);
+        const target = vertexes.find((v) => v.id === edge.target);
+
+        if (source && target) {
+          graph.insertEdge(parent, edge.id, "", source.vertex, target.vertex);
+        }
+      });
+    } finally {
+      graph
+        .getModel()
+        .endUpdate();
+    }
   }
 
   private readonly setMouseEvent = (graph: IMxGraph): void => {
