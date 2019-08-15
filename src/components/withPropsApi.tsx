@@ -12,14 +12,14 @@ import { ImxCell, IMxGraph } from "../types/mxGraph";
 import { shapeDictionary } from "../types/shapes";
 
 const {
-
+  mxConstants,
 } = mxGraphJs;
 
-interface IPropAPI {
+export interface IPropsAPI {
   graph: IMxGraph;
   executeCommand(command: string): void;
   find(id: string): ImxCell;
-  getSelected(): void;
+  getSelected(): ImxCell[];
   read(data: ICanvasData): void;
   save(): object;
   add(name: "node" | "edge", model): void;
@@ -47,7 +47,7 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
             insertEdge,
           } = value;
           if (graph && action) {
-            const propsAPI: IPropAPI = {
+            const propsAPI: IPropsAPI = {
               graph,
               executeCommand: (command) => {
                 if (!action.hasOwnProperty(command)) {
@@ -116,17 +116,25 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
                 if (!cell) {
                   return;
                 }
-                const { x, y, size, label } = model;
-
+                const { x, y, size, label, color } = model;
+                const bounds = {
+                  x: x ? x : cell.geometry.x,
+                  y: y ? y : cell.geometry.y,
+                  width: (size && size[0]) ? size[0] : cell.geometry.width,
+                  height: (size && size[1]) ? size[1] : cell.geometry.height,
+                };
                 graph
                   .getModel()
                   .beginUpdate();
                 try {
-                  graph.resizeCell(cell, { x, y, width: size[0], height: size[1] });
+                  graph.resizeCell(cell, bounds);
                   if (label) {
                     graph
                       .getModel()
                       .setValue(cell, label);
+                  }
+                  if (color) {
+                    graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, color, [cell]);
                   }
                 } finally {
                   graph
@@ -155,7 +163,7 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
 }
 
 interface IProps {
-  propsAPI: IPropAPI;
+  propsAPI: IPropsAPI;
   data: ICanvasData;
 }
 
@@ -216,6 +224,7 @@ class TestComponent extends React.PureComponent<IProps, { value: string; cellV: 
       x: cell.geometry.x - 10,
       y: cell.geometry.y - 10,
       label: "test",
+      color: "#CCCCCC",
     });
   }
 

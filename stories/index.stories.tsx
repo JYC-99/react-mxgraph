@@ -39,7 +39,7 @@ const data = {
     y: 55,
     id: "ea1184e8",
     index: 0,
-  },      {
+  }, {
     type: "node",
     size: [70, 70],
     shape: "flow-circle",
@@ -393,10 +393,52 @@ storiesOf("Flow", module)
     };
     return (
       <div>
-      <MxGraph>
-        <Flow data={data} />
-        <PropsComponent data={data2}/>
-      </MxGraph>
-    </div>
+        <MxGraph>
+          <Flow data={data} />
+          <PropsComponent data={data2} />
+        </MxGraph>
+      </div>
     )
+  }).add("registerCommand", () => {
+
+    interface IProps {
+      propsAPI: IPropsAPI;
+    }
+
+    class ACommand extends React.PureComponent<IProps> {
+      public render(): React.ReactNode {
+        const { propsAPI } = this.props;
+        const { save, update, getSelected } = propsAPI;
+
+        const config = {
+          enable(): boolean {
+            return true;
+          },
+          execute(): void {
+            const chart = save();
+            const selectedNodes = getSelected();
+            selectedNodes.map((node) => {
+              update(node, { x: node.geometry.x + 2 });
+            });
+          },
+          shortcutCodes: ["ArrowRight"],
+        };
+
+        return <RegisterCommand name="moveRight" config={config} />;
+      }
+    }
+
+    const CustomCommand = withPropsApi(ACommand);
+    return (
+      <div>
+        <MxGraph>
+          <Flow
+            data={data}
+            shortcut={{ moveRight: true }}
+          />
+          <p>select a cell then press arrowright to move it to right</p>
+          <CustomCommand />
+        </MxGraph>
+      </div>
+    );
   });

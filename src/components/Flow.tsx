@@ -10,12 +10,12 @@ import {
   IMxGraphContext,
   MxGraphContext
 } from "../context/MxGraphContext";
+import { customShortcutDictionary } from "../types/command";
 import { IMxGraph } from "../types/mxGraph";
-
-import { BuiltInShapes, setStyle } from "../types/shapes";
 
 interface IFlowProps {
   data: ICanvasData;
+  shortcut: object;
 }
 
 interface IFlowState {
@@ -29,6 +29,10 @@ const {
 export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
   private readonly _containerRef = React.createRef<HTMLDivElement>();
   private _setGraph?: (graph: IMxGraph) => void;
+  constructor(props: IFlowProps) {
+    super(props);
+    Object.assign(customShortcutDictionary, this.props.shortcut);
+  }
 
   public render(): React.ReactNode {
     return (
@@ -38,7 +42,6 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
           setGraph,
           readData,
         } = value;
-
         this._setGraph = setGraph;
 
         if (graph) {
