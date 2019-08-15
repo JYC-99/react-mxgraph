@@ -1,3 +1,5 @@
+import { IStylesheet } from "./mxGraph";
+
 export interface IConfig {
   rounded?: 0 | 1;
   fillColor?: string;
@@ -43,7 +45,7 @@ export interface ICustomShape {
   styleConfig: IConfig;
 }
 
-export const setStyle = (config: any) => {
+export const setStyle = (config: IStylesheet) => {
   let style = "";
   for (const key of Object.keys(config)) {
     if (key === "points") {
@@ -54,3 +56,5 @@ export const setStyle = (config: any) => {
   }
   return style;
 };
+
+export const shapeDictionary: object = { };

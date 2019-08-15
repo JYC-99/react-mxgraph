@@ -15,6 +15,7 @@ import {
   ItemPanel,
   MxGraph,
   NodePanel,
+  PropsComponent,
   RegisterNode,
   TextEditor,
   Toolbar,
@@ -251,4 +252,44 @@ storiesOf("Flow", module)
         </MxGraph>
       </div>
     );
+  }).add("withPropsAPI", () => {
+    const data2 = {
+      nodes: [{
+        type: "node",
+        size: [70, 70],
+        shape: "rounded",
+        color: "#FA8C16",
+        label: "起止节点",
+        x: 255,
+        y: 55,
+        id: "ea1184e9",
+        index: 0,
+      }, {
+        type: "node",
+        size: [70, 70],
+        shape: "rounded2",
+        color: "#FA8C16",
+        label: "结束节点",
+        x: 255,
+        y: 255,
+        id: "481fbb1b",
+        index: 2,
+      }],
+      edges: [{
+        source: "ea1184e9",
+        sourceAnchor: 2,
+        target: "481fbb1b",
+        targetAnchor: 0,
+        id: "7989ac71",
+        index: 1,
+      }],
+    };
+    return (
+      <div>
+      <MxGraph>
+        <Flow data={data} />
+        <PropsComponent data={data2}/>
+      </MxGraph>
+    </div>
+    )
   });

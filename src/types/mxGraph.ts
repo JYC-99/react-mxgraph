@@ -16,6 +16,15 @@ export interface IParent {
 export interface ImxCell {
   vertex: boolean;
   edge: boolean;
+  source?: ImxCell;
+  target?: ImxCell;
+  parent?: ImxCell;
+  geometry: IGeometry;
+  mxObjectId: string;
+  id: string;
+  style: string;
+  edges: ImxCell[];
+  value: string;
 }
 
 export interface IMxMenu {
@@ -53,9 +62,11 @@ export interface IMxEventObject {
 }
 
 export interface IGraphModel {
+  cells: ImxCell[];
   beginUpdate(): void;
   endUpdate(): void;
   getTopmostCells(cells: ImxCell[]): ImxCell[];
+  getCell(id: string): ImxCell;
   getRoot(): ImxCell;
   getChildCount(root: ImxCell): number;
   getChildren(cell: ImxCell): ImxCell;
@@ -69,6 +80,8 @@ export interface IGraphModel {
 interface IGeometry {
   x: number;
   y: number;
+  width: number;
+  height: number;
   relative: boolean;
 }
 
@@ -113,14 +126,14 @@ export interface IMxGraph {
   gridSize: number;
   getModel(): IGraphModel;
   getView(): IView;
-  getDefaultParent(): IParent;
+  getDefaultParent(): ImxCell;
   getCellGeometry(cell: ImxCell): IGeometry;
   getStylesheet(): IStylesheet;
   getSelectionCells(): ImxCell[];
   getSelectionCell(): ImxCell;
   getSelectionModel(): IMxSelectionModel;
-  insertVertex(parent: IParent, id?: string | null, value?: string, x?: number, y?: number, width?: number, height?: number, style?: string, relative?: string): IVertex;
-  insertEdge(parent: IParent, id?: string | null, value?: string, source?: IVertex, target?: IVertex): IEdge;
+  insertVertex(parent: ImxCell, id?: string | null, value?: string, x?: number, y?: number, width?: number, height?: number, style?: string, relative?: string): IVertex;
+  insertEdge(parent: ImxCell, id?: string | null, value?: string, source?: IVertex, target?: IVertex): IEdge;
   importCells(cells: ImxCell[], x: number, y: number, target: ImxCell): ImxCell[] | null;
   scrollCellToVisible(cells: ImxCell[]): void;
   setSelectionCells(cells: ImxCell[]): void;
@@ -129,7 +142,8 @@ export interface IMxGraph {
   isEditing(): boolean;
   isSelectionEmpty(): boolean;
   isCellLocked(target: ImxCell): boolean;
-  removeCells(): ImxCell[];
+  removeCells(cells?: ImxCell[]): ImxCell[];
+  resizeCell(cell: ImxCell, bounds: {x: number; y: number; width: number; height: number}, recurse?: boolean): void;
   moveCells(cell: ImxCell, dx: number, dy: number): void;
   cloneCells(cells: ImxCell[]): ImxCell[];
   zoomIn(): void;

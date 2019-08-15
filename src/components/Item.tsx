@@ -20,6 +20,7 @@ import {
 
 import {
   BuiltInShapes,
+  setStyle,
 } from "../types/shapes";
 
 import {
@@ -67,18 +68,6 @@ export class Item extends React.PureComponent<IItem>{
     return vertex;
   }
 
-  private readonly setStyle = (config) => {
-    let style = "";
-    for (const key of Object.keys(config)) {
-      if (key === "points") {
-        style += `;${key}=${JSON.stringify(config[key])}`;
-      } else {
-        style += `;${key}=${config[key]}`;
-      }
-    }
-    return style;
-  }
-
   private readonly addToolbarItem = (graph: IMxGraph, elt: HTMLDivElement): void => {
     const size = this.props.size ? this.props.size.split("*") : [100, 70];
     const width = size[0];
@@ -86,8 +75,8 @@ export class Item extends React.PureComponent<IItem>{
     const func = (graphF: IMxGraph, _evt: PointerEvent, target: ImxCell, x: number, y: number) => {
       const style = BuiltInShapes.hasOwnProperty(this.props.shape)
         ? BuiltInShapes[this.props.shape].style
-        : this.setStyle(graph.getStylesheet()
-                             .getCellStyle(this.props.shape));
+        : setStyle(graph.getStylesheet()
+                        .getCellStyle(this.props.shape));
       const text = this.props.model && this.props.model.label ? this.props.model.label : "none";
       const cell = this.addVertex(text, width, height, style);
       const cells = graphF.importCells([cell], x, y, target);

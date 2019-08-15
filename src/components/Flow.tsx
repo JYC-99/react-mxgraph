@@ -36,46 +36,13 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         const {
           graph,
           setGraph,
+          readData,
         } = value;
 
         this._setGraph = setGraph;
 
         if (graph) {
-
-          graph
-            .getModel()
-            .beginUpdate();
-
-          try {
-            const parent = graph.getDefaultParent();
-
-            const vertexes = this.props.data.nodes.map((node) => {
-              const width = node.size ? node.size[0] : 200;
-              const height = node.size ? node.size[1] : 200;
-              const style = node.shape ? (BuiltInShapes.hasOwnProperty(node.shape)
-                ? BuiltInShapes[node.shape].style
-                : setStyle(graph.getStylesheet()
-                  .getCellStyle(node.shape))) : null;
-              console.log(style);
-              return {
-                vertex: graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style),
-                id: node.id
-              };
-            });
-
-            this.props.data.edges.forEach((edge) => {
-              const source = vertexes.find((v) => v.id === edge.source);
-              const target = vertexes.find((v) => v.id === edge.target);
-
-              if (source && target) {
-                graph.insertEdge(parent, edge.id, "", source.vertex, target.vertex);
-              }
-            });
-          } finally {
-            graph
-              .getModel()
-              .endUpdate();
-          }
+          readData(graph, this.props.data);
         }
         return (
           <div className="flow-container" ref={this._containerRef} />
@@ -101,7 +68,6 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
     const graph = new mxGraph(this._containerRef.current);
 
     setGraph(graph);
-
 
   }
 }
