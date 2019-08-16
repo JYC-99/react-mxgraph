@@ -59,7 +59,11 @@ export interface IGraphModel {
   getRoot(): ImxCell;
   getChildCount(root: ImxCell): number;
   getChildren(cell: ImxCell): ImxCell;
+  getValue(cell: ImxCell): string | null;
   addListener(action: string, listener: (sender: IGraphModel, evt: IMxEventObject) => void): void;
+  isVertex(cell: ImxCell): boolean;
+  isEdge(cell: ImxCell): boolean;
+  setValue(cell: ImxCell, value: string): void;
 }
 
 interface IGeometry {
@@ -84,6 +88,16 @@ export interface IMxState {
   view: IView;
 }
 
+interface IMxSelectionModel {
+  cells: ImxCell[];
+  graph: IMxGraph;
+}
+
+export interface IStylesheet {
+  createDefaultVertexStyle(): IStylesheet;
+  putCellStyle(customName: string, customStyle: IStylesheet): void;
+}
+
 export interface IMxGraph {
   popupMenuHandler: {
     autoExpand: boolean;
@@ -100,12 +114,16 @@ export interface IMxGraph {
   getView(): IView;
   getDefaultParent(): IParent;
   getCellGeometry(cell: ImxCell): IGeometry;
+  getStylesheet(): IStylesheet;
   getSelectionCells(): ImxCell[];
+  getSelectionCell(): ImxCell;
+  getSelectionModel(): IMxSelectionModel;
   insertVertex(parent: IParent, id?: string | null, value?: string, x?: number, y?: number, width?: number, height?: number, style?: string, relative?: string): IVertex;
   insertEdge(parent: IParent, id?: string | null, value?: string, source?: IVertex, target?: IVertex): IEdge;
   importCells(cells: ImxCell[], x: number, y: number, target: ImxCell): ImxCell[] | null;
   scrollCellToVisible(cells: ImxCell[]): void;
   setSelectionCells(cells: ImxCell[]): void;
+  setHtmlLabels(bl: boolean): void;
   isEnabled(): boolean;
   isEditing(): boolean;
   isSelectionEmpty(): boolean;

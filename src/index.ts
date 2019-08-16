@@ -7,3 +7,8 @@ export * from "./components/Menu";
 export * from "./components/Command";
 export * from "./components/Toolbar";
 export * from "./components/ToolCommand";
+export * from "./components/Minimap";
+export * from "./components/Panel";
+export * from "./components/DetailPanel";
+export * from "./components/TextEditor";
+export * from "./components/RegisterNode";

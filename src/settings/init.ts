@@ -1,6 +1,7 @@
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 import { IMxConnectionConstraint, IMxGraph, IMxState } from "../types/mxGraph";
+import { initMxCellEditor } from "./initMxCellEditor";
 // import { registerShape } from "./Shapes";
 const {
   mxEvent,
@@ -19,7 +20,7 @@ const {
   mxCellState,
   mxCloud,
   mxRhombus,
-  Graph
+  mxGraphSelectionModel,
 } = mxGraphJs;
 
 // tslint:disable-next-line: export-name
@@ -241,7 +242,7 @@ function initStyleSheet(graph: IMxGraph): void {
 }
 
 // tslint:disable
-function initHighlightShape(graph): void {
+function initHighlightShape(graph: IMxGraph): void {
   // override  mxConstraintHandler.prototype.highlightColor = mxConstants.DEFAULT_VALID_COLOR
   mxConstraintHandler.prototype.highlightColor = "#29b6f6";
   graph.defaultEdgeStyle = {
@@ -252,42 +253,17 @@ function initHighlightShape(graph): void {
   graph.createCurrentEdgeStyle = function()
   {
     var style = 'edgeStyle=' + (this.currentEdgeStyle['edgeStyle'] || 'none') + ';';
-    
-    if (this.currentEdgeStyle['shape'] != null)
-    {
-      style += 'shape=' + this.currentEdgeStyle['shape'] + ';';
-    }
-    
-    if (this.currentEdgeStyle['curved'] != null)
-    {
-      style += 'curved=' + this.currentEdgeStyle['curved'] + ';';
-    }
-    
-    if (this.currentEdgeStyle['rounded'] != null)
-    {
-      style += 'rounded=' + this.currentEdgeStyle['rounded'] + ';';
-    }
-
-    if (this.currentEdgeStyle['comic'] != null)
-    {
-      style += 'comic=' + this.currentEdgeStyle['comic'] + ';';
-    }
-    
+    if (this.currentEdgeStyle['shape']) style += 'shape=' + this.currentEdgeStyle['shape'] + ';'; 
+    if (this.currentEdgeStyle['curved']) style += 'curved=' + this.currentEdgeStyle['curved'] + ';';
+    if (this.currentEdgeStyle['rounded']) style += 'rounded=' + this.currentEdgeStyle['rounded'] + ';';
+    if (this.currentEdgeStyle['comic']) style += 'comic=' + this.currentEdgeStyle['comic'] + ';';
     // Special logic for custom property of elbowEdgeStyle
-    if (this.currentEdgeStyle['edgeStyle'] == 'elbowEdgeStyle' && this.currentEdgeStyle['elbow'] != null)
+    if (this.currentEdgeStyle['edgeStyle'] == 'elbowEdgeStyle' && this.currentEdgeStyle['elbow'])
     {
       style += 'elbow=' + this.currentEdgeStyle['elbow'] + ';';
     }
-    
-    if (this.currentEdgeStyle['html'] != null)
-    {
-      style += 'html=' + this.currentEdgeStyle['html'] + ';';
-    }
-    else
-    {
-      style += 'html=1;';
-    }
-    
+    if (this.currentEdgeStyle['html']) style += 'html=' + this.currentEdgeStyle['html'] + ';';
+    else style += 'html=1;';
     return style;
   };
   // mxConstants.HIGHLIGHT_OPACITY = 30;
@@ -318,6 +294,7 @@ function initHighlightShape(graph): void {
     shape.isDashed = this.graph.currentEdgeStyle[mxConstants.STYLE_DASHED] == '1';
     return shape;
   }
+  // change valid and invalid color of edge preview
   mxConstants.VALID_COLOR = "#54cb30";
   mxConstants.INVALID_COLOR = "#c63530";
   // Overrides live preview to keep current style
@@ -343,4 +320,7 @@ export function init(graph: IMxGraph): void {
   initEdgeHandle();
 
   initHighlightShape(graph);
+  // html in-place editor
+  graph.setHtmlLabels(true);
+  // initMxCellEditor(graph);
 }

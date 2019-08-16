@@ -10,6 +10,7 @@ const {
     mxConnectionConstraint,
     mxPoint,
     mxRectangleShape,
+    mxConstants,
   } = mxGraphJs;
 
 import {
@@ -18,58 +19,31 @@ import {
 } from "../context/MxGraphContext";
 
 import {
+  BuiltInShapes,
+} from "../types/shapes";
+
+import {
   ImxCell,
   IMxGraph,
 } from "../types/mxGraph";
 
-interface IConfig {
-  width?: number;
-  height?: number;
-  rounded?: 0 | 1;
-  fillColor?: string;
-  shadow?: 0 | 1;
-  strokeWidth?: number; // boarder
-  strokeColor?: string;
-  anchorPoints?: number[][];
-  label?: string;
-  shape?: string;
-  fontColor?: string;
-  fontSize?: number;
-  gradientColor?: string;
-  gradientDirection?: string;
-  opacity?: number;
-  arcSize?: number; // 0~50
-  labelBackgroundColor?: string;
-  labelBorderColor?: string;
-  textOpacity?: number; // 0~100
-  fontFamily?: string;
-}
-
-interface IItemProps {
-  config?: IConfig;
-}
-
-import { Shapes } from "../types/shapes";
-
-export class Item extends React.PureComponent<IItemProps>{
-  private readonly _containerRef = React.createRef<HTMLDivElement>();
-  private readonly item = {
-    text: "", width: 100, height: 70, style: "shape=rectangle",
+interface IItem {
+  shape: string;
+  size?: string;
+  model?: {
+    color: string;
+    label: string;
   };
+}
 
-  constructor(props: IItemProps) {
+export class Item extends React.PureComponent<IItem>{
+  private readonly _containerRef = React.createRef<HTMLDivElement>();
+
+  constructor(props: IItem) {
     super(props);
-    const config = this.props.config;
-    if (config) {
-      this.item.text = config.label ? config.label : "";
-      this.item.style = config.shape ? this.setStyle(config.shape) : "shape=rectangle";
-      this.item.width = config.width ? config.width : 100;
-      this.item.height = config.height ? config.height : 70;
-    }
   }
 
   public render(): React.ReactNode {
-
     return (
       <div ref={this._containerRef} >
         <MxGraphContext.Consumer>{(context: IMxGraphContext) => {
@@ -79,11 +53,6 @@ export class Item extends React.PureComponent<IItemProps>{
           if (!graph || !container) {
             return null;
           }
-          const config = this.props.config;
-          if (config && config.shape && config.shape === "rectangle") {
-            this.initRecAnchorPoints();
-
-          }
           this.addToolbarItem(graph, container);
           return null;
         }}</MxGraphContext.Consumer>
@@ -92,38 +61,37 @@ export class Item extends React.PureComponent<IItemProps>{
     );
   }
 
-  private readonly setStyle = (shape: string) => {
-    if (Shapes.hasOwnProperty(shape)) {
-      if (!this.props.config || (this.props.config.shape && this.props.config.shape !== "rectangle")) {
-        return Shapes[shape].style;
-      } else {
-        const config = this.props.config;
-        let style = "shape=rectangle"; // only for configuring rectangle
-        for (const key of Object.keys(config)) {
-          // tslint:disable-next-line: prefer-switch
-          if (key === "width" || key === "height" || key === "anchorPoints" || key === "text") { continue; }
-          style += `;${key}=${config[key]}`;
-        }
-        return style;
-      }
-    } else {
-      throw new Error("error shape type");
-    }
-  }
-
-  private readonly addVertex = (text: string, width: number, height: number, style: string): ImxCell => {
+  private readonly addVertex = (text: string, width: string, height: string, style: string): ImxCell => {
     const vertex = new mxCell(text, new mxGeometry(0, 0, width, height), style);
     vertex.setVertex(true);
     return vertex;
   }
 
+  private readonly setStyle = (config) => {
+    let style = "";
+    for (const key of Object.keys(config)) {
+      // tslint:disable-next-line: prefer-switch
+      if (key === "width" || key === "height" || key === "anchorPoints" || key === "text") { continue; }
+      if (key === "points") {
+        style += `;${key}=${JSON.stringify(config[key])}`;
+      } else {
+        style += `;${key}=${config[key]}`;
+      }
+    }
+    return style;
+  }
+
   private readonly addToolbarItem = (graph: IMxGraph, elt: HTMLDivElement): void => {
-
-    const { text, width, height, style } = this.item;
+    const size = this.props.size ? this.props.size.split("*") : [100, 70];
+    const width = size[0];
+    const height = size[1];
     const func = (graphF: IMxGraph, _evt: PointerEvent, target: ImxCell, x: number, y: number) => {
-
+      const style = BuiltInShapes.hasOwnProperty(this.props.shape)
+        ? BuiltInShapes[this.props.shape].style
+        : this.setStyle(graph.getStylesheet()
+                             .getCellStyle(this.props.shape));
+      const text = this.props.model && this.props.model.label ? this.props.model.label : "none";
       const cell = this.addVertex(text, width, height, style);
-
       const cells = graphF.importCells([cell], x, y, target);
       if (cells !== null && cells.length > 0) {
         graphF.scrollCellToVisible(cells[0]);
@@ -138,16 +106,5 @@ export class Item extends React.PureComponent<IItemProps>{
     dragElt.style.height = `${height}px`;
     // cspell: disable-next-line
     mxUtils.makeDraggable(elt, graph, func, dragElt, null, null, graph.autoscroll, true);
-  }
-
-  private initRecAnchorPoints(): void {
-    if (this.props.config && this.props.config.anchorPoints) {
-      const arr = this.props.config.anchorPoints;
-      const constr = [];
-      for (const pt of arr) {
-        constr.push(new mxConnectionConstraint(new mxPoint(pt[0], pt[1]), true));
-      }
-      mxRectangleShape.prototype.constraints = constr;
-    }
   }
 }

@@ -132,10 +132,11 @@ const _importXml = (graph: IMxGraph, xml: XMLDocument, copy: ICopy, destX?: numb
 const _pasteText = (graph: IMxGraph, text: string, copy: ICopy, mouseX?: number, mouseY?: number) => {
   const xml = mxUtils.trim(text);
   // console.log("text", text);
-  let destX = mouseX;
-  let destY = mouseY;
+  let destX = mouseX ? mouseX / graph.view.scale - graph.view.translate.x : undefined;
+  let destY = mouseY ? mouseY / graph.view.scale - graph.view.translate.y : undefined;
   const x = graph.container.scrollLeft / graph.view.scale - graph.view.translate.x;
   const y = graph.container.scrollTop / graph.view.scale - graph.view.translate.y;
+
   if (xml.length > 0) {
     if (destX && destY) {
       if (copy.lastPasteX < destX - copy.gs || copy.lastPasteX > destX + copy.gs || copy.lastPasteY < destY - copy.gs || copy.lastPasteY >  destY + copy.gs) {

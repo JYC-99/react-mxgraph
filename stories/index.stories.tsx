@@ -4,16 +4,22 @@ import React from "react";
 
 import {
   CanvasMenu,
+  CanvasPanel,
   Command,
   ContextMenu,
+  DetailPanel,
   EdgeMenu,
+  EdgePanel,
   Flow,
   Item,
   ItemPanel,
   MxGraph,
-  VertexMenu,
+  NodePanel,
+  RegisterNode,
+  TextEditor,
   Toolbar,
   ToolCommand,
+  VertexMenu,
 } from "../src/index";
 import "./index.scss";
 
@@ -28,7 +34,7 @@ const data = {
     y: 55,
     id: "ea1184e8",
     index: 0,
-  }, {
+  },      {
     type: "node",
     size: [70, 70],
     shape: "flow-circle",
@@ -133,21 +139,9 @@ storiesOf("Flow", module)
         <MxGraph>
           <Flow data={data} />
           <ItemPanel>
-            <Item config={{ shape: "rectangle", label: "rec", width: 100, height: 50, fillColor: "white", anchorPoints: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]] }}>
-              rectangle
-            </Item>
-            <Item config={{
-              shape: "rectangle", rounded: 1, label: "rec", width: 100, height: 30, fillColor: "white", anchorPoints: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
-              fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey"
-            }}
-            >
-              <svg width="100" height="30" xmlns="http://www.w3.org/2000/svg">
-                <rect width="100" height="30" style={{fill: "white", stroke: "black"}}/>
-              </svg>
-            </Item>
-            <Item config={{label: "ellipse", shape: "ellipse"}}>ellipse</Item>
-            <Item config={{label: "rhombus", shape: "rhombus"}}>rhombus</Item>
-            <Item config={{label: "cloud", shape: "cloud"}}>cloud</Item>
+            <Item shape="ellipse">ellipse</Item>
+            <Item shape="rhombus">rhombus</Item>
+            <Item shape="cloud">cloud</Item>
           </ItemPanel>
           <ContextMenu>
             <VertexMenu >
@@ -229,24 +223,31 @@ storiesOf("Flow", module)
       <div>
         <MxGraph>
           <ItemPanel>
-            <Item config={{ shape: "rectangle", label: "rec", width: 100, height: 50, fillColor: "white", anchorPoints: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]] }}>
-              rectangle
-            </Item>
-            <Item config={{
-              shape: "rectangle", rounded: 1, label: "rec", width: 100, height: 30, fillColor: "white", anchorPoints: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
-              fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey"
-            }}
-            >
-              rectangle2
-            </Item>
+            <Item shape="rounded" size="70*30" model={{color: "#FA8C16", label: "Item 1", }}>Rounded</Item>
+            <Item shape="rounded2" size="200*60" model={{color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
           </ItemPanel>
-          <Flow
-            data={data}
-          />
-          <Toolbar>
-            <ToolCommand name="undo" >undo</ToolCommand>
-            <ToolCommand name="redo" >redo</ToolCommand>
-          </Toolbar>
+          <Flow data={data}/>
+          <RegisterNode name="rounded" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
+            fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1}} extend="rectangle" />
+          <RegisterNode name="rounded2" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
+            fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50}} extend="rectangle" />
+        </MxGraph>
+      </div>
+    );
+  }).add("textEditor", () => {
+    return (
+      <div>
+        <MxGraph>
+          <Flow data={data} />
+          <DetailPanel>
+            <NodePanel>
+              <TextEditor />
+            </NodePanel>
+            <EdgePanel>
+              <TextEditor />
+            </EdgePanel>
+            <CanvasPanel />
+          </DetailPanel>
         </MxGraph>
       </div>
     );

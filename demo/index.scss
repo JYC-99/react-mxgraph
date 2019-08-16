@@ -1,8 +1,8 @@
-body {
-  div {
-    color: orange;
-  }
-}
+// body {
+//   div {
+//     color: orange;
+//   }
+// }
 
 body div.mxPopupMenu {
   -webkit-box-shadow: 3px 3px 6px #C0C0C0;
@@ -46,4 +46,13 @@ body div.flow-container {
   height: 400px;
   border-top: solid 1px #cccccc;
   border-bottom: solid 1px #cccccc;
+}
+
+body div.minimap-container {
+  width: 200px;
+  height: 200px;
+  border-top: solid 1px #6F6F6F;
+  border-left: solid 1px #6F6F6F;
+  border-right: solid 1px #6F6F6F;
+  border-bottom: solid 1px #6F6F6F;
 }
