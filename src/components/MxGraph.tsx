@@ -197,6 +197,14 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     keyHandler.bindKey(8, (evt) => {
       this.action.deleteCell.func();
     });
+    keyHandler.bindKey(9, (evt) => {
+      if (graph.isEnabled()) {
+        if (graph.isEditing()) {
+          graph.stopEditing(false);
+        }
+        graph.selectCell(true);
+      }
+    });
   }
 
   private readonly addCustomKeyEvent = (graph: IMxGraph, func: () => void, key: string): void => {

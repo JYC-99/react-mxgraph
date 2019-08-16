@@ -137,6 +137,9 @@ export interface IMxGraph {
   importCells(cells: ImxCell[], x: number, y: number, target: ImxCell): ImxCell[] | null;
   scrollCellToVisible(cells: ImxCell[]): void;
   setSelectionCells(cells: ImxCell[]): void;
+  selectCell(isNext: boolean, isParent: boolean, isChild: boolean): void; //
+  selectAll(parent: ImxCell, descendants: ImxCell[]): void; // select all children of the given parent cell
+  selectCells(vertices: ImxCell[], edges: ImxCell[], parent: ImxCell): void;
   setHtmlLabels(bl: boolean): void;
   isEnabled(): boolean;
   isEditing(): boolean;
