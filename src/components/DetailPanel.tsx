@@ -11,15 +11,7 @@ import {
   IMxGraphContext,
   MxGraphContext,
 } from "../context/MxGraphContext";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { ImxCell, IMxGraph, } from "../types/mxGraph";
-=======
-import { IMxGraph, ImxCell, } from "../types/mxGraph";
->>>>>>> detect selected cell
-=======
-import { ImxCell, IMxGraph, } from "../types/mxGraph";
->>>>>>> fix lint & test
 
 import {
   IPanelContext,
@@ -49,14 +41,6 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
             this._setListener(graph);
             this._first = false;
           }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-          const model = graph.getModel();
-          console.log("render", this.state.cells);
->>>>>>> detect selected cell
-=======
->>>>>>> fix lint & test
           const name = this._getName(this.state.cells);
           return (
             <PanelContext.Provider value={{name, cells: this.state.cells}}>
@@ -73,23 +57,10 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
   }
 
   private readonly _setListener = (graph: IMxGraph) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
     // tslint:disable-next-line: no-this-assignment
     const that = this;
     const selectChange = mxGraphSelectionModel.prototype.changeSelection ;
     graph.getSelectionModel().changeSelection = function(): void {
-=======
-    const that = this;
-    const selectChange = mxGraphSelectionModel.prototype.changeSelection ;
-    graph.getSelectionModel().changeSelection = function() {
->>>>>>> detect selected cell
-=======
-    // tslint:disable-next-line: no-this-assignment
-    const that = this;
-    const selectChange = mxGraphSelectionModel.prototype.changeSelection ;
-    graph.getSelectionModel().changeSelection = function(): void {
->>>>>>> fix lint & test
       selectChange.apply(this, arguments);
 
       that.setState({cells: graph.getSelectionCells()});
@@ -97,40 +68,17 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
 
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   private readonly _getName = (cells?: ImxCell[]): string => {
-=======
-  private readonly _getName = (cells: ImxCell[]): string => {
->>>>>>> detect selected cell
-=======
-  private readonly _getName = (cells?: ImxCell[]): string => {
->>>>>>> fix lint & test
     if (!cells) {
       return "no selection";
     }
     if (cells.length > 1) {
       return "multi";
-<<<<<<< HEAD
-<<<<<<< HEAD
     // tslint:disable-next-line: prefer-switch
     } else if (cells.length === 1) {
       const cell = cells[0];
       if (cell.vertex) { return "vertex"; }
       else if (cell.edge) { return "edge"; }
-=======
-    } else if (cells.length === 1){
-      const cell = cells[0];
-      if (cell.vertex) return "vertex";
-      else if (cell.edge) return "edge";
->>>>>>> detect selected cell
-=======
-    // tslint:disable-next-line: prefer-switch
-    } else if (cells.length === 1) {
-      const cell = cells[0];
-      if (cell.vertex) { return "vertex"; }
-      else if (cell.edge) { return "edge"; }
->>>>>>> fix lint & test
     } else if (cells.length === 0) {
       return "canvas";
     }
