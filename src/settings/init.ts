@@ -243,6 +243,10 @@ function initStyleSheet(graph: IMxGraph): void {
 
 // tslint:disable
 function initHighlightShape(graph: IMxGraph): void {
+  // Shows connection points only if cell not selected
+  graph.connectionHandler.constraintHandler.isStateIgnored = function(state, source) {
+    return source && state.view.graph.isCellSelected(state.cell);
+  };
   // override  mxConstraintHandler.prototype.highlightColor = mxConstants.DEFAULT_VALID_COLOR
   mxConstraintHandler.prototype.highlightColor = "#29b6f6";
   graph.defaultEdgeStyle = {

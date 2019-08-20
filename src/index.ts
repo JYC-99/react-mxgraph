@@ -12,3 +12,6 @@ export * from "./components/Panel";
 export * from "./components/DetailPanel";
 export * from "./components/TextEditor";
 export * from "./components/RegisterNode";
+export * from "./components/WithPropsApi";
+export * from "./components/RegisterCommand";
+export * from "./components/CustomCommand";

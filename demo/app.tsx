@@ -4,6 +4,7 @@ import { hot } from "react-hot-loader";
 import {
   CanvasMenu,
   Command,
+  CustomCommand,
   ContextMenu,
   EdgeMenu,
   Flow,
@@ -20,6 +21,7 @@ import {
   DetailPanel,
   TextEditor,
   RegisterNode,
+  PropsComponent,
 } from "../src/index";
 import "./index.scss";
 
@@ -27,17 +29,17 @@ const data = {
   nodes: [{
     type: "node",
     size: [70, 70],
-    shape: "flow-circle",
+    shape: "rounded",
     color: "#FA8C16",
     label: "起止节点",
     x: 55,
     y: 55,
     id: "ea1184e8",
     index: 0,
-  },      {
+  }, {
     type: "node",
     size: [70, 70],
-    shape: "flow-circle",
+    shape: "rounded2",
     color: "#FA8C16",
     label: "结束节点",
     x: 55,
@@ -55,6 +57,39 @@ const data = {
   }],
 };
 
+const data2 = {
+  nodes: [{
+    type: "node",
+    size: [70, 70],
+    shape: "rounded",
+    color: "#FA8C16",
+    label: "起止节点",
+    x: 255,
+    y: 55,
+    id: "ea1184e9",
+    index: 0,
+  }, {
+    type: "node",
+    size: [70, 70],
+    shape: "rounded2",
+    color: "#FA8C16",
+    label: "结束节点",
+    x: 255,
+    y: 255,
+    id: "481fbb1b",
+    index: 2,
+  }],
+  edges: [{
+    source: "ea1184e9",
+    sourceAnchor: 2,
+    target: "481fbb1b",
+    targetAnchor: 0,
+    id: "7989ac71",
+    index: 1,
+  }],
+};
+
+
 const shortCutStyle = {
   color: "silver",
   fontSize: 10,
@@ -63,12 +98,14 @@ const shortCutStyle = {
 const Demo = () => (
   <div>
     <MxGraph>
+      <PropsComponent data={data2}/>
       <ItemPanel>
-        <Item shape="rounded" size="70*30" model={{color: "#FA8C16", label: "Item 1", }}>Rounded</Item>
-        <Item shape="rounded2" size="200*60" model={{color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
+        <Item shape="rounded" size="70*30" model={{ color: "#FA8C16", label: "Item 1", }}>Rounded</Item>
+        <Item shape="rounded2" size="200*60" model={{ color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
       </ItemPanel>
       <Flow
         data={data}
+        shortcut={{moveRight: true}}
       />
       <Toolbar>
         <ToolCommand name="copy" >Copy  <span style={shortCutStyle}>Ctrl + C</span></ToolCommand>
@@ -83,23 +120,23 @@ const Demo = () => (
       </Toolbar>
       <ContextMenu>
         <VertexMenu >
-          <Command name="copy" text="Copy"/>
-          <Command name="cut" text="Cut"/>
+          <Command name="copy" text="Copy" />
+          <Command name="cut" text="Cut" />
           <Command name="separator" />
-          <Command name="paste" text="Paste"/>
+          <Command name="paste" text="Paste" />
         </VertexMenu>
         <EdgeMenu >
-          <Command name="copy" text="Copy"/>
-          <Command name="cut" text="Cut"/>
-          <Command name="paste" text="Paste"/>
+          <Command name="copy" text="Copy" />
+          <Command name="cut" text="Cut" />
+          <Command name="paste" text="Paste" />
         </EdgeMenu>
         <CanvasMenu>
-          <Command name="copy" text="Copy"/>
-          <Command name="cut" text="Cut"/>
-          <Command name="paste" text="Paste"/>
+          <Command name="copy" text="Copy" />
+          <Command name="cut" text="Cut" />
+          <Command name="paste" text="Paste" />
         </CanvasMenu>
       </ContextMenu>
-      <DetailPanel > 
+      <DetailPanel >
         <NodePanel >
           <TextEditor name="cell" />
         </NodePanel>
@@ -107,10 +144,15 @@ const Demo = () => (
           <TextEditor name="cell" />
         </EdgePanel>
       </DetailPanel>
-      <RegisterNode name="rounded" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
-        fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1}} extend="rectangle" />
-      <RegisterNode name="rounded2" config={{rounded: 1, fillColor: "white", points: [[0.5,0], [0.5, 1], [0, 0.5], [1, 0.5]],
-        fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50}} extend="rectangle" />
+      <RegisterNode name="rounded" config={{
+        rounded: 1, fillColor: "white", points: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
+        fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1
+      }} extend="rectangle" />
+      <RegisterNode name="rounded2" config={{
+        rounded: 1, fillColor: "white", points: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
+        fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50
+      }} extend="rectangle" />
+      <CustomCommand />
     </MxGraph>
   </div>
 
