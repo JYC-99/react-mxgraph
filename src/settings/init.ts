@@ -211,7 +211,7 @@ function initHighlightShape(graph: IMxGraph): void {
 
 function setLabelUnmovable(): void {
   // tslint:disable-next-line: no-function-expression
-  mxGraph.prototype.isLabelMovable = function (cell: ImxCell): boolean {
+  mxGraph.prototype.isLabelMovable = function(cell: ImxCell): boolean {
     return false;
   };
 }
@@ -222,6 +222,7 @@ function unableDanglingEdges(graph: IMxGraph): void {
 }
 
 function repairDragCoordinate(): void {
+  // tslint:disable
   mxDragSource.prototype.dragOver = function (graph, evt) {
     var offset = mxUtils.getOffset(graph.container);
     // var origin = mxUtils.getScrollOrigin(graph.container);
@@ -288,6 +289,7 @@ function repairDragCoordinate(): void {
 
     this.currentPoint = new mxPoint(x, y);
   };
+  // tslint:enable
 }
 
 export function init(graph: IMxGraph): void {
