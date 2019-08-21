@@ -18,11 +18,7 @@ import {
   MxGraphContext,
 } from "../context/MxGraphContext";
 
-import {
-  BuiltInShapes,
-  setStyle,
-} from "../types/shapes";
-
+import { ICanvasNode } from "../types/flow";
 import {
   ImxCell,
   IMxGraph,
@@ -38,8 +34,8 @@ interface IItem {
 }
 
 export class Item extends React.PureComponent<IItem>{
+  public _insertVertex?: (parent, graph, node) => ImxCell;
   private readonly _containerRef = React.createRef<HTMLDivElement>();
-
   constructor(props: IItem) {
     super(props);
   }
@@ -48,12 +44,13 @@ export class Item extends React.PureComponent<IItem>{
     return (
       <div ref={this._containerRef} >
         <MxGraphContext.Consumer>{(context: IMxGraphContext) => {
-          const { graph, } = context;
+          const { graph, insertVertex } = context;
           const container = this._containerRef.current;
 
           if (!graph || !container) {
             return null;
           }
+          this._insertVertex = insertVertex;
           this.addToolbarItem(graph, container);
           return null;
         }}</MxGraphContext.Consumer>
@@ -68,30 +65,29 @@ export class Item extends React.PureComponent<IItem>{
     return vertex;
   }
 
+  private readonly insertNode = (graph: IMxGraph, _evt: PointerEvent, target: ImxCell, x: number, y: number): void => {
+    const label = this.props.model && this.props.model.label ? this.props.model.label : "none";
+    // tslint:disable-next-line: newline-per-chained-call
+    const shape = this.props.shape;
+    const size = this.props.size ? (this.props.size.split("*")
+      // tslint:disable-next-line
+      .map((x) => parseInt(x))) : [100, 70];
+    const nodeData: ICanvasNode = { label, size, x, y, shape, };
+
+    if (!this._insertVertex) {
+      throw new Error("no insert vertex");
+    }
+    this._insertVertex(target, graph, nodeData);
+
+  }
+
   private readonly addToolbarItem = (graph: IMxGraph, elt: HTMLDivElement): void => {
     const size = this.props.size ? this.props.size.split("*") : [100, 70];
-    const width = size[0];
-    const height = size[1];
-    const func = (graphF: IMxGraph, _evt: PointerEvent, target: ImxCell, x: number, y: number) => {
-      const style = BuiltInShapes.hasOwnProperty(this.props.shape)
-        ? BuiltInShapes[this.props.shape].style
-        : setStyle(graph.getStylesheet()
-                        .getCellStyle(this.props.shape));
-      const text = this.props.model && this.props.model.label ? this.props.model.label : "none";
-      const cell = this.addVertex(text, width, height, style);
-      const cells = graphF.importCells([cell], x, y, target);
-      if (cells !== null && cells.length > 0) {
-        graphF.scrollCellToVisible(cells[0]);
-        // disable select item of tool bar ( will produce a new drag-source )
-        graphF.setSelectionCells(cells);
-      }
-    };
-
     const dragElt = document.createElement("div");
     dragElt.style.border = "dashed black 1px";
-    dragElt.style.width =  `${width}px`;
-    dragElt.style.height = `${height}px`;
+    dragElt.style.width =  `${size[0]}px`;
+    dragElt.style.height = `${size[1]}px`;
     // cspell: disable-next-line
-    mxUtils.makeDraggable(elt, graph, func, dragElt, null, null, graph.autoscroll, true);
+    mxUtils.makeDraggable(elt, graph, this.insertNode, dragElt, null, null, graph.autoscroll, true);
   }
 }

@@ -6,7 +6,7 @@ import { IMxGraphContext, MxGraphContext } from "../context/MxGraphContext";
 import { IStylesheet } from "../types/mxGraph";
 const {
   mxCellRenderer,
-  mxRectangle,
+  mxRectangleShape,
   mxEllipse,
   mxUtils,
   mxConstants,
@@ -24,7 +24,7 @@ interface IRegisterNodeProps {
 }
 
 const builtInShape = {
-  rectangle: mxRectangle,
+  rectangle: mxRectangleShape,
   ellipse: mxEllipse,
 };
 
@@ -40,7 +40,8 @@ export class RegisterNode extends React.PureComponent<IRegisterNodeProps> {
       extendedShape.call(this);
     }
     mxUtils.extend(registerShape, extendedShape);
-    mxCellRenderer.registerShape(this.props.name, registerShape);
+    const a = mxCellRenderer.registerShape(this.props.name, registerShape);
+    // console.log(a, extendedShape, registerShape);
   }
 
   public render(): React.ReactNode {

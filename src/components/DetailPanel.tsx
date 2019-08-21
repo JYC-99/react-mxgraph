@@ -41,7 +41,7 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
             this._setListener(graph);
             this._first = false;
           }
-          const name = this._getName(this.state.cells);
+          const name = this._getName(graph, this.state.cells);
           return (
             <PanelContext.Provider value={{name, cells: this.state.cells}}>
               <div>
@@ -68,7 +68,7 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
 
   }
 
-  private readonly _getName = (cells?: ImxCell[]): string => {
+  private readonly _getName = (graph: IMxGraph, cells?: ImxCell[]): string => {
     if (!cells) {
       return "no selection";
     }
@@ -77,6 +77,7 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
     // tslint:disable-next-line: prefer-switch
     } else if (cells.length === 1) {
       const cell = cells[0];
+      if (graph.isPort(cell)) { return "port"; }
       if (cell.vertex) { return "vertex"; }
       else if (cell.edge) { return "edge"; }
     } else if (cells.length === 0) {

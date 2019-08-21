@@ -32,8 +32,8 @@ const data = {
   nodes: [{
     type: "node",
     size: [70, 70],
-    shape: "flow-circle",
-    color: "#FA8C16",
+    shape: "rounded",
+    color: "#FFFFFF",
     label: "起止节点",
     x: 55,
     y: 55,
@@ -42,8 +42,8 @@ const data = {
   }, {
     type: "node",
     size: [70, 70],
-    shape: "flow-circle",
-    color: "#FA8C16",
+    shape: "rounded2",
+    color: "#FFFFFF",
     label: "结束节点",
     x: 55,
     y: 255,
@@ -59,6 +59,7 @@ const data = {
     index: 1,
   }],
 };
+
 
 storiesOf("Flow", module)
   .add("Basic flow", () => {
@@ -115,11 +116,17 @@ storiesOf("Flow", module)
             <Command name="copy" text="Copy" />
             <Command name="cut" text="Cut" />
             <Command name="separator" />
+            <Command name="toFront" text="to front" />
+            <Command name="toBack" text="to back" />
+            <Command name="separator" />
             <Command name="deleteCell" text="Delete" />
           </VertexMenu>
           <EdgeMenu >
             <Command name="copy" text="Copy" />
             <Command name="cut" text="Cut" />
+            <Command name="separator" />
+            <Command name="toFront" text="to front" />
+            <Command name="toBack" text="to back" />
             <Command name="separator" />
             <Command name="deleteCell" text="Delete" />
           </EdgeMenu>

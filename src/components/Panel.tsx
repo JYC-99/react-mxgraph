@@ -12,7 +12,14 @@ class Panel extends React.PureComponent<{name: string}> {
         const {
           name, cells,
         } = value;
+
         if (name && cells && name === this.props.name) {
+          if (name === "edge") {
+            // console.log(cells[0]);
+          }
+          if (name === "port") {
+            // console.log(cells[0].style);
+          }
           return (
             <SpecialPanelContext.Provider value={{enabled: true, cells, }}>
               <div className="node-panel-container" >
@@ -41,3 +48,4 @@ function createPanel(PanelComponent, name: string): React.PureComponent {
 export const NodePanel = createPanel(Panel, "vertex");
 export const EdgePanel = createPanel(Panel, "edge");
 export const CanvasPanel = createPanel(Panel, "canvas");
+export const PortPanel = createPanel(Panel, "port");
