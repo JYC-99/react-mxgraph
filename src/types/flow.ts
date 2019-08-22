@@ -10,15 +10,18 @@ export interface ILayoutNode extends IDrawable {
 }
 
 export interface ICanvasNode extends IDrawable {
-  label?: string;
+  label: string;
+  x: number;
+  y: number;
+  color?: string;
   name?: string;
   comment?: string;
   size?: number[];
   shape?: string;
-  id: string;
-  index: number | string;
+  id?: string;
+  index?: number | string;
   // tslint:disable-next-line: no-reserved-keywords
-  type: string;
+  type?: string;
   parameters?: object;
   anchorPoints?: Array<[number, number]>;
 }

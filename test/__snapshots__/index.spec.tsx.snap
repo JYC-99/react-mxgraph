@@ -959,7 +959,7 @@ exports[`Storyshots Flow Command 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded'
                                   </span>
                                   ,
                                   <span>
@@ -1091,7 +1091,7 @@ exports[`Storyshots Flow Command 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded2'
                                   </span>
                                   ,
                                   <span>
@@ -3008,7 +3008,7 @@ exports[`Storyshots Flow Context menu 1`] = `
                                     }
                                   }
                                 >
-                                  'flow-circle'
+                                  'rounded'
                                 </span>
                                 ,
                                 <span>
@@ -3140,7 +3140,7 @@ exports[`Storyshots Flow Context menu 1`] = `
                                     }
                                   }
                                 >
-                                  'flow-circle'
+                                  'rounded2'
                                 </span>
                                 ,
                                 <span>
@@ -3636,6 +3636,234 @@ exports[`Storyshots Flow Context menu 1`] = `
                                 }
                               }
                             >
+                              toFront
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              to front
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              toBack
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              to back
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              separator
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
                               deleteCell
                             </span>
                             "
@@ -3885,6 +4113,234 @@ exports[`Storyshots Flow Context menu 1`] = `
                               }
                             >
                               Cut
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              separator
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              toFront
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              to front
+                            </span>
+                            "
+                          </span>
+                        </span>
+                         
+                      </span>
+                    </span>
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      /&gt;
+                    </span>
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "paddingLeft": 63,
+                        "paddingRight": 3,
+                      }
+                    }
+                  >
+                    <span
+                      style={
+                        Object {
+                          "color": "#444",
+                        }
+                      }
+                    >
+                      &lt;
+                      Command
+                    </span>
+                    <span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          name
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              toBack
+                            </span>
+                            "
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                        <span
+                          style={Object {}}
+                        >
+                          text
+                        </span>
+                        <span>
+                          =
+                          <span
+                            style={Object {}}
+                          >
+                            "
+                            <span
+                              style={
+                                Object {
+                                  "color": "#22a",
+                                  "wordBreak": "break-word",
+                                }
+                              }
+                            >
+                              to back
                             </span>
                             "
                           </span>
@@ -5251,7 +5707,7 @@ exports[`Storyshots Flow Item Panel 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded'
                                   </span>
                                   ,
                                   <span>
@@ -5383,7 +5839,7 @@ exports[`Storyshots Flow Item Panel 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded2'
                                   </span>
                                   ,
                                   <span>
@@ -7990,7 +8446,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded'
                                   </span>
                                   ,
                                   <span>
@@ -8122,7 +8578,7 @@ exports[`Storyshots Flow RegisterShape 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded2'
                                   </span>
                                   ,
                                   <span>
@@ -9460,7 +9916,7 @@ exports[`Storyshots Flow Toolbar 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded'
                                   </span>
                                   ,
                                   <span>
@@ -9592,7 +10048,7 @@ exports[`Storyshots Flow Toolbar 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded2'
                                   </span>
                                   ,
                                   <span>
@@ -10947,7 +11403,7 @@ exports[`Storyshots Flow registerCommand 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded'
                                   </span>
                                   ,
                                   <span>
@@ -11079,7 +11535,7 @@ exports[`Storyshots Flow registerCommand 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded2'
                                   </span>
                                   ,
                                   <span>
@@ -11829,7 +12285,7 @@ exports[`Storyshots Flow textEditor 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded'
                                   </span>
                                   ,
                                   <span>
@@ -11961,7 +12417,7 @@ exports[`Storyshots Flow textEditor 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded2'
                                   </span>
                                   ,
                                   <span>
@@ -12592,6 +13048,11 @@ exports[`Storyshots Flow withPropsAPI 1`] = `
           <button
             onClick={[Function]}
           >
+            style of selected cell
+          </button>
+          <button
+            onClick={[Function]}
+          >
             test read data
           </button>
           <button
@@ -12920,7 +13381,7 @@ exports[`Storyshots Flow withPropsAPI 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded'
                                   </span>
                                   ,
                                   <span>
@@ -13052,7 +13513,7 @@ exports[`Storyshots Flow withPropsAPI 1`] = `
                                       }
                                     }
                                   >
-                                    'flow-circle'
+                                    'rounded2'
                                   </span>
                                   ,
                                   <span>

@@ -72,7 +72,7 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
               save: () => {
                 const model = graph.getModel();
                 const data: ICanvasData = { nodes: [], edges: [] };
-
+                // formate
                 for (const [id, cell] of Object.entries(model.cells)) {
                   if (model.isEdge(cell)) {
                     const cellData: ICanvasEdge = {};
@@ -87,9 +87,8 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
                     if (cell.geometry) {
                       cellData.size = [cell.geometry.width, cell.geometry.height];
                     }
-                    if (shapeDictionary.hasOwnProperty(cell.id)) {
-                      cellData.shape = shapeDictionary[cell.id];
-                    }
+                    const style = graph.getCellStyle(cell);
+                    cellData.shape = style.shape;
                     data.nodes.push(cellData);
                   } else {
                     // do nothing
@@ -127,12 +126,15 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
                   .getModel()
                   .beginUpdate();
                 try {
+                  // resize
                   graph.resizeCell(cell, bounds);
+                  // label
                   if (label) {
                     graph
                       .getModel()
                       .setValue(cell, label);
                   }
+                  // update style by model
                   if (color) {
                     graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, color, [cell]);
                   }
@@ -182,6 +184,7 @@ class TestComponent extends React.PureComponent<IProps, { value: string; cellV: 
       <div>
         <p>test with props api component</p>
         <button onClick={this.testExeCopy} >test exe copy</button>
+        <button onClick={this.getSelectionStyle} >style of selected cell</button>
         <button onClick={this.testReadData} >test read data</button>
         <button onClick={this.testSaveData} >test save data</button>
         <button onClick={this.testAddCell} >test add cell</button>
@@ -212,6 +215,12 @@ class TestComponent extends React.PureComponent<IProps, { value: string; cellV: 
     const cell = this.props.propsAPI.find(this.state.value);
     const val = cell ? cell.value : "no found";
     this.setState({ cellV: val });
+  }
+
+  public getSelectionStyle = () => {
+    const cell = this.props.propsAPI.getSelected();
+    const graph = this.props.propsAPI.graph;
+    // console.log(cell[0], graph.getCellStyle(cell[0]));
   }
 
   public testUpdateCell = () => {

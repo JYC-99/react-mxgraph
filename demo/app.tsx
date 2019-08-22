@@ -22,6 +22,7 @@ import {
   TextEditor,
   RegisterNode,
   PropsComponent,
+  PortPanel
 } from "../src/index";
 import "./index.scss";
 
@@ -30,7 +31,7 @@ const data = {
     type: "node",
     size: [70, 70],
     shape: "rounded",
-    color: "#FA8C16",
+    color: "#FFFFFF",
     label: "起止节点",
     x: 55,
     y: 55,
@@ -40,7 +41,7 @@ const data = {
     type: "node",
     size: [70, 70],
     shape: "rounded2",
-    color: "#FA8C16",
+    color: "#FFFFFF",
     label: "结束节点",
     x: 55,
     y: 255,
@@ -102,6 +103,7 @@ const Demo = () => (
       <ItemPanel>
         <Item shape="rounded" size="70*30" model={{ color: "#FA8C16", label: "Item 1", }}>Rounded</Item>
         <Item shape="rounded2" size="200*60" model={{ color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
+        <Item shape="ellipse" size="200*60" model={{ color: "#FA8C16", label: "Item 1", }}>Rounded2</Item>
       </ItemPanel>
       <Flow
         data={data}
@@ -123,11 +125,18 @@ const Demo = () => (
           <Command name="copy" text="Copy" />
           <Command name="cut" text="Cut" />
           <Command name="separator" />
+          <Command name="toFront" text="to front" />
+          <Command name="toBack" text="to back" />
+          <Command name="separator" />
           <Command name="paste" text="Paste" />
         </VertexMenu>
         <EdgeMenu >
           <Command name="copy" text="Copy" />
           <Command name="cut" text="Cut" />
+          <Command name="separator" />
+          <Command name="toFront" text="to front" />
+          <Command name="toBack" text="to back" />
+          <Command name="separator" />
           <Command name="paste" text="Paste" />
         </EdgeMenu>
         <CanvasMenu>
@@ -143,6 +152,9 @@ const Demo = () => (
         <EdgePanel >
           <TextEditor name="cell" />
         </EdgePanel>
+        <PortPanel>
+          <TextEditor name="cell" />
+        </PortPanel>
       </DetailPanel>
       <RegisterNode name="rounded" config={{
         rounded: 1, fillColor: "white", points: [[0.5, 0], [0.5, 1], [0, 0.5], [1, 0.5]],
@@ -153,6 +165,7 @@ const Demo = () => (
         fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50
       }} extend="rectangle" />
       <CustomCommand />
+      <Minimap />
     </MxGraph>
   </div>
 

@@ -10,17 +10,17 @@ import {
   MxGraphContext
 } from "../context/MxGraphContext";
 import { init } from "../settings/init";
-import { IMxActions } from "../types/action";
+import { IMxActions, initAction } from "../types/action";
 import { customShortcutDictionary, ICustomCommand } from "../types/command";
-import { ICanvasData, ICanvasNode } from "../types/flow";
+import { ICanvasData, ICanvasEdge, ICanvasNode } from "../types/flow";
 import {
   ImxCell,
   IMxEventObject,
   IMxGraph,
+  IMxState,
   IMxUndoManager,
-  IVertex,
 } from "../types/mxGraph";
-import { BuiltInShapes, ICustomShape, setStyle, shapeDictionary } from "../types/shapes";
+import { ICustomShape, } from "../types/shapes";
 
 const {
   mxClient,
@@ -29,12 +29,10 @@ const {
   mxGraphModel,
   mxGeometry,
   mxPoint,
-  mxTransient,
-  mxObjectIdentity,
   mxUndoManager,
-  mxGraph,
   mxKeyHandler,
   mxConstants,
+  mxRubberband,
 } = mxGraphJs;
 
 window.mxGeometry = mxGeometry;
@@ -53,7 +51,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   private action: IMxActions;
   private readonly customShape: ICustomShape[];
   private readonly customCommand: ICustomCommand[];
-  private readonly dictionary: object;
   private _firstUpdate: boolean;
 
   constructor(props: {}) {
@@ -65,7 +62,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     this.mouseY = 0;
     this.customShape = [];
     this.customCommand = [];
-    this.dictionary = {};
     this._firstUpdate = true;
   }
 
@@ -74,10 +70,10 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       return;
     }
     init(graph);
-    // tslint:disable-next-line: deprecation
-    this.action = this.initAction(graph, this.context);
-
+    const rubberband = new mxRubberband(graph);
     this.undoManager = new mxUndoManager();
+    // tslint:disable-next-line: deprecation
+    this.action = initAction(graph, this.context, this.undoManager);
     this.addUndoEvent(graph);
     this.addCopyEvent(graph);
     this.setKeyHandler(graph);
@@ -90,7 +86,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   }
 
   public addUndoEvent = (graph: IMxGraph) => {
-    const listener = (_sender, evt: IMxEventObject) => {
+    const listener = (_sender: IMxGraph, evt: IMxEventObject) => {
       this.undoManager.undoableEditHappened(evt.getProperty("edit"));
     };
     graph.getModel()
@@ -220,6 +216,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       const style = graph.getStylesheet()
         .createDefaultVertexStyle(); // default
       style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
+      // style[mxConstants.STYLE_SHAPE] = shape.name;
       style[mxConstants.STYLE_PERIMETER] = "rectanglePerimeter";
       style[mxConstants.STYLE_ROUNDED] = true;
       Object.assign(style, shape.styleConfig);
@@ -232,6 +229,8 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     this.customCommand.forEach((command) => {
       const config = command.config;
       if (customShortcutDictionary.hasOwnProperty(command.name) && customShortcutDictionary[command.name] && config.enable) {
+        // tslint:disable-next-line: no-unbound-method
+        this.addAction(this.action, command.name, config.execute);
         if (config.shortcutCodes) {
           config.shortcutCodes.forEach((shortcutCode) => {
             // tslint:disable-next-line: no-unbound-method
@@ -242,20 +241,46 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     });
   }
 
-  private readonly saveShapeForNode = (id: string, shape?: string): void => {
-    if (shape) { shapeDictionary[id] = shape; }
+  private readonly insertVertex = (parent: ImxCell, graph: IMxGraph, node: ICanvasNode): ImxCell => {
+
+    const model = graph.getModel();
+
+    model.beginUpdate();
+    try {
+      const width = node.size ? node.size[0] : 200;
+      const height = node.size ? node.size[1] : 200;
+      let style = node.shape ? `${node.shape};shape=${node.shape};` : "";
+      if (node.color) { style += `fillColor=${node.color}`; }
+      const portSize = [8, 8];
+
+      const vertex = graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style);
+      vertex.setConnectable(false);
+      // if preset collapse size -- vertex.geometry.alternateBounds = new mxReactangle(xx,xx,xx,xx);
+      const points = graph.getCellStyle(vertex).points;
+      // for insert port
+      if (points) {
+        points.forEach((point, index) => {
+          let portStyle = "";
+          if (point[0] === 1) { portStyle += "portConstraint=east;direction=east"; }
+          else if (point[0] === 0) { portStyle += "portConstraint=west;direction=west"; }
+          else if (point[1] === 0) { portStyle += "portConstraint=north;direction=north"; }
+          else if (point[1] === 1) { portStyle += "portConstraint=south;direction=south"; }
+
+          portStyle += ";shape=ellipse;perimeter=none;";
+          portStyle += "opacity=50";
+          const port = graph.insertVertex(vertex, null, `p${index}`, point[0], point[1], portSize[0], portSize[1], portStyle, true);
+          port.geometry.offset = new mxPoint(-(portSize[0] / 2), -(portSize[1] / 2)); // set offset
+          port.setConnectable(true);
+        });
+      }
+      return vertex;
+    } finally {
+      model.endUpdate();
+    }
+
   }
 
-  private readonly insertVertex = (parent: ImxCell, graph: IMxGraph, node: ICanvasNode): IVertex => {
-    this.saveShapeForNode(node.id, node.shape);
-    const width = node.size ? node.size[0] : 200;
-    const height = node.size ? node.size[1] : 200;
-    const style = node.shape ? (BuiltInShapes.hasOwnProperty(node.shape) ? BuiltInShapes[node.shape].style : setStyle(graph.getStylesheet()
-      .getCellStyle(node.shape))) : null;
-    return graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style);
-  }
-
-  private readonly insertEdge = (parent: ImxCell, graph: IMxGraph, edge: ICanvasEdge, source: ImxCell, target: ImxCell): IEdge => {
+  private readonly insertEdge = (parent: ImxCell, graph: IMxGraph, edge: ICanvasEdge, source: ImxCell, target: ImxCell): ImxCell => {
     return graph.insertEdge(parent, edge.id, "", source, target);
   }
 
@@ -268,12 +293,8 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       const parent = graph.getDefaultParent();
 
       const vertexes = data.nodes.map((node) => {
-        const width = node.size ? node.size[0] : 200;
-        const height = node.size ? node.size[1] : 200;
-        const style = node.shape ? (BuiltInShapes.hasOwnProperty(node.shape) ? BuiltInShapes[node.shape].style : setStyle(graph.getStylesheet()
-          .getCellStyle(node.shape))) : null;
         return {
-          vertex: graph.insertVertex(parent, node.id, node.label, node.x, node.y, width, height, style),
+          vertex: this.insertVertex(parent, graph, node),
           id: node.id
         };
       });
@@ -293,177 +314,92 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     }
   }
 
+  // tslint:disable-next-line: max-func-body-length
   private readonly setMouseEvent = (graph: IMxGraph): void => {
-    function updateStyle(state, hover): void {
-      state.style.strokeColor = (hover) ? "#1976d2" : state.style.strokeColor;
-      state.style.strokeWidth = 1;
-      state.style.shadow = (hover) ? 0 : state.style.shadow;
-      // state.style[mxConstants.STYLE_FONTSTYLE] = (hover) ? mxConstants.FONT_BOLD : "0";
+    function updatePortStyle(state: IMxState, isHover: boolean): void {
+      state.style.opacity = (isHover) ? 100 : 50;
+      state.style.strokeColor = (isHover) ? "#1976d2" : "grey";
     }
-    graph.addMouseListener(
-      {
-        currentState: null,
-        previousStyle: null,
-        mouseDown(_sender, me): void {
-          if (this.currentState) {
-            this.dragLeave(me.getEvent(), this.currentState);
-            this.currentState = null;
-          }
-        },
-        mouseMove(_sender, me): void {
-          if (this.currentState && me.getState() === this.currentState) {
-            return;
-          }
-          let tmp = graph.view.getState(me.getCell());
 
-          // Ignores everything but vertices
-          const model = graph.getModel();
-          if (graph.isMouseDown || (tmp && !model.isVertex(tmp.cell) && !model.isEdge(tmp.cell))) {
-            tmp = null;
-          }
-          if (tmp !== this.currentState) {
-            if (this.currentState) {
-              this.dragLeave(me.getEvent(), this.currentState);
-            }
+    function updateNodeStyle(state: IMxState, isHover: boolean): void {
+      state.style.strokeColor = (isHover) ? "#1976d2" : "grey";
+      state.style.strokeWidth = (isHover) ? 1 : 0;
+    }
 
-            this.currentState = tmp;
+    function updateStyle(state: IMxState, isHover: boolean): void {
 
-            if (this.currentState) {
-              this.dragEnter(me.getEvent(), this.currentState);
-            }
-          }
-        },
-        // tslint:disable-next-line: no-empty
-        mouseUp(_sender, _me): void { },
-        dragEnter(_evt, state): void {
-          if (state) {
-            this.previousStyle = state.style;
-            state.style = mxUtils.clone(state.style);
-            updateStyle(state, true);
-            state.shape.apply(state);
-            state.shape.redraw();
+      if (graph.isPort(state.cell)) {
+        updatePortStyle(state, isHover);
+      } else {
+        updateNodeStyle(state, isHover);
+      }
 
-            if (state.text) {
-              state.text.apply(state);
-              state.text.redraw();
-            }
-          }
-        },
-        dragLeave(_evt, state): void {
-          if (state) {
-            state.style = this.previousStyle;
-            updateStyle(state, false);
-            if (state.shape) {
-              state.shape.apply(state);
-              state.shape.redraw();
-              if (state.text) {
-                state.text.apply(state);
-                state.text.redraw();
-              }
-            }
-          }
+    }
+    function draw(state: IMxState): void {
+      if (state.shape) {
+        state.shape.apply(state);
+        state.shape.redraw();
+
+        if (state.text) {
+          state.text.apply(state);
+          state.text.redraw();
         }
-      });
+      }
+    }
+
+    function drag(_evt, state: IMxState | null, isEnter: boolean): void {
+      if (state) {
+
+        updateStyle(state, isEnter);
+        draw(state);
+
+        if (state.cell && state.cell.children) {
+          state.cell.children.forEach((port) => {
+            if (graph.isPort(port)) {
+              drag(_evt, graph.view.getState(port), isEnter);
+            }
+          });
+        }
+      }
+    }
+
+    graph.addMouseListener({
+      currentState: null,
+      mouseDown(_sender, me): void {
+        if (this.currentState) {
+          if (graph.isPort(me.getCell())) { return; }
+          drag(me.getEvent(), this.currentState, false);
+          this.currentState = null;
+        }
+      },
+      mouseMove(_sender, me): void {
+        if (this.currentState && me.getState() === this.currentState) {
+          return;
+        }
+        const model = graph.getModel();
+        let nextState = graph.view.getState(me.getCell());
+
+        if (nextState && ((!model.isVertex(nextState.cell) && !model.isEdge(nextState.cell)) || graph.isPort(nextState.cell))) {
+          nextState = null;
+        }
+        if (nextState !== this.currentState) {
+          if (this.currentState) { // leave restore view
+            drag(me.getEvent(), this.currentState, false);
+          } else { // enter update view
+            drag(me.getEvent(), nextState, true);
+          }
+          this.currentState = nextState;
+        }
+      },
+      // tslint:disable-next-line: no-empty
+      mouseUp(_sender, _me): void { },
+
+    });
 
   }
 
   private readonly addAction = (action: IMxActions, name: string, func: () => void): void => {
     action[name] = new Object();
     action[name].func = func;
-  }
-
-  private readonly initAction = (graph: IMxGraph, clipboard: IClipboardContext): IMxActions => {
-    return {
-      copy: {
-        func: () => {
-          clipboard.copyFuncForMenu(graph, clipboard.copy, clipboard.textInput);
-          const text = clipboard.textInput.value;
-          navigator.clipboard.writeText(text)
-            .then(
-              (result) => {
-                // tslint:disable-next-line: no-console
-                console.log("Successfully copied to clipboard", result);
-              }
-            )
-            .catch(
-              (err) => {
-                // tslint:disable-next-line: no-console
-                console.log("Error! could not copy text", err);
-              });
-        },
-      },
-      cut: {
-        func: () => {
-          clipboard.cutFunc(graph, clipboard.copy, clipboard.textInput);
-          const text = clipboard.textInput.value;
-          navigator.clipboard.writeText(text)
-            .then(
-              (result) => {
-                // tslint:disable-next-line: no-console
-                console.log("Successfully copied to clipboard", result);
-              }
-            )
-            .catch(
-              (err) => {
-                // tslint:disable-next-line: no-console
-                console.log("Error! could not copy text", err);
-              });
-        },
-      },
-      paste: {
-        getFunc(destX?, destY?): () => void {
-          return () => {
-            navigator.clipboard.readText()
-              .then(
-                // tslint:disable-next-line: promise-function-async
-                (result) => {
-                  // tslint:disable-next-line: no-console
-                  console.log("Successfully retrieved text from clipboard", result);
-                  clipboard.textInput.focus(); // no listener
-                  // tslint:disable-next-line: deprecation
-                  clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput, destX, destY);
-                  return Promise.resolve(result);
-                }
-              )
-              .catch(
-                (err) => {
-                  throw new Error("Error! read text from clipboard");
-                });
-          };
-        },
-      },
-      undo: {
-        func: () => {
-          this.undoManager.undo();
-        },
-      },
-      redo: {
-        func: () => {
-          this.undoManager.redo();
-        },
-      },
-      zoomIn: {
-        func: () => {
-          graph.zoomIn();
-        },
-      },
-      zoomOut: {
-        func: () => {
-          graph.zoomOut();
-        },
-      },
-      deleteCell: {
-        func: () => {
-          graph.removeCells();
-        },
-      },
-      fit: {
-        func: () => {
-          graph.fit();
-        }
-      },
-
-    };
-
   }
 }
