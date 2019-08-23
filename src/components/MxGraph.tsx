@@ -133,7 +133,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
   }
 
-
   public componentWillMount(): void {
     if (!mxClient.isBrowserSupported()) {
       mxUtils.error("Browser is not supported!", 200, false);
@@ -254,6 +253,8 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
           portStyle += ";shape=ellipse;perimeter=none;";
           portStyle += "opacity=50";
+          // vital
+          // portStyle += `;deletable=0`;
           const port = graph.insertVertex(vertex, null, `p${index}`, point[0], point[1], portSize[0], portSize[1], portStyle, true);
           port.geometry.offset = new mxPoint(-(portSize[0] / 2), -(portSize[1] / 2)); // set offset
           port.setConnectable(true);

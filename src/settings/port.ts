@@ -170,22 +170,23 @@ function setTooltips(graph: IMxGraph) {
 function setSelectionRecursively(graph: IMxGraph) {
   mxGraphSelectionModel.prototype.setCell = function (cell: ImxCell) {
     if (cell != null) {
-      if (cell.isEdge) {
+      if (graph.getModel().isEdge(cell)) {
         this.setCells([cell]);
       } else {
-        console.log(cell);
         const cells = [cell, ...cell.children.filter(port => graph.isPort(port))];
+        console.log(cells);
         this.setCells(cells);
       }
     }
   };
 }
 
-function preventChildrenFromBeingRemoved(graph: IMxGraph) {
-  graph.graphHandler.shouldRemoveCellsFromParent = (parent, cells, evt) => {
-    return cells.length == 0 && !cells[0].geometry.relative && mxGraphHandler.prototype.shouldRemoveCellsFromParent.apply(this, arguments);
-  };
-}
+// function preventChildrenFromBeingRemoved(graph: IMxGraph) {
+//   // graph.graphHandler.shouldRemoveCellsFromParent = (parent, cells, evt) => {
+//   //   const bl =  (cells.length == 0 && !cells[0].geometry.relative && mxGraphHandler.prototype.shouldRemoveCellsFromParent.apply(this, arguments));
+//   //   console.log(bl);
+//   // };
+// }
 
 // tslint:disable-next-line: export-name
 export function initPort(graph: IMxGraph) {
@@ -208,7 +209,6 @@ export function initPort(graph: IMxGraph) {
     return label;
   }
 
-  preventChildrenFromBeingRemoved(graph);
 
   graph.isPort = (cell) => {
     const geo = graph.getCellGeometry(cell);
