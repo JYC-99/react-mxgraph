@@ -4,7 +4,8 @@ import * as React from "react";
 import * as mxGraphJs from "mxgraph-js";
 
 const {
-  mxGraphSelectionModel
+  mxGraphSelectionModel,
+  mxEvent
 } = mxGraphJs;
 
 import {
@@ -57,15 +58,10 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
   }
 
   private readonly _setListener = (graph: IMxGraph) => {
-    // tslint:disable-next-line: no-this-assignment
-    const that = this;
-    const selectChange = mxGraphSelectionModel.prototype.changeSelection ;
-    graph.getSelectionModel().changeSelection = function(): void {
-      selectChange.apply(this, arguments);
 
-      that.setState({cells: graph.getSelectionCells()});
-    };
-
+    graph.getSelectionModel().addListener(mxEvent.CHANGE, (sender: any, evt: any) => {
+      this.setState({cells: graph.getSelectionCells()});
+    });
   }
 
   private readonly _getName = (graph: IMxGraph, cells?: ImxCell[]): string => {
@@ -73,6 +69,11 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
       return "no selection";
     }
     if (cells.length > 1) {
+      if (cells.map((cell) => +!graph.isPort(cell))
+      .reduce((acc, cur) => (acc + cur)) === 1) {
+        return "vertex";
+      }
+
       return "multi";
     // tslint:disable-next-line: prefer-switch
     } else if (cells.length === 1) {

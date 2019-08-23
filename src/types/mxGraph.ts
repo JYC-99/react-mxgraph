@@ -183,6 +183,13 @@ export interface IMxMouseEvent {
   getState(): IMxState;
 }
 
+interface IKeyHandler {
+  bindKey(keycode: number, evt: KeyboardEvent): void;
+  bindShiftKey(keycode: number, evt: KeyboardEvent): void;
+  bindControlKey(keycode: number, evt: KeyboardEvent): void;
+  bindControlShiftKey(keycode: number, evt: KeyboardEvent): void;
+}
+
 export interface IMxGraph {
   popupMenuHandler: {
     autoExpand: boolean;
@@ -207,6 +214,7 @@ export interface IMxGraph {
   extendParents: boolean;
   defaultEdgeStyle: object;
   currentEdgeStyle: object;
+  keyHandler: IKeyHandler;
   addMouseListener(listener: {
     currentState: null | IMxState;
     mouseDown(sender: IMxGraph, me: IMxMouseEvent): void;
@@ -240,6 +248,9 @@ export interface IMxGraph {
   selectCell(isNext: boolean, isParent?: boolean, isChild?: boolean): void; //
   selectAll(parent: ImxCell, descendants: ImxCell[]): void; // select all children of the given parent cell
   selectCells(vertices: ImxCell[], edges: ImxCell[], parent: ImxCell): void;
+  selectPreviousCell(): void;
+  selectParentCell(): void;
+  selectChildCell(): void;
   setHtmlLabels(bl: boolean): void;
   stopEditing(bl: boolean): void;
   isEnabled(): boolean;
@@ -258,5 +269,6 @@ export interface IMxGraph {
   zoomIn(): void;
   zoomOut(): void;
   fit(): void;
+  actual(): void;
   orderCells(isToBack: boolean): void;
 }

@@ -8,7 +8,9 @@ interface IProps {
 }
 
 class ACommand extends React.PureComponent<IProps> {
+
   public render(): React.ReactNode {
+    console.log("render");
     const { propsAPI } = this.props;
     const { save, update, getSelected } = propsAPI;
 
@@ -19,6 +21,7 @@ class ACommand extends React.PureComponent<IProps> {
       execute(): void {
         const chart = save();
         const selectedNodes = getSelected();
+        console.log(selectedNodes);
         selectedNodes.map((node) => {
           update(node, {x : node.geometry.x + 2});
         });

@@ -24,7 +24,7 @@ import {
   IMxGraph,
 } from "../types/mxGraph";
 
-interface IItem {
+export interface IItemProps {
   shape: string;
   size?: string;
   model?: {
@@ -33,30 +33,46 @@ interface IItem {
   };
 }
 
-export class Item extends React.PureComponent<IItem>{
-  public _insertVertex?: (parent, graph, node) => ImxCell;
+export class Item extends React.PureComponent<IItemProps>{
+  public _insertVertex?: (parent: ImxCell, graph: IMxGraph, node: ICanvasNode) => ImxCell;
   private readonly _containerRef = React.createRef<HTMLDivElement>();
-  constructor(props: IItem) {
+  private _graph?: IMxGraph;
+  constructor(props: IItemProps) {
     super(props);
   }
 
   public render(): React.ReactNode {
+
     return (
-      <div ref={this._containerRef} >
+      <div ref={this._containerRef}>
+        {this.props.children}
         <MxGraphContext.Consumer>{(context: IMxGraphContext) => {
           const { graph, insertVertex } = context;
           const container = this._containerRef.current;
-
-          if (!graph || !container) {
+          if (graph && insertVertex) {
+            this._graph = graph;
+            this._insertVertex = insertVertex;
+          } else {
             return null;
           }
-          this._insertVertex = insertVertex;
-          this.addToolbarItem(graph, container);
+          if (container) {
+            this.addToolbarItem(graph, container);
+          }
           return null;
         }}</MxGraphContext.Consumer>
-        {this.props.children}
       </div>
     );
+  }
+
+  public componentDidMount = () => {
+
+    if (this._graph && this._containerRef.current) {
+      this.addToolbarItem(this._graph, this._containerRef.current);
+    }
+  }
+
+  public componentDidUpdate = () => {
+    console.log("item did update");
   }
 
   private readonly addVertex = (text: string, width: string, height: string, style: string): ImxCell => {
@@ -81,7 +97,7 @@ export class Item extends React.PureComponent<IItem>{
 
   }
 
-  private readonly addToolbarItem = (graph: IMxGraph, elt: HTMLDivElement): void => {
+  private readonly addToolbarItem = (graph: IMxGraph, elt: HTMLDivElement | HTMLSpanElement): void => {
     const size = this.props.size ? this.props.size.split("*") : [100, 70];
     const dragElt = document.createElement("div");
     dragElt.style.border = "dashed black 1px";

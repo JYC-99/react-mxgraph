@@ -10,7 +10,7 @@ import {
   MxGraphContext
 } from "../context/MxGraphContext";
 import { init } from "../settings/init";
-import { IMxActions, initAction } from "../types/action";
+import { IMxActions, initActions } from "../types/action";
 import { customShortcutDictionary, ICustomCommand } from "../types/command";
 import { ICanvasData, ICanvasEdge, ICanvasNode } from "../types/flow";
 import {
@@ -19,6 +19,7 @@ import {
   IMxGraph,
   IMxState,
   IMxUndoManager,
+  IKeyHandler,
 } from "../types/mxGraph";
 import { ICustomShape, } from "../types/shapes";
 
@@ -48,9 +49,10 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   private undoManager: IMxUndoManager;
   private mouseX: number;
   private mouseY: number;
-  private action: IMxActions;
+  private actions: IMxActions;
   private readonly customShape: ICustomShape[];
   private readonly customCommand: ICustomCommand[];
+  private keyHandler: IKeyHandler;
   private _firstUpdate: boolean;
 
   constructor(props: {}) {
@@ -73,10 +75,11 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     const rubberband = new mxRubberband(graph);
     this.undoManager = new mxUndoManager();
     // tslint:disable-next-line: deprecation
-    this.action = initAction(graph, this.context, this.undoManager);
+    this.actions = initActions(graph, this.context, this.undoManager);
+    this.keyHandler = this.setKeyHandler(graph);
+
     this.addUndoEvent(graph);
     this.addCopyEvent(graph);
-    this.setKeyHandler(graph);
     this.setMouseEvent(graph);
     this.registerNode(graph);
 
@@ -94,8 +97,8 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     graph.getView()
       .addListener(mxEvent.UNDO, listener);
   }
-  // tslint:disable-next-line: max-func-body-length
-  public addCopyEvent = (graph: IMxGraph) => { // , textInput: HTMLTextAreaElement, copy: ICopy) => {
+
+  public addCopyEvent = (graph: IMxGraph) => {
     // tslint:disable-next-line: deprecation
     const { copy, textInput } = this.context;
     copy.gs = graph.gridSize;
@@ -103,49 +106,33 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
     // For jest
     // tslint:disable-next-line: strict-type-predicates
-    if (graph.container !== undefined) {
+    if (graph.container) {
       mxEvent.addListener(graph.container, "mousemove", mxUtils.bind(this, (evt: MouseEvent) => {
         this.mouseX = evt.offsetX;
         this.mouseY = evt.offsetY;
       }));
+      mxEvent.addListener(graph.container, "mouseenter", mxUtils.bind(this, (evt: MouseEvent) => {
+        graph.setEnabled(true);
+      }));
+      mxEvent.addListener(graph.container, "mouseleave", mxUtils.bind(this, (evt: MouseEvent) => {
+        graph.setEnabled(false);
+      }));
     }
 
-    // tslint:disable-next-line: cyclomatic-complexity
-    mxEvent.addListener(document, "keydown", (evt: KeyboardEvent) => {
-      const source = mxEvent.getSource(evt);
-      if (graph.isEnabled() && !graph.isMouseDown && !graph.isEditing() && source.nodeName !== "INPUT") {
-        // tslint:disable-next-line: deprecation
-        if (evt.keyCode === 224 /* FF */ || (!mxClient.IS_MAC && evt.keyCode === 17 /* Control */) || (mxClient.IS_MAC && evt.keyCode === 91 /* Meta */)) {
-          // tslint:disable-next-line: deprecation
-          this.context.beforeUsingClipboard(graph, copy, textInput);
-        }
-      }
+    this.keyHandler.bindControlKey(67, () => {
+      this.actions.copy.func();
     });
 
-    mxEvent.addListener(document, "keyup", (evt: KeyboardEvent) => {
-      // tslint:disable-next-line: deprecation
-      if (copy.restoreFocus && (evt.keyCode === 224 || evt.keyCode === 17 || evt.keyCode === 91)) {
-        // tslint:disable-next-line: deprecation
-        this.context.afterUsingClipboard(graph, copy, textInput);
-      }
+    this.keyHandler.bindControlKey(88, () => {
+      this.actions.cut.func();
     });
 
-    mxEvent.addListener(textInput, "copy", mxUtils.bind(this, (_evt: ClipboardEvent) => {
-      // tslint:disable-next-line: deprecation
-      this.context.copyFunc(graph, copy, textInput);
-    }));
-
-    mxEvent.addListener(textInput, "cut", mxUtils.bind(this, (_evt: ClipboardEvent) => {
-      // tslint:disable-next-line: deprecation
-      this.context.cutFunc(graph, copy, textInput);
-    }));
-
-    mxEvent.addListener(textInput, "paste", (evt: ClipboardEvent) => {
-      // tslint:disable-next-line: deprecation
-      this.context.pasteFunc(evt, graph, copy, textInput, this.mouseX, this.mouseY);
+    this.keyHandler.bindControlKey(86, () => {
+      this.actions.pasteHere.func({ x: this.mouseX, y: this.mouseY });
     });
 
   }
+
 
   public componentWillMount(): void {
     if (!mxClient.isBrowserSupported()) {
@@ -164,7 +151,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
           value={{
             graph: this.state.graph,
             setGraph: this.setGraph,
-            action: this.action,
+            actions: this.actions,
             customShape: this.customShape,
             customCommand: this.customCommand,
             readData: this.readData,
@@ -185,15 +172,15 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     textInput.value = " ";
   }
 
-  private readonly setKeyHandler = (graph: IMxGraph): void => {
+  private readonly setKeyHandler = (graph: IMxGraph): IKeyHandler => {
     const keyHandler = new mxKeyHandler(graph);
-    keyHandler.bindControlKey(90, (evt) => {
-      this.action.undo.func();
+    keyHandler.bindControlKey(90, (evt: KeyboardEvent) => {
+      this.actions.undo.func();
     });
-    keyHandler.bindKey(8, (evt) => {
-      this.action.deleteCell.func();
+    keyHandler.bindKey(8, (evt: KeyboardEvent) => {
+      this.actions.deleteCell.func();
     });
-    keyHandler.bindKey(9, (evt) => {
+    keyHandler.bindKey(9, (evt: KeyboardEvent) => {
       if (graph.isEnabled()) {
         if (graph.isEditing()) {
           graph.stopEditing(false);
@@ -201,6 +188,10 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         graph.selectCell(true);
       }
     });
+    keyHandler.bindShiftKey(9, () => { if (graph.isEnabled()) { graph.selectPreviousCell(); } }); // Shift+Tab
+    keyHandler.bindControlKey(9, () => { if (graph.isEnabled()) { graph.selectParentCell(); } }); // Ctrl+Tab
+    keyHandler.bindControlShiftKey(9, () => { if (graph.isEnabled()) { graph.selectChildCell(); } }); // Ctrl+Shift+Tab
+    return keyHandler;
   }
 
   private readonly addCustomKeyEvent = (graph: IMxGraph, func: () => void, key: string): void => {
@@ -230,13 +221,8 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       const config = command.config;
       if (customShortcutDictionary.hasOwnProperty(command.name) && customShortcutDictionary[command.name] && config.enable) {
         // tslint:disable-next-line: no-unbound-method
-        this.addAction(this.action, command.name, config.execute);
-        if (config.shortcutCodes) {
-          config.shortcutCodes.forEach((shortcutCode) => {
-            // tslint:disable-next-line: no-unbound-method
-            this.addCustomKeyEvent(graph, config.execute, shortcutCode);
-          });
-        }
+        this.addAction(graph, this.actions, command.name, config.execute, config.shortcutCodes);
+        console.log(command);
       }
     });
   }
@@ -398,8 +384,17 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
   }
 
-  private readonly addAction = (action: IMxActions, name: string, func: () => void): void => {
-    action[name] = new Object();
-    action[name].func = func;
+  private readonly addAction = (graph: IMxGraph, actions: IMxActions, name: string, func: () => void, shortcuts?: string[]): void => {
+    actions[name] = new Object();
+    actions[name].func = func;
+    if (!shortcuts) { return; }
+    actions[name].shortcuts = shortcuts;
+    shortcuts.forEach((shortcut) => {
+      mxEvent.addListener(document, "keydown", (event: KeyboardEvent) => {
+        if (graph.isEnabled() && !graph.isMouseDown && !graph.isEditing() && event.key === shortcut) {
+          func();
+        }
+      });
+    });
   }
 }

@@ -56,44 +56,41 @@ export class ContextMenu extends React.PureComponent {
         <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
           const {
             graph,
-            action,
+            actions,
           } = value;
 
           mxEvent.disableContextMenu(document.body);
 
-          if (graph && action) {
+          if (graph && actions) {
             graph.popupMenuHandler.autoExpand = true;
             graph.popupMenuHandler.factoryMethod = (menu, cell, _evt) => {
               const currentMenu: IMenu[] = this._getMenuFromCell(cell);
               if (currentMenu.length !== 0) {
 
                 // tslint:disable-next-line: cyclomatic-complexity
-                currentMenu.map((item) => {
+                currentMenu.forEach((item) => {
                   const text = item.text ? item.text : "default";
+                  const type = item.menuItemType;
                   // tslint:disable-next-line: prefer-switch
-                  if (item.menuItemType === "separator") {
+                  if (type === "separator") {
                     menu.addSeparator();
                   } else {
-                    if (!action.hasOwnProperty(item.menuItemType)) {
+                    if (!actions.hasOwnProperty(type)) {
                       throw new Error("not be initialized in action");
                     }
-                    const func = item.menuItemType === "paste" ?
-                      action.paste.getFunc(menu.triggerX, menu.triggerY) :
-                      action[item.menuItemType].func;
-                    const menuItem = menu.addItem(text, null, func);
+                    const menuItem = menu.addItem(text, null, () => {
+                      actions[type].func({x: menu.triggerX, y: menu.triggerY});
+                    });
                     const td = menuItem.firstChild.nextSibling.nextSibling;
                     const span = document.createElement("span");
                     span.style.color = "gray";
-                    const shortCutText = item.menuItemType === "paste" ? "Ctrl+V" :
-                    item.menuItemType === "copy" ? "Ctrl+C" :
-                    item.menuItemType === "cut" ? "Ctrl+X" :
-                    item.menuItemType === "undo" ? "Ctrl+Z" : "";
+                    const shortCutText = actions[type].shortcuts ? actions[type].shortcuts[0] : "";
                     mxUtils.write(span, shortCutText);
                     td.appendChild(span);
                     // tslint:disable-next-line: prefer-switch
-                    if (item.menuItemType === "copy" || item.menuItemType === "cut") {
-                      this.addListener(menuItem, graph, copy, textInput);
-                    }
+                    // if (item.menuItemType === "copy" || item.menuItemType === "cut") {
+                    //   this.addListener(menuItem, graph, copy, textInput);
+                    // }
                   }
                 });
 

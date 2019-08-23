@@ -41,16 +41,17 @@ table.mxPopupMenu tr {
   font-size: 4pt;
 }
 
-body div.flow-container {
-  width: 600px;
-  height: 400px;
-  border-top: solid 1px #cccccc;
-  border-bottom: solid 1px #cccccc;
-}
+// body div.flow-container {
+//   width: 600px;
+//   height: 400px;
+//   border-top: solid 1px #cccccc;
+//   border-bottom: solid 1px #cccccc;
+// }
 
 body div.minimap-container {
   width: 200px;
   height: 200px;
+  margin: 5px;
   border-top: solid 1px #6F6F6F;
   border-left: solid 1px #6F6F6F;
   border-right: solid 1px #6F6F6F;

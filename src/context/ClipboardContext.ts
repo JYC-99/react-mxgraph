@@ -10,7 +10,7 @@ const {
   mxCodec,
 } = mxGraphJs;
 
-mxClipboard.cellsToString = (cells) => {
+mxClipboard.cellsToString = (cells: ImxCell[]) => {
   const codec = new mxCodec();
   const model = new mxGraphModel();
   const parent = model.getChildAt(model.getRoot(), 0);
@@ -36,8 +36,8 @@ export interface IClipboardContext {
   copyFunc(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   copyFuncForMenu(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   cutFunc(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
-  pasteFunc(evt: ClipboardEvent, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
-  pasteFuncForMenu(result: string, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX: number, mouseY: number): void;
+  pasteFunc(evt: ClipboardEvent, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX?: number, mouseY?: number): void;
+  pasteFuncForMenu(result: string, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement, mouseX?: number, mouseY?: number): void;
   beforeUsingClipboard(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
   afterUsingClipboard(graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void;
 }
@@ -192,8 +192,6 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
   copyFunc: (graph, copy, textInput) => {
     if (graph.isEnabled() && !graph.isSelectionEmpty()) {
       copyCells(graph, mxUtils.sortCells(graph.model.getTopmostCells(graph.getSelectionCells())), copy, textInput);
-      // tslint:disable-next-line: no-console
-      console.log(textInput.value);
       copy.dx = 0;
       copy.dy = 0;
     }
@@ -201,15 +199,14 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
   copyFuncForMenu: (graph, copy, textInput) => {
     if (graph.isEnabled() && !graph.isSelectionEmpty()) {
       copyCells(graph, mxUtils.sortCells(graph.model.getTopmostCells(graph.getSelectionCells())), copy, textInput);
-      // tslint:disable-next-line: no-console
-      console.log(textInput.value);
       copy.dx = 0;
       copy.dy = 0;
     }
   },
   cutFunc: (graph, copy, textInput) => {
     if (graph.isEnabled() && !graph.isSelectionEmpty()) {
-      copyCells(graph, graph.removeCells(), copy, textInput);
+      const cells = graph.model.getTopmostCells(graph.getSelectionCells());
+      copyCells(graph, graph.removeCells(cells), copy, textInput);
       copy.dx = -copy.gs;
       copy.dy = -copy.gs;
     }
@@ -247,6 +244,7 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
     textInput.select();
   },
   beforeUsingClipboard: (graph, copy, textInput) => {
+    // console.log("befor", graph.model.cells.ea1184e8.geometry , copy.restoreFocus, textInput);
     if (!copy.restoreFocus) {
       textInput.style.position = "absolute";
       textInput.style.left = `${(graph.container.scrollLeft + 10)}px`;
@@ -259,6 +257,7 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
     }
   },
   afterUsingClipboard: (graph, copy, textInput) => {
+    // console.log("after", copy.restoreFocus);
     if (copy.restoreFocus) {
       copy.restoreFocus = false;
       if (!graph.isEditing()) { graph.container.focus(); }

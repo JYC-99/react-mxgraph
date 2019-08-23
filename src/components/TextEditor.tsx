@@ -49,7 +49,9 @@ export class TextEditor extends React.PureComponent<{}, { value: string }> {
                 this._first = false;
               }
               return (
-                <input type="text" placeholder="placeholder" value={this._getInputValue()} onFocus={this.startEditing} onChange={this._onChange} onBlur={this.stopEditing} />
+                <div >
+                  <input type="text" placeholder="placeholder" value={this._getInputValue()} onFocus={this.startEditing} onChange={this._onChange} onBlur={this.stopEditing} />
+                </div>
               );
             }
           }}</MxGraphContext.Consumer>

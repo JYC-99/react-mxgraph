@@ -6,6 +6,7 @@ const {
   mxGraph,
   mxConstants,
   mxPerimeter,
+  mxGraphHandler,
   mxEdgeHandler,
   mxVertexHandler,
   mxRectangle,
@@ -31,8 +32,8 @@ function setPortHandler(graph: IMxGraph): void {
     shape.isRounded = state.style[mxConstants.STYLE_ROUNDED];
     const isPort = this.graph.isPort(state.cell);
 
-    shape.fill = isPort ? state.style[mxConstants.STYLE_FILLCOLOR] : state.style[mxConstants.STYLE_STROKECOLOR];
-    shape.stroke = state.style[mxConstants.STYLE_STROKECOLOR];
+    shape.fill = isPort ? state.style[mxConstants.STYLE_FILLCOLOR] : this.getSelectionColor();
+    shape.stroke = this.getSelectionColor();
 
     shape.fillOpacity = isPort ? 100 : 20;
     shape.strokeOpacity = 100;
@@ -169,16 +170,20 @@ function setTooltips(graph: IMxGraph) {
 function setSelectionRecursively(graph: IMxGraph) {
   mxGraphSelectionModel.prototype.setCell = function (cell: ImxCell) {
     if (cell != null) {
-      const cells = [cell];
-      if (cell.children) {
-        cell.children.forEach((port) => {
-          if (graph.isPort(port)) {
-            cells.push(port);
-          }
-        })
+      if (cell.isEdge) {
+        this.setCells([cell]);
+      } else {
+        console.log(cell);
+        const cells = [cell, ...cell.children.filter(port => graph.isPort(port))];
+        this.setCells(cells);
       }
-      this.setCells(cells);
     }
+  };
+}
+
+function preventChildrenFromBeingRemoved(graph: IMxGraph) {
+  graph.graphHandler.shouldRemoveCellsFromParent = (parent, cells, evt) => {
+    return cells.length == 0 && !cells[0].geometry.relative && mxGraphHandler.prototype.shouldRemoveCellsFromParent.apply(this, arguments);
   };
 }
 
@@ -202,6 +207,8 @@ export function initPort(graph: IMxGraph) {
     }
     return label;
   }
+
+  preventChildrenFromBeingRemoved(graph);
 
   graph.isPort = (cell) => {
     const geo = graph.getCellGeometry(cell);

@@ -9,7 +9,6 @@ import {
   ICanvasNode,
 } from "../types/flow";
 import { ImxCell, IMxGraph } from "../types/mxGraph";
-import { shapeDictionary } from "../types/shapes";
 
 const {
   mxConstants,
@@ -41,22 +40,20 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
         <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
           const {
             graph,
-            action,
+            actions,
             readData,
             insertVertex,
             insertEdge,
           } = value;
-          if (graph && action) {
+          if (graph && actions) {
+            const model = graph.getModel();
             const propsAPI: IPropsAPI = {
               graph,
               executeCommand: (command) => {
-                if (!action.hasOwnProperty(command)) {
+                if (!actions.hasOwnProperty(command)) {
                   throw new Error("this command is not initialized in action");
                 }
-                const func = command === "paste" ?
-                  action.paste.getFunc() :
-                  action[command].func;
-                func();
+                actions[command].func();
               },
               find: (id) => {
                 return graph.getModel()
@@ -112,19 +109,17 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
                 }
               },
               update: (cell: ImxCell, model: ICanvasEdge | ICanvasNode) => {
-                if (!cell) {
+                if (!cell || graph.isPort(cell) ) {
                   return;
                 }
                 const { x, y, size, label, color } = model;
                 const bounds = {
                   x: x ? x : cell.geometry.x,
                   y: y ? y : cell.geometry.y,
-                  width: (size && size[0]) ? size[0] : cell.geometry.width,
-                  height: (size && size[1]) ? size[1] : cell.geometry.height,
+                  width: size ? size[0] : cell.geometry.width,
+                  height: size ? size[1] : cell.geometry.height,
                 };
-                graph
-                  .getModel()
-                  .beginUpdate();
+                graph.model.beginUpdate();
                 try {
                   // resize
                   graph.resizeCell(cell, bounds);
@@ -139,9 +134,7 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
                     graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, color, [cell]);
                   }
                 } finally {
-                  graph
-                    .getModel()
-                    .endUpdate();
+                  graph.model.endUpdate();
                 }
               },
               remove: (cell: ImxCell) => {

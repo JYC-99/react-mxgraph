@@ -7,7 +7,7 @@ import { ICustomShape } from "../types/shapes";
 
 export interface IMxGraphContext {
   graph?: IMxGraph;
-  action?: IMxActions;
+  actions?: IMxActions;
   customShape?: ICustomShape[];
   customCommand?: ICustomCommand[];
   setGraph(graph: IMxGraph): void;
