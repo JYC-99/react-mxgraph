@@ -27,7 +27,6 @@ function setPortHandler(graph: IMxGraph): void {
   mxVertexHandler.prototype.createSelectionShape = function (state) {
     const shape = this.graph.cellRenderer.createShape(state);
     shape.style = state.shape.style;
-
     shape.isDashed = this.isSelectionDashed();
     shape.isRounded = state.style[mxConstants.STYLE_ROUNDED];
     const isPort = this.graph.isPort(state.cell);
@@ -105,11 +104,11 @@ function setPortValidationStyle(graph: IMxGraph) {
   // and lead wrong intersection calculation in mxUtils.intersectsHotspot
   // but maybe it is useful somewhere else 
   mxUtils.convertPoint = function(container: HTMLDivElement, x: number, y: number) {
-		// var origin = mxUtils.getScrollOrigin(container);
+		var origin = mxUtils.getScrollOrigin(container);
 		var offset = mxUtils.getOffset(container);
 
-		// offset.x -= origin.x;
-		// offset.y -= origin.y;
+		offset.x -= origin.x;
+		offset.y -= origin.y;
 		
 		return new mxPoint(x - offset.x, y - offset.y);
 	}
@@ -168,16 +167,14 @@ function setTooltips(graph: IMxGraph) {
 }
 
 function setSelectionRecursively(graph: IMxGraph) {
-  mxGraphSelectionModel.prototype.setCell = function (cell: ImxCell) {
-    if (cell != null) {
-      if (graph.getModel().isEdge(cell)) {
-        this.setCells([cell]);
-      } else {
-        const cells = [cell, ...cell.children.filter(port => graph.isPort(port))];
-        console.log(cells);
-        this.setCells(cells);
-      }
-    }
+  const selectModel = graph.getSelectionModel();
+  const setCells = selectModel.setCells;
+  selectModel.setCells = function (cells: ImxCell[]) {
+    setCells.call( selectModel,
+    cells.filter( cell => cell != null)
+         .map( cell => cell.getChildCount() ? [cell, ...cell.children.filter(port => graph.isPort(port))] : [cell] )
+         .reduce((arr, cells) => arr.concat(cells) , [])
+    );
   };
 }
 

@@ -1,4 +1,4 @@
-import { IStylesheet } from "./mxGraph";
+import { IMxState, IStylesheet } from "./mxGraph";
 
 export interface IConfig {
   rounded?: 0 | 1;
@@ -20,8 +20,43 @@ export interface IConfig {
   points?: number[][];
 }
 
-interface IShape {
-  style: string;
+export interface IShape {
+  style: string; 
+}
+
+export interface IMxShape {
+  apply(state: IMxState): void;
+  redraw(): void;
+}
+
+export interface IMxRectangleShape extends IMxShape {
+  style: IConfig;
+  boundingBox: IMxRectangle;
+  bounds: IMxRectangle;
+}
+
+export interface IMxText extends IMxShape {
+  style: IConfig;
+  background: string;
+  color: string;
+  cursor: string;
+  dialect: string;
+  family: string;
+  fill: string;
+}
+
+export interface IMxPoint {
+  x: number;
+  y: number;
+  getCenterX(): number;
+  getCenterY(): number;
+  getPoint(): IMxPoint;
+}
+
+export interface IMxRectangle extends IMxPoint {
+  height: number;
+  width: number;
+  intersect(rect: IMxRectangle): void;
 }
 
 export interface IShapeMap {

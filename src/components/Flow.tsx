@@ -48,7 +48,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
           readData(graph, this.props.data);
         }
         return (
-          <div style={{width: "100%", height: "100%"}} className="flow-container" ref={this._containerRef} />
+          <div style={{width: "100%", height: "100%", overflow: "scroll"}} className="flow-container" ref={this._containerRef} />
         );
       }}
       </MxGraphContext.Consumer>

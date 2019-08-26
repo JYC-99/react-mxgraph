@@ -45,7 +45,7 @@ export interface IClipboardContext {
 const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HTMLTextAreaElement) => {
   if (cells.length > 0) {
     const clones = graph.cloneCells(cells);
-
+    console.log(cells);
     for (let i = 0; i < clones.length; i += 1) {
       const state = graph.view.getState(cells[i]);
       // tslint:disable-next-line: strict-type-predicates  triple-equals
@@ -60,6 +60,7 @@ const copyCells = (graph: IMxGraph, cells: ImxCell[], copy: ICopy, textInput: HT
       }
     }
     textInput.value = mxClipboard.cellsToString(clones); // mxCell => xml
+    console.log(  textInput.value );
   }
   textInput.select();
   copy.lastPaste = textInput.value;
@@ -161,6 +162,7 @@ const _pasteText = (graph: IMxGraph, text: string, copy: ICopy, mouseX?: number,
     if (xml.substring(0, 14) === "<mxGraphModel>") {
       const cells = _importXml(graph, xml, copy, destX, destY);
       graph.setSelectionCells(cells);
+      console.log(cells);
       graph.scrollCellToVisible(graph.getSelectionCells());
     }
   }
@@ -197,7 +199,10 @@ export const ClipboardContext = React.createContext<IClipboardContext>({
     }
   },
   copyFuncForMenu: (graph, copy, textInput) => {
+    console.log( graph.isEnabled(),  graph.isSelectionEmpty() );
     if (graph.isEnabled() && !graph.isSelectionEmpty()) {
+      console.log( graph.getSelectionCells() );
+
       copyCells(graph, mxUtils.sortCells(graph.model.getTopmostCells(graph.getSelectionCells())), copy, textInput);
       copy.dx = 0;
       copy.dy = 0;

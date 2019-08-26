@@ -58,6 +58,7 @@ export const itemPanelStyles = {
 export const flowContainerStyles = {
   root: {
     width: "66.67%",
+    height: "800px",
     borderStyle: "solid",
     borderWidth: "1px",
     borderColor: "#a0aeb2",
@@ -85,6 +86,7 @@ export const detailPanelStyles = {
     borderBottom: "1px",
     borderBottomStyle: "solid",
     borderBottomColor: "grey",
+    backgroundColor: "grey",
   }
 };
 
@@ -127,7 +129,7 @@ export const classNames = mergeStyleSets({
   name: {
     display: 'inline-block',
     overflow: 'hidden',
-    height: 24,
+    height: 40,
     cursor: 'default',
     padding: 8,
     boxSizing: 'border-box',
@@ -139,5 +141,10 @@ export const classNames = mergeStyleSets({
   },
   button: {
     border: 'none',
+  },
+  item: {
+    backgroundColor: "gray",
+    height: 22,
+    width: 80,
   }
 });

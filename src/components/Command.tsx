@@ -12,7 +12,6 @@ import {
   MenuItemContext,
 } from "../context/MenuContext";
 
-
 export class Command extends React.PureComponent<{name: string; text?: string}> {
   constructor(props: {name: string; text?: string}) {
     super(props);

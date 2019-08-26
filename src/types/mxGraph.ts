@@ -1,3 +1,10 @@
+import {
+  IConfig,
+  IMxPoint,
+  IMxRectangle,
+  IMxShape,
+  IMxText,
+} from "./shapes";
 // tslint:disable-next-line: no-empty-interface
 export interface IEdge {
 
@@ -29,6 +36,7 @@ export interface ImxCell {
   absolutePoints: IMxPoint[];
   setConnectable(isConnectable: boolean): void;
   getStyle(): string;
+  getChildCount(): number;
   setStyle(style: string): void;
   removeFromTerminal(isSource: boolean): void; // removes the edge from its source or target terminal
   getTerminal(isSource: boolean): ImxCell; // for edges
@@ -89,11 +97,6 @@ export interface IGraphModel {
   setValue(cell: ImxCell, value: string): void;
 }
 
-interface IMxPoint {
-  x: number;
-  y: number;
-}
-
 interface IGeometry {
   x: number;
   y: number;
@@ -142,6 +145,13 @@ export interface IMxState {
 interface IMxSelectionModel {
   cells: ImxCell[];
   graph: IMxGraph;
+  setCell(cell: ImxCell): void;
+  setCells(cells: ImxCell[]): void;
+  addCell(cell: ImxCell): void;
+  addCells(cells: ImxCell[]): void;
+  removeCell(cell: ImxCell): void;
+  removeCells(cells: ImxCell[]): void;
+  selectRegion(rect: IMxRectangle, evt: any): void;
 }
 
 export interface IStylesheet {
@@ -153,8 +163,6 @@ export interface IStylesheet {
    */
   getCellStyle(name: string, defaultStyle?: IStylesheet): IStylesheet;
 }
-
-import { IConfig, IMxRectangle, IMxShape, IMxText } from "./shapes";
 
 interface ICellStyle extends IConfig {
   shape: string;
@@ -183,11 +191,11 @@ export interface IMxMouseEvent {
   getState(): IMxState;
 }
 
-interface IKeyHandler {
-  bindKey(keycode: number, evt: KeyboardEvent): void;
-  bindShiftKey(keycode: number, evt: KeyboardEvent): void;
-  bindControlKey(keycode: number, evt: KeyboardEvent): void;
-  bindControlShiftKey(keycode: number, evt: KeyboardEvent): void;
+export interface IKeyHandler {
+  bindKey(keycode: number, func: () => void): void;
+  bindShiftKey(keycode: number, func: () => void): void;
+  bindControlKey(keycode: number, func: () => void): void;
+  bindControlShiftKey(keycode: number, func: () => void): void;
 }
 
 export interface IMxGraph {
@@ -235,11 +243,13 @@ export interface IMxGraph {
   getSelectionCell(): ImxCell;
   getSelectionModel(): IMxSelectionModel;
   getTooltipForCell(cell: ImxCell): IMxToolTip;
+  getGraphBounds(): void;
   insertVertex(parent: ImxCell, id?: string | null, value?: string, x?: number, y?: number, width?: number, height?: number, style?: string, isRelative?: boolean): ImxCell;
   insertEdge(parent: ImxCell, id?: string | null, value?: string, source?: ImxCell, target?: ImxCell): ImxCell;
   importCells(cells: ImxCell[], x: number, y: number, target: ImxCell): ImxCell[] | null;
   scrollCellToVisible(cells: ImxCell[]): void;
   setSelectionCells(cells: ImxCell[]): void;
+  setSelectionCell(cells: ImxCell[]): void;
   setTooltips(bl: boolean): void;
   setCellsResizable(bl: boolean): void;
   setConnectable(bl: boolean): void;
@@ -252,6 +262,7 @@ export interface IMxGraph {
   selectParentCell(): void;
   selectChildCell(): void;
   setHtmlLabels(bl: boolean): void;
+  setEnabled(bl: boolean): void;
   stopEditing(bl: boolean): void;
   isEnabled(): boolean;
   isEditing(): boolean;
@@ -269,6 +280,6 @@ export interface IMxGraph {
   zoomIn(): void;
   zoomOut(): void;
   fit(): void;
-  actual(): void;
+  zoomActual(): void;
   orderCells(isToBack: boolean): void;
 }

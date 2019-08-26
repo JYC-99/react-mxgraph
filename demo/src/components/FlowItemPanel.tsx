@@ -57,9 +57,11 @@ export class FlowItemPanel extends React.PureComponent {
     return (
       <div data-selection-index={itemIndex}>
         <span className={classNames.name}>
+          <div className={classNames.item}>
           <Item shape={item.shape} size={item.size} model={item.model}>
             {item.shape}
           </Item>
+          </div>
         </span>
       </div>
     );

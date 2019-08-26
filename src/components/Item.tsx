@@ -44,7 +44,7 @@ export class Item extends React.PureComponent<IItemProps>{
   public render(): React.ReactNode {
 
     return (
-      <div ref={this._containerRef}>
+      <div ref={this._containerRef} style={{height: "100%"}}>
         {this.props.children}
         <MxGraphContext.Consumer>{(context: IMxGraphContext) => {
           const { graph, insertVertex } = context;

@@ -132,13 +132,11 @@ export function initActions(graph: IMxGraph, clipboard: IClipboardContext, undoM
     },
     zoomIn: {
       func: () => {
-        console.log(graph.container.clientWidth, graph.container.clientHeight);
         graph.zoomIn();
       },
     },
     zoomOut: {
-      func: () => {
-        
+      func: () => {        
         graph.zoomOut();
       },
     },
@@ -154,7 +152,7 @@ export function initActions(graph: IMxGraph, clipboard: IClipboardContext, undoM
     },
     actual: {
       func: () => {
-        graph.actual();
+        graph.zoomActual();
       }
     },
     toFront: {

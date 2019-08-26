@@ -60,6 +60,7 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
   private readonly _setListener = (graph: IMxGraph) => {
 
     graph.getSelectionModel().addListener(mxEvent.CHANGE, (sender: any, evt: any) => {
+      console.log(graph.getSelectionCells()[0], graph.getDefaultParent());
       this.setState({cells: graph.getSelectionCells()});
     });
   }

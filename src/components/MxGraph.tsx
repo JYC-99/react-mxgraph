@@ -14,13 +14,14 @@ import { IMxActions, initActions } from "../types/action";
 import { customShortcutDictionary, ICustomCommand } from "../types/command";
 import { ICanvasData, ICanvasEdge, ICanvasNode } from "../types/flow";
 import {
+  IKeyHandler,
   ImxCell,
   IMxEventObject,
   IMxGraph,
   IMxState,
   IMxUndoManager,
-  IKeyHandler,
 } from "../types/mxGraph";
+import { initBackground } from "../settings/background";
 import { ICustomShape, } from "../types/shapes";
 
 const {
@@ -80,7 +81,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
     this.addUndoEvent(graph);
     this.addCopyEvent(graph);
-    this.setMouseEvent(graph);
+    // this.setMouseEvent(graph);
     this.registerNode(graph);
 
     this.setState({
@@ -111,12 +112,16 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         this.mouseX = evt.offsetX;
         this.mouseY = evt.offsetY;
       }));
-      mxEvent.addListener(graph.container, "mouseenter", mxUtils.bind(this, (evt: MouseEvent) => {
-        graph.setEnabled(true);
-      }));
-      mxEvent.addListener(graph.container, "mouseleave", mxUtils.bind(this, (evt: MouseEvent) => {
-        graph.setEnabled(false);
-      }));
+      // mxEvent.addListener(graph.container, "mouseenter", mxUtils.bind(this, (evt: MouseEvent) => {
+      //   console.log("enter");
+      //   graph.setEnabled(true);
+      // }));
+      // mxEvent.addListener(graph.container, "mouseleave", mxUtils.bind(this, (evt: MouseEvent) => {
+      //   console.log("leave");
+      //   graph.setEnabled(false);
+      // }));
+      
+      // initBackground(graph);
     }
 
     this.keyHandler.bindControlKey(67, () => {
@@ -193,14 +198,6 @@ export class MxGraph extends React.PureComponent<{}, IState> {
     return keyHandler;
   }
 
-  private readonly addCustomKeyEvent = (graph: IMxGraph, func: () => void, key: string): void => {
-    mxEvent.addListener(document, "keydown", (event: KeyboardEvent) => {
-      if (graph.isEnabled() && !graph.isMouseDown && !graph.isEditing() && event.key === key) {
-        func();
-      }
-    });
-  }
-
   private readonly registerNode = (graph: IMxGraph): void => {
     this.customShape.forEach((shape) => {
       const style = graph.getStylesheet()
@@ -221,7 +218,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
       if (customShortcutDictionary.hasOwnProperty(command.name) && customShortcutDictionary[command.name] && config.enable) {
         // tslint:disable-next-line: no-unbound-method
         this.addAction(graph, this.actions, command.name, config.execute, config.shortcutCodes);
-        console.log(command);
+        // console.log(command);
       }
     });
   }
@@ -254,7 +251,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
           portStyle += ";shape=ellipse;perimeter=none;";
           portStyle += "opacity=50";
           // vital
-          // portStyle += `;deletable=0`;
+          portStyle += `;deletable=0`;
           const port = graph.insertVertex(vertex, null, `p${index}`, point[0], point[1], portSize[0], portSize[1], portStyle, true);
           port.geometry.offset = new mxPoint(-(portSize[0] / 2), -(portSize[1] / 2)); // set offset
           port.setConnectable(true);
