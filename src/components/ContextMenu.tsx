@@ -5,7 +5,6 @@ import * as React from "react";
 const {
   mxEvent,
   mxUtils,
-  mxPopupMenuHandler,
 } = mxGraphJs;
 
 import {
@@ -19,7 +18,6 @@ import {
 
 import {
   ClipboardContext,
-  IClipboardContext,
 } from "../context/ClipboardContext";
 
 import {
@@ -30,7 +28,6 @@ import {
 import {
   ImxCell,
   IMxGraph,
-  IMxMenu,
 } from "../types/mxGraph";
 
 export class ContextMenu extends React.PureComponent {

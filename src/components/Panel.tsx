@@ -14,19 +14,10 @@ class Panel extends React.PureComponent<{name: string}> {
         } = value;
 
         if (name && cells && name === this.props.name) {
-          if (name === "edge") {
-            // console.log(cells[0]);
-          }
-          if (name === "port") {
-            // console.log(cells[0].style);
-          }
           return (
-            <SpecialPanelContext.Provider value={{enabled: true, cells, }}>
-              <div>
-                {`${name} panel:`}
-                {this.props.children}
-              </div>
-            </SpecialPanelContext.Provider>
+            <div>
+              {this.props.children}
+            </div>
           );
         }
         return null;

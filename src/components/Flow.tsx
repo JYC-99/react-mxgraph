@@ -47,6 +47,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         if (graph) {
           readData(graph, this.props.data);
         }
+        // const Background = require("../../images/grid.gif");
         return (
           <div style={{width: "100%", height: "100%", overflow: "scroll"}} className="flow-container" ref={this._containerRef} />
         );

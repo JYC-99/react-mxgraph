@@ -7,17 +7,21 @@ import {
   TextEditor,
 } from "../../../src/index";
 
+import {
+  FlowDetailForm
+} from "./FlowDetailForm";
+
 export const FlowDetailPanel = () => {
   return (
     <DetailPanel >
       <NodePanel >
-        <TextEditor />
+        <FlowDetailForm />
       </NodePanel>
       <EdgePanel >
-        <TextEditor />
+        <FlowDetailForm />
       </EdgePanel>
       <PortPanel>
-        <TextEditor />
+        <FlowDetailForm />
       </PortPanel>
     </DetailPanel>
   );

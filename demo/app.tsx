@@ -16,6 +16,7 @@ import {
   Minimap,
   MxGraph,
   RegisterNode,
+  Minimap2,
 } from "../src/index";
 import "./index.scss";
 
@@ -146,8 +147,10 @@ class Demo extends React.PureComponent {
               fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50
             }} extend="rectangle" />
             <CustomCommand />
+            {/* <Minimap2 /> */}
           </MxGraph>
         </Stack>
+        
       </div>
     );
   }

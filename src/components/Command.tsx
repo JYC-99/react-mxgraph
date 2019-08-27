@@ -3,10 +3,6 @@ import * as React from "react";
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 
-const {
-  mxEvent,
-} = mxGraphJs;
-
 import {
   IMenuItemContext,
   MenuItemContext,

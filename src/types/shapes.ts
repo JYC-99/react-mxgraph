@@ -54,6 +54,8 @@ export interface IMxPoint {
 }
 
 export interface IMxRectangle extends IMxPoint {
+  x: number;
+  y: number;
   height: number;
   width: number;
   intersect(rect: IMxRectangle): void;

@@ -145,13 +145,7 @@ function repairDragCoordinate(): void {
     if (!node || node === b || node === d) {
       return {x: 0, y: 0};
     }
-    console.log(node);
- //console.log(node.ownerDocument);
-    // var result = mxUtils.getDocumentScrollOrigin((node != null) ? node.ownerDocument : document);
-    // console.log(result);
-    if(node) {
-      // console.log(node.ownerDocument);
-    }
+
     const result = {x:0, y:0};
     while (node != null && node != b && node != d) {
       if (!isNaN(node.scrollLeft) && !isNaN(node.scrollTop)) {
@@ -170,7 +164,7 @@ function repairDragCoordinate(): void {
       var offset = mxUtils.getOffset(graph.container);
 
       var origin = mxUtils.getScrollOrigin(graph.container);
-       console.log(origin);
+      // console.log(origin);
       // var origin = { x: 0, y: 0 };
       var x = mxEvent.getClientX(evt) - offset.x + origin.x - graph.panDx;
       var y = mxEvent.getClientY(evt) - offset.y + origin.y - graph.panDy;
@@ -237,7 +231,7 @@ function repairDragCoordinate(): void {
     };
   // tslint:enable
 }
-
+import { initGuides } from "./guide";
 export function init(graph: IMxGraph): void {
 
   mxGraph.prototype.tolerance = 8;
@@ -249,12 +243,12 @@ export function init(graph: IMxGraph): void {
   graph.setConnectable(true);
   initStyleSheet(graph);
 
-  initEdgeHandle();
+  initEdgeHandle(graph);
 
   initHighlightShape(graph);
   // html in-place editor
   graph.setHtmlLabels(true);
 
   initPort(graph);
-
+  initGuides(graph);
 }

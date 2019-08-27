@@ -27,6 +27,7 @@ function setPortHandler(graph: IMxGraph): void {
   mxVertexHandler.prototype.createSelectionShape = function (state) {
     const shape = this.graph.cellRenderer.createShape(state);
     shape.style = state.shape.style;
+
     shape.isDashed = this.isSelectionDashed();
     shape.isRounded = state.style[mxConstants.STYLE_ROUNDED];
     const isPort = this.graph.isPort(state.cell);
@@ -100,9 +101,8 @@ function setPortValidationStyle(graph: IMxGraph) {
     }
   };
 
-  // comment the code that calculates scroll offset since it causes wrong graphX graphY for mxMouseEvent
-  // and lead wrong intersection calculation in mxUtils.intersectsHotspot
-  // but maybe it is useful somewhere else 
+  // the code calculates graphX and graphY of mxMouseEvent
+  // which involve intersection calculation in mxUtils.intersectsHotspot
   mxUtils.convertPoint = function(container: HTMLDivElement, x: number, y: number) {
 		var origin = mxUtils.getScrollOrigin(container);
 		var offset = mxUtils.getOffset(container);

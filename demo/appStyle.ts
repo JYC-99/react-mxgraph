@@ -64,6 +64,7 @@ export const flowContainerStyles = {
     borderColor: "#a0aeb2",
     marginRight: "-1px",
     marginBottom: "-1px",
+    background: ""
   }
 }
 
@@ -86,7 +87,7 @@ export const detailPanelStyles = {
     borderBottom: "1px",
     borderBottomStyle: "solid",
     borderBottomColor: "grey",
-    backgroundColor: "grey",
+    // backgroundColor: "grey",
   }
 };
 
@@ -120,7 +121,7 @@ export const headerAndFooterStyles: IRawStyle = {
 export const windowContainerStyles: IRawStyle = {
   minHeigh: 800,
   minWeight: 800,
-  Height: 1800,
+  Height: 1000,
 }
 
 export const classNames = mergeStyleSets({

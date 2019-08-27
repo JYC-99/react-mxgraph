@@ -17,9 +17,8 @@ interface IMinimapProps {
   height?: string;
 }
 
-// tslint:disable-next-line: no-empty-interface
 interface IOutline {
-
+  labelsVisible: boolean;
 }
 
 export class Minimap extends React.PureComponent<IMinimapProps> {
@@ -28,7 +27,7 @@ export class Minimap extends React.PureComponent<IMinimapProps> {
 
   constructor(props: IMinimapProps) {
     super(props);
-
+    mxOutline.prototype.labelsVisible = true;
   }
   public render(): React.ReactNode {
     return (

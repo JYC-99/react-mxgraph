@@ -47,7 +47,6 @@ export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
             <PanelContext.Provider value={{name, cells: this.state.cells}}>
               <div>
                 {this.props.children}
-                <p>{name}</p>
               </div>
             </PanelContext.Provider>
           );

@@ -9,32 +9,15 @@ import {
   ICanvasNode,
 } from "../types/flow";
 import { ImxCell, IMxGraph } from "../types/mxGraph";
-
+import { IPropsAPI, IModel } from "../types/propsAPI";
 const {
   mxConstants,
 } = mxGraphJs;
 
-export interface IPropsAPI {
-  graph: IMxGraph;
-  executeCommand(command: string): void;
-  find(id: string): ImxCell;
-  getSelected(): ImxCell[];
-  read(data: ICanvasData): void;
-  save(): object;
-  add(name: "node" | "edge", model): void;
-  update(cell: ImxCell, model): void;
-  remove(cell: ImxCell): void;
-}
+export const withPropsApi = (WrappedComponent: any) =>
+  class MakeCounter extends React.PureComponent {
 
-// tslint:disable-next-line: max-func-body-length
-export function withPropsApi(WrappedComponent): React.PureComponent {
-  return class extends React.PureComponent {
-
-    constructor(props: {}) {
-      super(props);
-    }
-    // tslint:disable-next-line: max-func-body-length
-    public render(): React.ReactNode {
+    public render(): JSX.Element {
       return (
         // tslint:disable-next-line: max-func-body-length
         <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
@@ -67,31 +50,26 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
               },
               // tslint:disable-next-line: cyclomatic-complexity
               save: () => {
-                const model = graph.getModel();
-                const data: ICanvasData = { nodes: [], edges: [] };
-                // formate
-                for (const [id, cell] of Object.entries(model.cells)) {
-                  if (model.isEdge(cell)) {
-                    const cellData: ICanvasEdge = {};
-                    if (cell.source) { cellData.source = cell.source.id; }
-                    if (cell.target) { cellData.target = cell.target.id; }
-                    cellData.id = id;
-                    data.edges.push(cellData);
-                  } else if (model.isVertex(cell)) {
-                    const cellData: ICanvasNode = {};
-                    if (cell.value) { cellData.label = cell.value; }
-                    cellData.id = id;
-                    if (cell.geometry) {
-                      cellData.size = [cell.geometry.width, cell.geometry.height];
-                    }
-                    const style = graph.getCellStyle(cell);
-                    cellData.shape = style.shape;
-                    data.nodes.push(cellData);
-                  } else {
-                    // do nothing
-                  }
-                }
-                return data;
+                const tmp = model.cells.map((cell) => propsAPI.getCellModel(cell));
+                return { nodes: tmp.filter((cell) => !cell.edge), edges: tmp.filter((cell) => cell.edge) };
+              },
+              getCellModel: (cell: ImxCell) => {
+                const geo = model.getGeometry(cell);
+                const style = graph.getCellStyle(cell);
+
+                const cellData: IModel = {
+                  id: cell.id,
+                  label: cell.value,
+                  size: [geo.width, geo.height],
+                  shape: style.shape,
+                  color: style.fillColor,
+                  edge: model.isEdge(cell),
+                  x: geo.x,
+                  y: geo.y,
+                };
+                if (cell.source) { cellData.source = cell.source.id; }
+                if (cell.target) { cellData.target = cell.target.id; }
+                return cellData;
               },
               add: (name: string, model: ICanvasEdge | ICanvasNode) => {
                 const parent = graph.getDefaultParent();
@@ -109,7 +87,7 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
                 }
               },
               update: (cell: ImxCell, model: ICanvasEdge | ICanvasNode) => {
-                if (!cell || graph.isPort(cell) ) {
+                if (!cell || graph.isPort(cell)) {
                   return;
                 }
                 const { x, y, size, label, color } = model;
@@ -155,7 +133,128 @@ export function withPropsApi(WrappedComponent): React.PureComponent {
       );
     }
   };
-}
+
+
+// // tslint:disable-next-line: max-func-body-length
+// export function withPropsApi(WrappedComponent): React.PureComponent {
+//   return class extends React.PureComponent {
+
+//     constructor(props: {}) {
+//       super(props);
+//     }
+//     // tslint:disable-next-line: max-func-body-length
+//     public render(): React.ReactNode {
+//       return (
+//         // tslint:disable-next-line: max-func-body-length
+//         <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
+//           const {
+//             graph,
+//             actions,
+//             readData,
+//             insertVertex,
+//             insertEdge,
+//           } = value;
+//           if (graph && actions) {
+//             const model = graph.getModel();
+//             const propsAPI: IPropsAPI = {
+//               graph,
+//               executeCommand: (command) => {
+//                 if (!actions.hasOwnProperty(command)) {
+//                   throw new Error("this command is not initialized in action");
+//                 }
+//                 actions[command].func();
+//               },
+//               find: (id) => {
+//                 return graph.getModel()
+//                   .getCell(id);
+//               },
+//               getSelected: () => {
+//                 console.log("?");
+//                 return graph.getSelectionCells();
+//               },
+//               read: (data) => {
+//                 readData(graph, data);
+//               },
+//               // tslint:disable-next-line: cyclomatic-complexity
+//               save: () => {
+//                 const tmp = model.cells.map((cell) => propsAPI.getCellModel(cell));
+//                 return { nodes: tmp.filter((cell) => cell.type === "0"), edges: tmp.filter((cell) => cell.type === "1") };
+//               },
+//               getCellModel: (cell: ImxCell) => {
+//                 const cellData: IModel = {};
+//                 if (cell.source ) cellData.source = cell.source.id;
+//                 if (cell.target ) cellData.target = cell.target.id;
+//                 cellData.id = cell.id;
+//                 cellData.label = cell.value;
+//                 cellData.size = [cell.geometry.width, cell.geometry.height];
+//                 const style = graph.getCellStyle(cell);
+//                 cellData.shape = style.shape;
+//                 cellData.type = model.isEdge(cell) ? "0" : "1";
+//                 return cellData;
+//               },
+//               add: (name: string, model: ICanvasEdge | ICanvasNode) => {
+//                 const parent = graph.getDefaultParent();
+//                 // tslint:disable-next-line: prefer-switch
+//                 if (name === "node") {
+//                   insertVertex(parent, graph, model);
+//                 } else if (name === "edge") {
+//                   const source = graph.getModel()
+//                     .getCell(model.source);
+//                   const target = graph.getModel()
+//                     .getCell(model.target);
+//                   if (source && target) {
+//                     insertEdge(parent, graph, model, source, target);
+//                   }
+//                 }
+//               },
+//               update: (cell: ImxCell, model: ICanvasEdge | ICanvasNode) => {
+//                 if (!cell || graph.isPort(cell)) {
+//                   return;
+//                 }
+//                 const { x, y, size, label, color } = model;
+//                 const bounds = {
+//                   x: x ? x : cell.geometry.x,
+//                   y: y ? y : cell.geometry.y,
+//                   width: size ? size[0] : cell.geometry.width,
+//                   height: size ? size[1] : cell.geometry.height,
+//                 };
+//                 graph.model.beginUpdate();
+//                 try {
+//                   // resize
+//                   graph.resizeCell(cell, bounds);
+//                   // label
+//                   if (label) {
+//                     graph
+//                       .getModel()
+//                       .setValue(cell, label);
+//                   }
+//                   // update style by model
+//                   if (color) {
+//                     graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, color, [cell]);
+//                   }
+//                 } finally {
+//                   graph.model.endUpdate();
+//                 }
+//               },
+//               remove: (cell: ImxCell) => {
+
+//                 if (cell) {
+//                   graph.removeCells([cell]);
+//                 } else {
+//                   //
+//                 }
+//               }
+//             };
+//             return <WrappedComponent propsAPI={propsAPI} {...this.props} />;
+//           } else {
+//             return null;
+//           }
+//         }}
+//         </MxGraphContext.Consumer>
+//       );
+//     }
+//   };
+// }
 
 interface IProps {
   propsAPI: IPropsAPI;

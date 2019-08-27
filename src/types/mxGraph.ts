@@ -87,6 +87,7 @@ export interface IGraphModel {
   getChildCount(root: ImxCell): number;
   getChildren(cell: ImxCell): ImxCell;
   getValue(cell: ImxCell): string | null;
+  getGeometry(cell: ImxCell): IGeometry;
   getTerminal(edge: ImxCell, isSource: boolean): ImxCell; // returns the source or target mxCell of the given edge depending on the value of the boolean parameter
   setTerminal(edge: ImxCell, terminal: ImxCell, isSourse: boolean): void; // to current transaction
   setTerminals(edge: ImxCell, source: ImxCell, target: ImxCell): void; // in a single transaction
@@ -152,6 +153,7 @@ interface IMxSelectionModel {
   removeCell(cell: ImxCell): void;
   removeCells(cells: ImxCell[]): void;
   selectRegion(rect: IMxRectangle, evt: any): void;
+  addListener(name: string, func: () => void): void;
 }
 
 export interface IStylesheet {
