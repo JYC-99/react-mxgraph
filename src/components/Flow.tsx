@@ -15,7 +15,7 @@ import { IMxGraph } from "../types/mxGraph";
 
 interface IFlowProps {
   data: ICanvasData;
-  shortcut: object;
+  shortcut?: object;
 }
 
 interface IFlowState {
@@ -31,7 +31,9 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
   private _setGraph?: (graph: IMxGraph) => void;
   constructor(props: IFlowProps) {
     super(props);
-    Object.assign(customShortcutDictionary, this.props.shortcut);
+    if (this.props.shortcut) {
+      Object.assign(customShortcutDictionary, this.props.shortcut);
+    }
   }
 
   public render(): React.ReactNode {

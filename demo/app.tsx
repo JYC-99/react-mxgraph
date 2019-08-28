@@ -4,19 +4,19 @@ import * as Fabric from "office-ui-fabric-react/lib";
 
 import {
   FlowContextMenu,
+  FlowCustomCommand,
   FlowDetailPanel,
   FlowItemPanel,
   FlowToolbar,
 } from "./src/index";
 
 import {
-  CustomCommand,
   Flow,
- // ItemPanel,
+  // ItemPanel,
   Minimap,
   MxGraph,
   RegisterNode,
-  Minimap2,
+  // Minimap2,
 } from "../src/index";
 import "./index.scss";
 
@@ -146,7 +146,7 @@ class Demo extends React.PureComponent {
               rounded: 1, fillColor: "white", points: [[0.5, 0], [0.33, 1], [0.67,1], [0, 0.5], [1, 0.5]],
               fontColor: "grey", fontSize: 10, strokeWidth: 1, strokeColor: "grey", shadow: 1, arcSize: 50
             }} extend="rectangle" />
-            <CustomCommand />
+            <FlowCustomCommand />
             {/* <Minimap2 /> */}
           </MxGraph>
         </Stack>

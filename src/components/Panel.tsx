@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   IPanelContext,
   PanelContext,
-  SpecialPanelContext,
 } from "../context/PanelContext";
 
 class Panel extends React.PureComponent<{name: string}> {

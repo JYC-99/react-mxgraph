@@ -1,6 +1,6 @@
 import { IClipboardContext, } from "../context/ClipboardContext";
+import { INavigator } from "../types/clipboard";
 import { IMxGraph, IMxUndoManager } from "./mxGraph";
-
 export interface IMxAction {
   label?: string;
   shortcuts?: string[];
@@ -45,15 +45,15 @@ export function initActions(graph: IMxGraph, clipboard: IClipboardContext, undoM
       func: () => {
         clipboard.copyFuncForMenu(graph, clipboard.copy, clipboard.textInput);
         const text = clipboard.textInput.value;
-        navigator.clipboard.writeText(text)
+        (navigator as INavigator).clipboard.writeText(text)
           .then(
-            (result) => {
+            (result: void) => {
               // tslint:disable-next-line: no-console
               console.log("Successfully copied to clipboard", result);
             }
           )
           .catch(
-            (err) => {
+            (err: ErrorEvent) => {
               // tslint:disable-next-line: no-console
               console.log("Error! could not copy text", err);
             });
@@ -64,15 +64,15 @@ export function initActions(graph: IMxGraph, clipboard: IClipboardContext, undoM
       func: () => {
         clipboard.cutFunc(graph, clipboard.copy, clipboard.textInput);
         const text = clipboard.textInput.value;
-        navigator.clipboard.writeText(text)
+        (navigator as INavigator).clipboard.writeText(text)
           .then(
-            (result) => {
+            (result: void) => {
               // tslint:disable-next-line: no-console
               console.log("Successfully copied to clipboard", result);
             }
           )
           .catch(
-            (err) => {
+            (err: ErrorEvent) => {
               // tslint:disable-next-line: no-console
               console.log("Error! could not copy text", err);
             });
@@ -80,44 +80,46 @@ export function initActions(graph: IMxGraph, clipboard: IClipboardContext, undoM
       shortcuts: ["ctrl + x"]
     },
     pasteHere: {
-      func: (trigger: {x: number; y: number}) => {
-        navigator.clipboard.readText()
-        .then(
-          // tslint:disable-next-line: promise-function-async
-          (result) => {
-            // tslint:disable-next-line: no-console
-            console.log("Successfully retrieved text from clipboard", result);
-            clipboard.textInput.focus(); // no listener
-            // tslint:disable-next-line: deprecation
-            clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput, trigger.x, trigger.y);
-            return Promise.resolve(result);
-          }
-        )
-        .catch(
-          (err) => {
-            throw new Error("Error! read text from clipboard");
-          });
+      func: (trigger: { x: number; y: number }) => {
+        (navigator as INavigator).clipboard.readText()
+          .then(
+            // tslint:disable-next-line: promise-function-async
+            (result: string) => {
+              // tslint:disable-next-line: no-console
+              console.log("Successfully retrieved text from clipboard", result);
+              clipboard.textInput.focus(); // no listener
+              // tslint:disable-next-line: deprecation
+              clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput, trigger.x, trigger.y);
+              return Promise.resolve(result);
+            }
+          )
+          .catch(
+            (err: ErrorEvent) => {
+              // tslint:disable-next-line: no-console
+              console.log("Error! could not copy text", err);
+            });
       },
       shortcuts: ["ctrl + v"]
     },
     paste: {
       func: () => {
-        navigator.clipboard.readText()
-        .then(
-          // tslint:disable-next-line: promise-function-async
-          (result) => {
-            // tslint:disable-next-line: no-console
-            console.log("Successfully retrieved text from clipboard", result);
-            clipboard.textInput.focus(); // no listener
-            // tslint:disable-next-line: deprecation
-            clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput);
-            return Promise.resolve(result);
-          }
-        )
-        .catch(
-          (err) => {
-            throw new Error("Error! read text from clipboard");
-          });
+        (navigator as INavigator).clipboard.readText()
+          .then(
+            // tslint:disable-next-line: promise-function-async
+            (result: string) => {
+              // tslint:disable-next-line: no-console
+              console.log("Successfully retrieved text from clipboard", result);
+              clipboard.textInput.focus(); // no listener
+              // tslint:disable-next-line: deprecation
+              clipboard.pasteFuncForMenu(result, graph, clipboard.copy, clipboard.textInput);
+              return Promise.resolve(result);
+            }
+          )
+          .catch(
+            (err: ErrorEvent) => {
+              // tslint:disable-next-line: no-console
+              console.log("Error! read text from clipboard", err);
+            });
       },
     },
     undo: {
@@ -136,7 +138,7 @@ export function initActions(graph: IMxGraph, clipboard: IClipboardContext, undoM
       },
     },
     zoomOut: {
-      func: () => {        
+      func: () => {
         graph.zoomOut();
       },
     },

@@ -1,24 +1,20 @@
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
-import { ImxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
+import { IMxGraph } from "../types/mxGraph";
+import { IMxPoint, IMxShape } from "../types/shapes";
 // import { registerShape } from "./Shapes";
 const {
   mxEvent,
   mxConstraintHandler,
-  mxGraph,
   mxPoint,
-  mxEllipse,
   mxConstants,
   mxEdgeHandler,
-  mxConnectionHandler,
-  mxCellState,
-  mxDragSource,
   mxRectangle,
-  mxUtils,
 } = mxGraphJs;
 
 const setSelectionShape = (): void => {
-  mxEdgeHandler.prototype.createSelectionShape = function (points) {
+  mxEdgeHandler.prototype.createSelectionShape = function(_points: IMxPoint[]): IMxShape {
+    // tslint:disable-next-line: no-invalid-this
     const shape = new this.state.shape.constructor();
     shape.outline = false;
     // shape.apply(this.state);
@@ -32,7 +28,8 @@ const setSelectionShape = (): void => {
     return shape;
   };
 
-  mxEdgeHandler.prototype.drawPreview = function () {
+  mxEdgeHandler.prototype.drawPreview = function(): void {
+    // tslint:disable
     if (this.isLabel) {
       var b = this.labelShape.bounds;
       var bounds = new mxRectangle(Math.round(this.label.x - b.width / 2),
@@ -59,13 +56,16 @@ const setSelectionShape = (): void => {
       this.parentHighlight.redraw();
     }
   };
+  // tslint:enable
 };
 
 const setEdgeUnmovable = (graph: IMxGraph): void => {
-  graph.isCellMovable = function(cell) {
-    var state = graph.view.getState(cell);
-    var style = (state != null) ? state.style : graph.getCellStyle(cell);
-    if( graph.getModel().isEdge(cell) ) return false;
+  graph.isCellMovable = (cell) => {
+    const state = graph.view.getState(cell);
+    const style = state ? state.style : graph.getCellStyle(cell);
+    if (graph.getModel()
+      .isEdge(cell)) { return false; }
+    // tslint:disable-next-line: triple-equals
     return graph.isCellsMovable() && !graph.isCellLocked(cell) && style[mxConstants.STYLE_MOVABLE] != 0;
   };
 };
@@ -74,7 +74,7 @@ const setEdgeUnmovable = (graph: IMxGraph): void => {
 // tslint:disable-next-statement
 export function initEdgeHandle(graph: IMxGraph): void {
   // tslint:disable
-  mxEdgeHandler.prototype.isHandleVisible = (index) => {
+  mxEdgeHandler.prototype.isHandleVisible = (_index: number) => {
     return true;
   }
 
@@ -160,4 +160,3 @@ export function initEdgeHandle(graph: IMxGraph): void {
   };
 
 }
-

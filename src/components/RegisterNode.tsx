@@ -3,17 +3,16 @@ import * as React from "react";
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 import { IMxGraphContext, MxGraphContext } from "../context/MxGraphContext";
-import { IStylesheet } from "../types/mxGraph";
 const {
   mxCellRenderer,
   mxRectangleShape,
   mxEllipse,
   mxUtils,
-  mxConstants,
-  mxStylesheet,
 } = mxGraphJs;
 
-import { IConfig } from "../types/shapes";
+import {
+  IConfig,
+} from "../types/shapes";
 
 type ExtendableShape = "rectangle" | "ellipse";
 
@@ -24,8 +23,10 @@ interface IRegisterNodeProps {
 }
 
 const builtInShape = {
-  rectangle: mxRectangleShape,
-  ellipse: mxEllipse,
+  // tslint:disable-next-line: ban-types
+  rectangle: (mxRectangleShape as Function),
+  // tslint:disable-next-line: ban-types
+  ellipse: (mxEllipse as Function),
 };
 
 export class RegisterNode extends React.PureComponent<IRegisterNodeProps> {
@@ -37,11 +38,11 @@ export class RegisterNode extends React.PureComponent<IRegisterNodeProps> {
     }
     const extendedShape = builtInShape[extend];
     function registerShape(): void {
+      // @ts-ignore
       extendedShape.call(this);
     }
     mxUtils.extend(registerShape, extendedShape);
-    const a = mxCellRenderer.registerShape(this.props.name, registerShape);
-    // console.log(a, extendedShape, registerShape);
+    mxCellRenderer.registerShape(this.props.name, registerShape);
   }
 
   public render(): React.ReactNode {

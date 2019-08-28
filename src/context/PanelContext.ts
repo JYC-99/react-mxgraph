@@ -1,8 +1,8 @@
 import * as React from "react";
-import { ImxCell } from "../types/mxGraph";
+import { IMxCell } from "../types/mxGraph";
 
 export interface IPanelContext {
-  cells?: ImxCell[];
+  cells?: IMxCell[];
   name: string;
 }
 
@@ -13,7 +13,7 @@ export const PanelContext = React.createContext<IPanelContext>({
 
 export interface ISpecialPanelContext {
   enabled: boolean;
-  cells: ImxCell[];
+  cells: IMxCell[];
 }
 
 export const SpecialPanelContext = React.createContext<ISpecialPanelContext>({

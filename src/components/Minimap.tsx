@@ -52,5 +52,6 @@ export class Minimap extends React.PureComponent<IMinimapProps> {
       throw new Error("empty minimap container");
     }
     this.outline = new mxOutline(graph, this._containerRef.current);
+    if (this.outline) { this.outline.labelsVisible = true; }
   }
 }

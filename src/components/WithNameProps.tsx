@@ -19,12 +19,13 @@ import * as React from "react";
 //   )
 // }
 
-export interface InjectedCounterProps {
+export interface InjectedProps {
   name: string;
 }
 
+// tslint:disable-next-line: no-any
 export const withNameProps = (Component: any, name: string) =>
-  class MakeCounter extends React.PureComponent {
+  class WithNameProps extends React.PureComponent {
 
     public render(): JSX.Element {
       return (

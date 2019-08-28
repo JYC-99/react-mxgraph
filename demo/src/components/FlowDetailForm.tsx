@@ -9,7 +9,7 @@ interface IProps {
 
 import * as Fabric from "office-ui-fabric-react";
 import { StackItem } from "office-ui-fabric-react";
-import { ImxCell } from "../../../src/types/mxGraph";
+import { IMxCell } from "../../../src/types/mxGraph";
 
 const {
   TextField,
@@ -18,7 +18,7 @@ const {
 
 export class DetailForm extends React.PureComponent<IProps, { value: string }> {
   private _isEditing: boolean;
-  get cell(): ImxCell {
+  get cell(): IMxCell {
     const { propsAPI } = this.props;
     return propsAPI.getSelected()[0];
   }

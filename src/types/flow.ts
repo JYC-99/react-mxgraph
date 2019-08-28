@@ -10,7 +10,7 @@ export interface ILayoutNode extends IDrawable {
 }
 
 export interface ICanvasNode extends IDrawable {
-  label: string;
+  label?: string;
   x: number;
   y: number;
   color?: string;
@@ -28,10 +28,10 @@ export interface ICanvasNode extends IDrawable {
 
 export interface ICanvasEdge {
   source: number | string;
-  sourceAnchor: number | string;
+  sourceAnchor?: number | string;
   target: number | string;
-  targetAnchor: number | string;
-  index: number | string;
+  targetAnchor?: number | string;
+  index?: number | string;
   id: string;
 }
 

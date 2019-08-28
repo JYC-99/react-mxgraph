@@ -4,13 +4,7 @@ import * as React from "react";
 import * as mxGraphJs from "mxgraph-js";
 
 const {
-    mxCell,
     mxUtils,
-    mxGeometry,
-    mxConnectionConstraint,
-    mxPoint,
-    mxRectangleShape,
-    mxConstants,
   } = mxGraphJs;
 
 import {
@@ -18,11 +12,14 @@ import {
   MxGraphContext,
 } from "../context/MxGraphContext";
 
-import { ICanvasNode } from "../types/flow";
 import {
-  ImxCell,
+  IMxCell,
   IMxGraph,
 } from "../types/mxGraph";
+
+import {
+  ICanvasNode
+} from "../types/flow";
 
 export interface IItemProps {
   shape: string;
@@ -34,7 +31,7 @@ export interface IItemProps {
 }
 
 export class Item extends React.PureComponent<IItemProps>{
-  public _insertVertex?: (parent: ImxCell, graph: IMxGraph, node: ICanvasNode) => ImxCell;
+  public _insertVertex?: (parent: IMxCell, graph: IMxGraph, node: ICanvasNode) => IMxCell;
   private readonly _containerRef = React.createRef<HTMLDivElement>();
   private _graph?: IMxGraph;
   constructor(props: IItemProps) {
@@ -72,22 +69,16 @@ export class Item extends React.PureComponent<IItemProps>{
   }
 
   public componentDidUpdate = () => {
-    console.log("item did update");
+    // console.log("item did update");
   }
 
-  private readonly addVertex = (text: string, width: string, height: string, style: string): ImxCell => {
-    const vertex = new mxCell(text, new mxGeometry(0, 0, width, height), style);
-    vertex.setVertex(true);
-    return vertex;
-  }
-
-  private readonly insertNode = (graph: IMxGraph, _evt: PointerEvent, target: ImxCell, x: number, y: number): void => {
+  private readonly insertNode = (graph: IMxGraph, _evt: PointerEvent, target: IMxCell, x: number, y: number): void => {
     const label = this.props.model && this.props.model.label ? this.props.model.label : "none";
     // tslint:disable-next-line: newline-per-chained-call
     const shape = this.props.shape;
-    const size = this.props.size ? (this.props.size.split("*")
-      // tslint:disable-next-line
-      .map((x) => parseInt(x))) : [100, 70];
+    const tmp = this.props.size ? this.props.size.split("*")
+       .map((s) => parseInt(s, 10)) : [100, 70];
+    const size: [number, number] = [tmp[0], tmp[1]];
     const nodeData: ICanvasNode = { label, size, x, y, shape, };
 
     if (!this._insertVertex) {

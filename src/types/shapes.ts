@@ -21,10 +21,11 @@ export interface IConfig {
 }
 
 export interface IShape {
-  style: string; 
+  style: string;
 }
 
 export interface IMxShape {
+  style: IConfig;
   apply(state: IMxState): void;
   redraw(): void;
 }
@@ -33,6 +34,10 @@ export interface IMxRectangleShape extends IMxShape {
   style: IConfig;
   boundingBox: IMxRectangle;
   bounds: IMxRectangle;
+}
+
+export interface IMxEllipse extends IMxShape {
+  style: IConfig;
 }
 
 export interface IMxText extends IMxShape {

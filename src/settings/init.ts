@@ -1,9 +1,8 @@
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
-import { ImxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
-import { initPort } from "./port";
+import { IMxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
 import { initEdgeHandle } from "./edge";
-import { initBackground } from "./background";
+import { initPort } from "./port";
 // import { registerShape } from "./Shapes";
 const {
   mxEvent,
@@ -12,14 +11,12 @@ const {
   mxPoint,
   mxEllipse,
   mxConstants,
-  mxEdgeHandler,
   mxConnectionHandler,
   mxCellState,
   mxDragSource,
   mxRectangle,
   mxUtils,
 } = mxGraphJs;
-
 
 function initStyleSheet(graph: IMxGraph): void {
   const edgeStyle = graph.getStylesheet()
@@ -29,7 +26,6 @@ function initStyleSheet(graph: IMxGraph): void {
   edgeStyle.edgeStyle = "orthogonalEdgeStyle";
   edgeStyle.strokeColor = "grey"; // "#1685a9";
   edgeStyle.fontColor = "#000000";
-  edgeStyle.fontStyle = "0";
   edgeStyle.fontStyle = "0";
 
   edgeStyle[mxConstants.STYLE_CURVED] = "1";
@@ -99,7 +95,7 @@ function initHighlightShape(graph: IMxGraph): void {
   //   return null;
   // };
 
-  graph.connectionHandler.createEdgeState = function (me: IMxMouseEvent) {
+  graph.connectionHandler.createEdgeState = function (_me: IMxMouseEvent) {
     var edge = graph.createEdge(null, null, null, null, null);
     console.log(edge);
     return new mxCellState(this.graph.view, edge, this.graph.getCellStyle(edge));
@@ -128,7 +124,7 @@ function initHighlightShape(graph: IMxGraph): void {
 
 function setLabelUnmovable(): void {
   // tslint:disable-next-line: no-function-expression
-  mxGraph.prototype.isLabelMovable = function (cell: ImxCell): boolean {
+  mxGraph.prototype.isLabelMovable = function(_cell: IMxCell): boolean {
     return false;
   };
 }
@@ -139,28 +135,26 @@ function unableDanglingEdges(graph: IMxGraph): void {
 }
 
 function repairDragCoordinate(): void {
-  mxUtils.getScrollOrigin = (node) => {
-    var b = document.body;
-    var d = document.documentElement;
+  mxUtils.getScrollOrigin = (node: HTMLElement) => {
+    const b = document.body;
+    const d = document.documentElement;
     if (!node || node === b || node === d) {
-      return {x: 0, y: 0};
+      return { x: 0, y: 0 };
     }
 
-    const result = {x:0, y:0};
-    while (node != null && node != b && node != d) {
-      if (!isNaN(node.scrollLeft) && !isNaN(node.scrollTop)) {
-        result.x += node.scrollLeft;
-        result.y += node.scrollTop;
-      }
-
-      node = node.parentNode;
+    const result = { x: 0, y: 0 };
+    // while (node !== null && node !== b && node !== d) {
+    if (!isNaN(node.scrollLeft) && !isNaN(node.scrollTop)) {
+      result.x += node.scrollLeft;
+      result.y += node.scrollTop;
     }
+    //   node = node.parentNode;
+    // }
     return result;
-    //return result;
   },
 
     // tslint:disable
-    mxDragSource.prototype.dragOver = function (graph, evt) {
+    mxDragSource.prototype.dragOver = function (graph: IMxGraph, evt: PointerEvent) {
       var offset = mxUtils.getOffset(graph.container);
 
       var origin = mxUtils.getScrollOrigin(graph.container);
