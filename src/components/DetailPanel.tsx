@@ -4,20 +4,21 @@ import * as React from "react";
 import * as mxGraphJs from "mxgraph-js";
 
 const {
-  mxEvent
+  mxGraphSelectionModel
 } = mxGraphJs;
 
 import {
   IMxGraphContext,
   MxGraphContext,
 } from "../context/MxGraphContext";
-import { IMxCell, IMxGraph, } from "../types/mxGraph";
+import { ImxCell, IMxGraph, } from "../types/mxGraph";
 
 import {
+  IPanelContext,
   PanelContext,
 } from "../context/PanelContext";
 
-export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> {
+export class DetailPanel extends React.PureComponent<{}, {cells?: ImxCell[]}> {
   public _first: boolean;
   constructor(props: {}) {
     super(props);
@@ -42,9 +43,10 @@ export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> 
           }
           const name = this._getName(graph, this.state.cells);
           return (
-            <PanelContext.Provider value={{ name, cells: this.state.cells }}>
+            <PanelContext.Provider value={{name, cells: this.state.cells}}>
               <div>
                 {this.props.children}
+                <p>{name}</p>
               </div>
             </PanelContext.Provider>
           );
@@ -55,27 +57,24 @@ export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> 
   }
 
   private readonly _setListener = (graph: IMxGraph) => {
+    // tslint:disable-next-line: no-this-assignment
+    const that = this;
+    const selectChange = mxGraphSelectionModel.prototype.changeSelection ;
+    graph.getSelectionModel().changeSelection = function(): void {
+      selectChange.apply(this, arguments);
 
-    graph.getSelectionModel()
-      .addListener(mxEvent.CHANGE, (_sender, _evt) => {
-        // console.log(_sender, _evt);
-        // console.log(graph.getSelectionCells()[0], graph.getDefaultParent());
-        this.setState({ cells: graph.getSelectionCells() });
-      });
+      that.setState({cells: graph.getSelectionCells()});
+    };
+
   }
 
-  private readonly _getName = (graph: IMxGraph, cells?: IMxCell[]): string => {
+  private readonly _getName = (graph: IMxGraph, cells?: ImxCell[]): string => {
     if (!cells) {
       return "no selection";
     }
     if (cells.length > 1) {
-      if (cells.map((cell) => +!graph.isPort(cell))
-        .reduce((acc, cur) => (acc + cur)) === 1) {
-        return "vertex";
-      }
-
       return "multi";
-      // tslint:disable-next-line: prefer-switch
+    // tslint:disable-next-line: prefer-switch
     } else if (cells.length === 1) {
       const cell = cells[0];
       if (graph.isPort(cell)) { return "port"; }

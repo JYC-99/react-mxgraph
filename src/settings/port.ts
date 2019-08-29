@@ -1,10 +1,11 @@
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 
-import { IMxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
+import { ImxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
 const {
   mxGraph,
   mxConstants,
+  mxPerimeter,
   mxEdgeHandler,
   mxVertexHandler,
   mxRectangle,
@@ -12,6 +13,7 @@ const {
   mxCellMarker,
   mxCellHighlight,
   mxGraphView,
+  mxGraphSelectionModel,
   mxClient,
   mxUtils,
   mxPoint,
@@ -19,9 +21,9 @@ const {
 
 // tslint:disable
 
-function setPortHandler(_graph: IMxGraph): void {
+function setPortHandler(graph: IMxGraph): void {
 
-  mxVertexHandler.prototype.createSelectionShape = function (state: IMxState) {
+  mxVertexHandler.prototype.createSelectionShape = function (state) {
     const shape = this.graph.cellRenderer.createShape(state);
     shape.style = state.shape.style;
 
@@ -29,8 +31,8 @@ function setPortHandler(_graph: IMxGraph): void {
     shape.isRounded = state.style[mxConstants.STYLE_ROUNDED];
     const isPort = this.graph.isPort(state.cell);
 
-    shape.fill = isPort ? state.style[mxConstants.STYLE_FILLCOLOR] : this.getSelectionColor();
-    shape.stroke = this.getSelectionColor();
+    shape.fill = isPort ? state.style[mxConstants.STYLE_FILLCOLOR] : state.style[mxConstants.STYLE_STROKECOLOR];
+    shape.stroke = state.style[mxConstants.STYLE_STROKECOLOR];
 
     shape.fillOpacity = isPort ? 100 : 20;
     shape.strokeOpacity = 100;
@@ -64,8 +66,8 @@ function setPortHandler(_graph: IMxGraph): void {
 
 }
 
-function setPortValidationStyle(_graph: IMxGraph) {
-  mxCellMarker.prototype.getMarkerColor = function (_evt: PointerEvent, _state: IMxState, isValid: boolean) {
+function setPortValidationStyle(graph: IMxGraph) {
+  mxCellMarker.prototype.getMarkerColor = function (evt, state, isValid) {
     return (isValid) ? "#1565c0" : "red";
   };
   mxCellHighlight.prototype.repaint = function () {
@@ -84,8 +86,7 @@ function setPortValidationStyle(_graph: IMxGraph) {
         this.shape.setCursor(this.state.shape.getCursor());
       }
 
-      // if (mxClient.IS_QUIRKS || document.documentMode == 8) {
-      if (mxClient.IS_QUIRKS) {
+      if (mxClient.IS_QUIRKS || document.documentMode == 8) {
         if (this.shape.stroke == 'transparent') {
           this.shape.stroke = 'white';
           this.shape.opacity = 1;
@@ -99,17 +100,18 @@ function setPortValidationStyle(_graph: IMxGraph) {
     }
   };
 
-  // the code calculates graphX and graphY of mxMouseEvent
-  // which involve intersection calculation in mxUtils.intersectsHotspot
-  mxUtils.convertPoint = function (container: HTMLDivElement, x: number, y: number) {
-    var origin = mxUtils.getScrollOrigin(container);
-    var offset = mxUtils.getOffset(container);
+  // comment the code that calculates scroll offset since it causes wrong graphX graphY for mxMouseEvent
+  // and lead wrong intersection calculation in mxUtils.intersectsHotspot
+  // but maybe it is useful somewhere else 
+  mxUtils.convertPoint = function(container: HTMLDivElement, x: number, y: number) {
+		// var origin = mxUtils.getScrollOrigin(container);
+		var offset = mxUtils.getOffset(container);
 
-    offset.x -= origin.x;
-    offset.y -= origin.y;
-
-    return new mxPoint(x - offset.x, y - offset.y);
-  }
+		// offset.x -= origin.x;
+		// offset.y -= origin.y;
+		
+		return new mxPoint(x - offset.x, y - offset.y);
+	}
 
   mxCellHighlight.prototype.createShape = function () {
     var shape = this.graph.cellRenderer.createShape(this.state);
@@ -140,7 +142,7 @@ function setPortValidationStyle(_graph: IMxGraph) {
 
 }
 
-function setHotspot(_graph: IMxGraph) {
+function setHotspot(graph: IMxGraph) {
 
   mxCellMarker.prototype.intersects = function (state: IMxState, me: IMxMouseEvent) {
     if (this.hotspotEnabled) {
@@ -165,23 +167,20 @@ function setTooltips(graph: IMxGraph) {
 }
 
 function setSelectionRecursively(graph: IMxGraph) {
-  const selectModel = graph.getSelectionModel();
-  const setCells = selectModel.setCells;
-  selectModel.setCells = function (cells: IMxCell[]) {
-    setCells.call(selectModel,
-      cells.filter(cell => cell != null)
-        .map(cell => cell.getChildCount() ? [cell, ...cell.children.filter(port => graph.isPort(port))] : [cell])
-        .reduce((arr, cells) => arr.concat(cells), [])
-    );
+  mxGraphSelectionModel.prototype.setCell = function (cell: ImxCell) {
+    if (cell != null) {
+      const cells = [cell];
+      if (cell.children) {
+        cell.children.forEach((port) => {
+          if (graph.isPort(port)) {
+            cells.push(port);
+          }
+        })
+      }
+      this.setCells(cells);
+    }
   };
 }
-
-// function preventChildrenFromBeingRemoved(graph: IMxGraph) {
-//   // graph.graphHandler.shouldRemoveCellsFromParent = (parent, cells, evt) => {
-//   //   const bl =  (cells.length == 0 && !cells[0].geometry.relative && mxGraphHandler.prototype.shouldRemoveCellsFromParent.apply(this, arguments));
-//   //   console.log(bl);
-//   // };
-// }
 
 // tslint:disable-next-line: export-name
 export function initPort(graph: IMxGraph) {
@@ -194,7 +193,7 @@ export function initPort(graph: IMxGraph) {
   graph.cellsResizable = false;
   graph.extendParents = false;
 
-  graph.getLabel = function (cell: IMxCell) {
+  graph.getLabel = function (cell: ImxCell) {
     let label = mxGraph.prototype.getLabel.apply(this, arguments); // "supercall"
     if (this.isCellLocked(cell)) { return ""; }
     else if (this.isCellCollapsed(cell)) {
@@ -204,17 +203,16 @@ export function initPort(graph: IMxGraph) {
     return label;
   }
 
-
   graph.isPort = (cell) => {
     const geo = graph.getCellGeometry(cell);
     return geo ? graph.getModel().isVertex(cell) && geo.relative : false;
   };
   setTooltips(graph);
   // Removes the folding icon and disables any folding
-  graph.isCellFoldable = function (_cell: IMxCell) {
+  graph.isCellFoldable = function (cell: ImxCell) {
     return false;
   };
-  graph.view.updateFixedTerminalPoint = function (edge, terminal, source, _constraint) {
+  graph.view.updateFixedTerminalPoint = function (edge, terminal, source, constraint) {
     mxGraphView.prototype.updateFixedTerminalPoint.apply(this, arguments);
 
     var pts = edge.absolutePoints;
@@ -230,7 +228,7 @@ export function initPort(graph: IMxGraph) {
     graph.connectionHandler.isConnectableCell = (cell) => {
       return graph.isPort(cell);
     };
-    mxEdgeHandler.prototype.isConnectableCell = (cell: IMxCell) => {
+    mxEdgeHandler.prototype.isConnectableCell = (cell: ImxCell) => {
       return graph.connectionHandler.isConnectableCell(cell);
     };
   }

@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   IPanelContext,
   PanelContext,
+  SpecialPanelContext,
 } from "../context/PanelContext";
 
 class Panel extends React.PureComponent<{name: string}> {
@@ -13,10 +14,19 @@ class Panel extends React.PureComponent<{name: string}> {
         } = value;
 
         if (name && cells && name === this.props.name) {
+          if (name === "edge") {
+            // console.log(cells[0]);
+          }
+          if (name === "port") {
+            // console.log(cells[0].style);
+          }
           return (
-            <div>
-              {this.props.children}
-            </div>
+            <SpecialPanelContext.Provider value={{enabled: true, cells, }}>
+              <div className="node-panel-container" >
+                {`${name} panel:`}
+                {this.props.children}
+              </div>
+            </SpecialPanelContext.Provider>
           );
         }
         return null;
@@ -26,10 +36,16 @@ class Panel extends React.PureComponent<{name: string}> {
   }
 }
 
-import {
-  withNameProps
-} from "./WithNameProps";
-export const NodePanel = withNameProps(Panel, "vertex");
-export const EdgePanel = withNameProps(Panel, "edge");
-export const CanvasPanel = withNameProps(Panel, "canvas");
-export const PortPanel = withNameProps(Panel, "port");
+function createPanel(PanelComponent, name: string): React.PureComponent {
+  // tslint:disable-next-line: max-classes-per-file
+  return class extends React.PureComponent {
+    public render(): React.ReactNode {
+      return <PanelComponent name={name} {...this.props} />;
+    }
+  };
+}
+
+export const NodePanel = createPanel(Panel, "vertex");
+export const EdgePanel = createPanel(Panel, "edge");
+export const CanvasPanel = createPanel(Panel, "canvas");
+export const PortPanel = createPanel(Panel, "port");

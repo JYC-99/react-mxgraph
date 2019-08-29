@@ -1,11 +1,3 @@
-import {
-  IConfig,
-  IMxPoint,
-  IMxRectangle,
-  IMxShape,
-  IMxText,
-} from "./shapes";
-
 // tslint:disable-next-line: no-empty-interface
 export interface IEdge {
 
@@ -21,36 +13,27 @@ export interface IParent {
 
 }
 
-export interface IBasicCell {
+export interface ImxCell {
   vertex: boolean;
   edge: boolean;
-  parent?: IMxCell;
+  source?: ImxCell;
+  target?: ImxCell;
+  parent?: ImxCell;
   geometry: IGeometry;
   mxObjectId: string;
   id: string;
   style: string;
+  edges: ImxCell[];
   value: string;
-  children: IMxCell[];
+  children: ImxCell[];
   absolutePoints: IMxPoint[];
   setConnectable(isConnectable: boolean): void;
   getStyle(): string;
-  getChildCount(): number;
   setStyle(style: string): void;
-}
-
-export interface IEdge extends IBasicCell{
-  source: IMxCell;
-  target: IMxCell;
   removeFromTerminal(isSource: boolean): void; // removes the edge from its source or target terminal
-  getTerminal(isSource: boolean): IMxCell;
+  getTerminal(isSource: boolean): ImxCell; // for edges
   setAbsoluteTerminalPoint(point: IMxPoint, isSource: boolean): void;
 }
-
-export interface INode extends IBasicCell {
-  edges: IEdge[];
-}
-
-export type IMxCell = IEdge | INode;
 
 export interface IMxMenu {
   triggerX: number;
@@ -87,25 +70,28 @@ export interface IMxEventObject {
 }
 
 export interface IGraphModel {
-  cells: IMxCell[];
+  cells: ImxCell[];
   beginUpdate(): void;
   endUpdate(): void;
-  getTopmostCells(cells: IMxCell[]): IMxCell[];
-  getCell(id: string): IMxCell;
-  getRoot(): IMxCell;
-  getChildCount(root: IMxCell): number;
-  getChildren(cell: IMxCell): IMxCell;
-  getChildAt(cell: IMxCell, index: number): IMxCell;
-  getValue(cell: IMxCell): string | null;
-  getGeometry(cell: IMxCell): IGeometry;
-  getTerminal(edge: IMxCell, isSource: boolean): IMxCell; // returns the source or target mxCell of the given edge depending on the value of the boolean parameter
-  setTerminal(edge: IMxCell, terminal: IMxCell, isSourse: boolean): void; // to current transaction
-  setTerminals(edge: IMxCell, source: IMxCell, target: IMxCell): void; // in a single transaction
-  setVisible(cell: IMxCell, visible: boolean): void; // to current transaction
-  addListener(action: string, listener: (_sender: IGraphModel, evt: IMxEventObject) => void): void;
-  isVertex(cell: IMxCell): boolean;
-  isEdge(cell: IMxCell): boolean;
-  setValue(cell: IMxCell, value: string): void;
+  getTopmostCells(cells: ImxCell[]): ImxCell[];
+  getCell(id: string): ImxCell;
+  getRoot(): ImxCell;
+  getChildCount(root: ImxCell): number;
+  getChildren(cell: ImxCell): ImxCell;
+  getValue(cell: ImxCell): string | null;
+  getTerminal(edge: ImxCell, isSource: boolean): ImxCell; // returns the source or target mxCell of the given edge depending on the value of the boolean parameter
+  setTerminal(edge: ImxCell, terminal: ImxCell, isSourse: boolean): void; // to current transaction
+  setTerminals(edge: ImxCell, source: ImxCell, target: ImxCell): void; // in a single transaction
+  setVisible(cell: ImxCell, visible: boolean): void; // to current transaction
+  addListener(action: string, listener: (sender: IGraphModel, evt: IMxEventObject) => void): void;
+  isVertex(cell: ImxCell): boolean;
+  isEdge(cell: ImxCell): boolean;
+  setValue(cell: ImxCell, value: string): void;
+}
+
+interface IMxPoint {
+  x: number;
+  y: number;
 }
 
 interface IGeometry {
@@ -124,18 +110,17 @@ interface IGeometry {
 
 interface IGraphView {
   scale: number;
-  graph: IMxGraph;
   translate: {
     x: number;
     y: number;
   };
-  getState(cell: IMxCell): IMxState | null;
-  getTerminalPort(state: IMxState, terminal: IMxCell, isSource: boolean): IMxState;
+  getState(cell: ImxCell): IMxState | null;
+  getTerminalPort(state: IMxState, terminal: ImxCell, isSource: boolean): IMxState;
   addListener(action: string, listener: (sender: IGraphModel, evt: IMxEventObject) => void): void;
-  updateFixedTerminalPoint(edge: IEdge, terminal: INode, isSource: boolean, constraint?: IMxPoint[]): void;
-  getPerimeterFunction(terminal: IMxCell): () => void;
-  getRoutingCenterX(terminal: IMxCell): number;
-  getRoutingCenterY(terminal: IMxCell): number;
+  updateFixedTerminalPoint(edge: ImxCell, terminal: ImxCell, isSource: boolean, constraint?: IMxPoint[]): void;
+  getPerimeterFunction(terminal: ImxCell): () => void;
+  getRoutingCenterX(terminal: ImxCell): number;
+  getRoutingCenterY(terminal: ImxCell): number;
 }
 
 export interface IMxState {
@@ -146,34 +131,20 @@ export interface IMxState {
   terminalDistance: number; // for edges
   segments: number[];
   style: ICellStyle;
-  cell: IMxCell;
+  cell: ImxCell;
   cellBounds: IMxRectangle;
   text: IMxText;
-  getVisibleTerminal(isSource: boolean): IMxCell;
+  getVisibleTerminal(isSource: boolean): ImxCell;
   getVisibleTerminalState(isSource: boolean): IMxState;
   setVisibleTerminalState(terminalState: IMxState, isSource: boolean): void;
 }
 
 interface IMxSelectionModel {
-  cells: IMxCell[];
+  cells: ImxCell[];
   graph: IMxGraph;
-  setCell(cell: IMxCell): void;
-  setCells(cells: IMxCell[]): void;
-  addCell(cell: IMxCell): void;
-  addCells(cells: IMxCell[]): void;
-  removeCell(cell: IMxCell): void;
-  removeCells(cells: IMxCell[]): void;
-  selectRegion(rect: IMxRectangle, evt: IMxEventObject): void;
-  addListener(name: string, func: (sender: IMxSelectionModel, event: IMxEventObject) => void): void;
 }
 
-export interface IStyle extends IConfig {
-  edgeStyle: string;
-  fontStyle: string;
-}
-
-export interface IStylesheet{
-
+export interface IStylesheet {
   createDefaultVertexStyle(): IStylesheet;
   putCellStyle(customName: string, customStyle: IStylesheet): void;
   /*
@@ -181,9 +152,9 @@ export interface IStylesheet{
    * defaultStyle - Default style to be returned if no style can be found.
    */
   getCellStyle(name: string, defaultStyle?: IStylesheet): IStylesheet;
-  getDefaultEdgeStyle(): IStyle;
-  getDefaultVertexStyle(): IStyle;
 }
+
+import { IConfig, IMxRectangle, IMxShape, IMxText } from "./shapes";
 
 interface ICellStyle extends IConfig {
   shape: string;
@@ -207,38 +178,21 @@ export interface IMxMouseEvent {
   state: IMxState;
   getGraphX(): number;
   getGraphY(): number;
-  getCell(): IMxCell;
+  getCell(): ImxCell;
   getEvent(): PointerEvent;
   getState(): IMxState;
-}
-
-export interface IKeyHandler {
-  bindKey(keycode: number, func: () => void): void;
-  bindShiftKey(keycode: number, func: () => void): void;
-  bindControlKey(keycode: number, func: () => void): void;
-  bindControlShiftKey(keycode: number, func: () => void): void;
-}
-
-// tslint:disable-next-line: no-empty-interface
-export interface IMxRubberband{
-
-}
-// tslint:disable-next-line: no-empty-interface
-export interface IMxConstraintHandler{
-  isStateIgnored(state: IMxState, isSource: boolean): boolean;
 }
 
 export interface IMxGraph {
   popupMenuHandler: {
     autoExpand: boolean;
-    factoryMethod(menu: IMxMenu, cell: IMxCell | null, evt: () => {}): void;
+    factoryMethod(menu: IMxMenu, cell: ImxCell | null, evt: () => {}): void;
   };
   container: HTMLDivElement;
   connectionHandler: {
     connectImage: IMxImage;
     graph: IMxGraph;
-    constraintHandler: IMxConstraintHandler;
-    isConnectableCell(cell: IMxCell): boolean;
+    isConnectableCell(cell: ImxCell): boolean;
     createEdgeState(me: IMxMouseEvent): IMxState;
   };
   view: IGraphView;
@@ -253,11 +207,6 @@ export interface IMxGraph {
   extendParents: boolean;
   defaultEdgeStyle: object;
   currentEdgeStyle: object;
-  keyHandler: IKeyHandler;
-  panDx: number;
-  panDy: number;
-  autoScroll: number;
-  autoExtend: boolean;
   addMouseListener(listener: {
     currentState: null | IMxState;
     mouseDown(sender: IMxGraph, me: IMxMouseEvent): void;
@@ -265,64 +214,49 @@ export interface IMxGraph {
     mouseUp(sender: IMxGraph, me: IMxMouseEvent): void;
   }): void;
   createCurrentEdgeStyle(): string;
-  convertValueToString(terminal: IMxCell): string;
-  createEdge(parent: IMxCell | null, id: string | null, label: HTMLElement | null, source: IMxCell | null, target: IMxCell | null, style?: string): IMxCell;
+  convertValueToString(terminal: ImxCell): string;
+  createEdge(parent: ImxCell | null, id: string | null, label: HTMLElement | null, source: ImxCell | null, target: ImxCell | null, style?: string): ImxCell;
   getModel(): IGraphModel;
   getView(): IGraphView;
-  getDefaultParent(): IMxCell;
-  getCellGeometry(cell: IMxCell): IGeometry;
-  getCellStyle(cell: IMxCell): ICellStyle;
-  getLabel(cell: IMxCell): string;
+  getDefaultParent(): ImxCell;
+  getCellGeometry(cell: ImxCell): IGeometry;
+  getCellStyle(cell: ImxCell): ICellStyle;
+  getLabel(cell: ImxCell): string;
   getStylesheet(): IStylesheet;
-  getSelectionCells(): IMxCell[];
-  getSelectionCell(): IMxCell;
+  getSelectionCells(): ImxCell[];
+  getSelectionCell(): ImxCell;
   getSelectionModel(): IMxSelectionModel;
-  getTooltipForCell(cell: IMxCell): IMxToolTip;
-  getGraphBounds(): void;
-  insertVertex(parent: IMxCell, id?: string | null, value?: string, x?: number, y?: number, width?: number, height?: number, style?: string, isRelative?: boolean): IMxCell;
-  insertEdge(parent: IMxCell, id?: string | null, value?: string, source?: IMxCell, target?: IMxCell): IMxCell;
-  importCells(cells: IMxCell[], x: number, y: number, target: IMxCell): IMxCell[];
-  scrollCellToVisible(cells: IMxCell[]): void;
-  setSelectionCells(cells: IMxCell[]): void;
-  setSelectionCell(cells: IMxCell[]): void;
+  getTooltipForCell(cell: ImxCell): IMxToolTip;
+  insertVertex(parent: ImxCell, id?: string | null, value?: string, x?: number, y?: number, width?: number, height?: number, style?: string, isRelative?: boolean): ImxCell;
+  insertEdge(parent: ImxCell, id?: string | null, value?: string, source?: ImxCell, target?: ImxCell): ImxCell;
+  importCells(cells: ImxCell[], x: number, y: number, target: ImxCell): ImxCell[] | null;
+  scrollCellToVisible(cells: ImxCell[]): void;
+  setSelectionCells(cells: ImxCell[]): void;
   setTooltips(bl: boolean): void;
   setCellsResizable(bl: boolean): void;
-  setCellStyles(name: string, style: string, cell: IMxCell[]): void;
   setConnectable(bl: boolean): void;
   setAllowDanglingEdges(bl: boolean): void;
   setDisconnectOnMove(bl: boolean): void;
   selectCell(isNext: boolean, isParent?: boolean, isChild?: boolean): void; //
-  selectAll(parent: IMxCell, descendants: IMxCell[]): void; // select all children of the given parent cell
-  selectCells(vertices: IMxCell[], edges: IMxCell[], parent: IMxCell): void;
-  selectPreviousCell(): void;
-  selectParentCell(): void;
-  selectChildCell(): void;
+  selectAll(parent: ImxCell, descendants: ImxCell[]): void; // select all children of the given parent cell
+  selectCells(vertices: ImxCell[], edges: ImxCell[], parent: ImxCell): void;
   setHtmlLabels(bl: boolean): void;
-  setEnabled(bl: boolean): void;
   stopEditing(bl: boolean): void;
-  snap(value: number): number;
   isEnabled(): boolean;
   isEditing(): boolean;
   isSelectionEmpty(): boolean;
-  isCellLocked(target: IMxCell): boolean;
-  isCellFoldable(cell: IMxCell): boolean;
-  isCellCollapsed(cell: IMxCell): boolean;
-  isCellSelected(cell: IMxCell): boolean;
-  isCellMovable(cell: IMxCell): boolean;
-  isCellsMovable(): boolean;
-  removeCells(cells?: IMxCell[]): IMxCell[];
-  isDropEnabled(): boolean;
-  isGridEnabledEvent(evt: MouseEvent): boolean;
-  resizeCell(cell: IMxCell, bounds: { x: number; y: number; width: number; height: number }, recurse?: boolean): void;
-  moveCells(cell: IMxCell, dx: number, dy: number): void;
-  cloneCells(cells: IMxCell[]): IMxCell[];
+  isCellLocked(target: ImxCell): boolean;
+  isCellFoldable(cell: ImxCell): boolean;
+  isCellCollapsed(cell: ImxCell): boolean;
+  removeCells(cells?: ImxCell[]): ImxCell[];
+  resizeCell(cell: ImxCell, bounds: { x: number; y: number; width: number; height: number }, recurse?: boolean): void;
+  moveCells(cell: ImxCell, dx: number, dy: number): void;
+  cloneCells(cells: ImxCell[]): ImxCell[];
   // drill down
-  isPort(cell: IMxCell): boolean;
-  getTerminalForPort(portCell: IMxCell, isSource: boolean): IMxCell;
+  isPort(cell: ImxCell): boolean;
+  getTerminalForPort(portCell: ImxCell, isSource: boolean): ImxCell;
   zoomIn(): void;
   zoomOut(): void;
   fit(): void;
-  zoomActual(): void;
   orderCells(isToBack: boolean): void;
-  scrollPointToVisible(x: number, y: number, isAutoExtend: boolean): void;
 }

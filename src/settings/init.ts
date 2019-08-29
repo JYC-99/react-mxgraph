@@ -1,7 +1,6 @@
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
-import { IMxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
-import { initEdgeHandle } from "./edge";
+import { ImxCell, IMxGraph, IMxMouseEvent } from "../types/mxGraph";
 import { initPort } from "./port";
 // import { registerShape } from "./Shapes";
 const {
@@ -11,12 +10,99 @@ const {
   mxPoint,
   mxEllipse,
   mxConstants,
+  mxEdgeHandler,
   mxConnectionHandler,
   mxCellState,
   mxDragSource,
   mxRectangle,
   mxUtils,
 } = mxGraphJs;
+
+// override to disallow resizing of edge
+// tslint:disable-next-statement
+function initEdgeHandle(): void {
+  // tslint:disable
+  mxEdgeHandler.prototype.isHandleVisible = (index) => {
+    return true;
+  }
+
+  // tslint:disable-next-line: cyclomatic-complexity
+  mxEdgeHandler.prototype.init = function () {
+    this.graph = this.state.view.graph;
+    this.marker = this.createMarker();
+    this.constraintHandler = new mxConstraintHandler(this.graph);
+
+    // Clones the original points from the cell
+    // and makes sure at least one point exists
+    this.points = [];
+
+    // Uses the absolute points of the state
+    // for the initial configuration and preview
+    this.abspoints = this.getSelectionPoints(this.state);
+    this.shape = this.createSelectionShape(this.abspoints);
+    this.shape.dialect = (this.graph.dialect != mxConstants.DIALECT_SVG) ?
+      mxConstants.DIALECT_MIXEDHTML : mxConstants.DIALECT_SVG;
+    this.shape.init(this.graph.getView().getOverlayPane());
+    this.shape.pointerEvents = false;
+    this.shape.setCursor(mxConstants.CURSOR_MOVABLE_EDGE);
+    mxEvent.redirectMouseEvents(this.shape.node, this.graph, this.state);
+
+    // Updates preferHtml
+    this.preferHtml = this.state.text != null &&
+      this.state.text.node.parentNode == this.graph.container;
+
+    if (!this.preferHtml) {
+      // Checks source terminal
+      const sourceState = this.state.getVisibleTerminalState(true);
+
+      if (sourceState != null) {
+        this.preferHtml = sourceState.text != null &&
+          sourceState.text.node.parentNode == this.graph.container;
+      }
+
+      if (!this.preferHtml) {
+        // Checks target terminal
+        const targetState = this.state.getVisibleTerminalState(false);
+
+        if (targetState != null) {
+          this.preferHtml = targetState.text != null &&
+            targetState.text.node.parentNode == this.graph.container;
+        }
+      }
+    }
+
+    // Adds highlight for parent group
+    if (this.parentHighlightEnabled) {
+      const parent = this.graph.model.getParent(this.state.cell);
+
+      if (this.graph.model.isVertex(parent)) {
+        const pstate = this.graph.view.getState(parent);
+
+        if (pstate != null) {
+          this.parentHighlight = this.createParentHighlightShape(pstate);
+          // VML dialect required here for event transparency in IE
+          this.parentHighlight.dialect = (this.graph.dialect != mxConstants.DIALECT_SVG) ? mxConstants.DIALECT_VML : mxConstants.DIALECT_SVG;
+          this.parentHighlight.pointerEvents = false;
+          this.parentHighlight.rotation = Number(pstate.style[mxConstants.STYLE_ROTATION] || '0');
+          this.parentHighlight.init(this.graph.getView().getOverlayPane());
+        }
+      }
+    }
+    // [remove a piece of code about initializing this.bends from the original function]
+
+    // Adds a rectangular handle for the label position
+    this.label = new mxPoint(this.state.absoluteOffset.x, this.state.absoluteOffset.y);
+    this.labelShape = this.createLabelHandleShape();
+    this.initBend(this.labelShape);
+    this.labelShape.setCursor(mxConstants.CURSOR_LABEL_HANDLE);
+
+    this.customHandles = this.createCustomHandles();
+    console.log(this.marker);
+    this.redraw();
+    // tslint:enable
+  };
+
+}
 
 function initStyleSheet(graph: IMxGraph): void {
   const edgeStyle = graph.getStylesheet()
@@ -26,6 +112,7 @@ function initStyleSheet(graph: IMxGraph): void {
   edgeStyle.edgeStyle = "orthogonalEdgeStyle";
   edgeStyle.strokeColor = "grey"; // "#1685a9";
   edgeStyle.fontColor = "#000000";
+  edgeStyle.fontStyle = "0";
   edgeStyle.fontStyle = "0";
 
   edgeStyle[mxConstants.STYLE_CURVED] = "1";
@@ -51,8 +138,8 @@ function initStyleSheet(graph: IMxGraph): void {
 // tslint:disable
 function initHighlightShape(graph: IMxGraph): void {
   // Shows connection points only if cell not selected
-  graph.connectionHandler.constraintHandler.isStateIgnored = (state: IMxState, isSource: boolean) => {
-    return isSource && state.view.graph.isCellSelected(state.cell);
+  graph.connectionHandler.constraintHandler.isStateIgnored = function (state, source) {
+    return source && state.view.graph.isCellSelected(state.cell);
   };
   // override  mxConstraintHandler.prototype.highlightColor = mxConstants.DEFAULT_VALID_COLOR
   mxConstraintHandler.prototype.highlightColor = "#29b6f6";
@@ -95,9 +182,9 @@ function initHighlightShape(graph: IMxGraph): void {
   //   return null;
   // };
 
-  graph.connectionHandler.createEdgeState = function (_me: IMxMouseEvent) {
+  graph.connectionHandler.createEdgeState = function (me: IMxMouseEvent) {
     var edge = graph.createEdge(null, null, null, null, null);
-    console.log(edge);
+
     return new mxCellState(this.graph.view, edge, this.graph.getCellStyle(edge));
   };
   // Overrides edge preview to use current edge shape and default style
@@ -124,7 +211,7 @@ function initHighlightShape(graph: IMxGraph): void {
 
 function setLabelUnmovable(): void {
   // tslint:disable-next-line: no-function-expression
-  mxGraph.prototype.isLabelMovable = function(_cell: IMxCell): boolean {
+  mxGraph.prototype.isLabelMovable = function(cell: ImxCell): boolean {
     return false;
   };
 }
@@ -135,97 +222,76 @@ function unableDanglingEdges(graph: IMxGraph): void {
 }
 
 function repairDragCoordinate(): void {
-  mxUtils.getScrollOrigin = (node: HTMLElement) => {
-    const b = document.body;
-    const d = document.documentElement;
-    if (!node || node === b || node === d) {
-      return { x: 0, y: 0 };
+  // tslint:disable
+  mxDragSource.prototype.dragOver = function (graph, evt) {
+    var offset = mxUtils.getOffset(graph.container);
+    // var origin = mxUtils.getScrollOrigin(graph.container);
+    var origin = { x: 0, y: 0 };
+    var x = mxEvent.getClientX(evt) - offset.x + origin.x - graph.panDx;
+    var y = mxEvent.getClientY(evt) - offset.y + origin.y - graph.panDy;
+
+    if (graph.autoScroll && (this.autoscroll == null || this.autoscroll)) {
+      graph.scrollPointToVisible(x, y, graph.autoExtend);
     }
 
-    const result = { x: 0, y: 0 };
-    // while (node !== null && node !== b && node !== d) {
-    if (!isNaN(node.scrollLeft) && !isNaN(node.scrollTop)) {
-      result.x += node.scrollLeft;
-      result.y += node.scrollTop;
+    // Highlights the drop target under the mouse
+    if (this.currentHighlight != null && graph.isDropEnabled()) {
+      this.currentDropTarget = this.getDropTarget(graph, x, y, evt);
+      var state = graph.getView().getState(this.currentDropTarget);
+      this.currentHighlight.highlight(state);
     }
-    //   node = node.parentNode;
-    // }
-    return result;
-  },
 
-    // tslint:disable
-    mxDragSource.prototype.dragOver = function (graph: IMxGraph, evt: PointerEvent) {
-      var offset = mxUtils.getOffset(graph.container);
+    // Updates the location of the preview
+    if (this.previewElement != null) {
+      if (this.previewElement.parentNode == null) {
+        graph.container.appendChild(this.previewElement);
 
-      var origin = mxUtils.getScrollOrigin(graph.container);
-      // console.log(origin);
-      // var origin = { x: 0, y: 0 };
-      var x = mxEvent.getClientX(evt) - offset.x + origin.x - graph.panDx;
-      var y = mxEvent.getClientY(evt) - offset.y + origin.y - graph.panDy;
-
-      // console.log(x,y );
-      if (graph.autoScroll && (this.autoscroll == null || this.autoscroll)) {
-        graph.scrollPointToVisible(x, y, graph.autoExtend);
+        this.previewElement.style.zIndex = '3';
+        this.previewElement.style.position = 'absolute';
       }
 
-      // Highlights the drop target under the mouse
-      if (this.currentHighlight != null && graph.isDropEnabled()) {
-        this.currentDropTarget = this.getDropTarget(graph, x, y, evt);
-        var state = graph.getView().getState(this.currentDropTarget);
-        this.currentHighlight.highlight(state);
+      var gridEnabled = this.isGridEnabled() && graph.isGridEnabledEvent(evt);
+      var hideGuide = true;
+
+      // Grid and guides
+      if (this.currentGuide != null && this.currentGuide.isEnabledForEvent(evt)) {
+        // LATER: HTML preview appears smaller than SVG preview
+        var w = parseInt(this.previewElement.style.width);
+        var h = parseInt(this.previewElement.style.height);
+        var bounds = new mxRectangle(0, 0, w, h);
+        var delta = new mxPoint(x, y);
+        delta = this.currentGuide.move(bounds, delta, gridEnabled);
+        hideGuide = false;
+        x = delta.x;
+        y = delta.y;
+      }
+      else if (gridEnabled) {
+        var scale = graph.view.scale;
+        var tr = graph.view.translate;
+        var off = graph.gridSize / 2;
+        x = (graph.snap(x / scale - tr.x - off) + tr.x) * scale;
+        y = (graph.snap(y / scale - tr.y - off) + tr.y) * scale;
       }
 
-      // Updates the location of the preview
-      if (this.previewElement != null) {
-        if (this.previewElement.parentNode == null) {
-          graph.container.appendChild(this.previewElement);
-
-          this.previewElement.style.zIndex = '3';
-          this.previewElement.style.position = 'absolute';
-        }
-
-        var gridEnabled = this.isGridEnabled() && graph.isGridEnabledEvent(evt);
-        var hideGuide = true;
-
-        // Grid and guides
-        if (this.currentGuide != null && this.currentGuide.isEnabledForEvent(evt)) {
-          // LATER: HTML preview appears smaller than SVG preview
-          var w = parseInt(this.previewElement.style.width);
-          var h = parseInt(this.previewElement.style.height);
-          var bounds = new mxRectangle(0, 0, w, h);
-          var delta = new mxPoint(x, y);
-          delta = this.currentGuide.move(bounds, delta, gridEnabled);
-          hideGuide = false;
-          x = delta.x;
-          y = delta.y;
-        }
-        else if (gridEnabled) {
-          var scale = graph.view.scale;
-          var tr = graph.view.translate;
-          var off = graph.gridSize / 2;
-          x = (graph.snap(x / scale - tr.x - off) + tr.x) * scale;
-          y = (graph.snap(y / scale - tr.y - off) + tr.y) * scale;
-        }
-
-        if (this.currentGuide != null && hideGuide) {
-          this.currentGuide.hide();
-        }
-
-        if (this.previewOffset != null) {
-          x += this.previewOffset.x;
-          y += this.previewOffset.y;
-        }
-
-        this.previewElement.style.left = Math.round(x) + 'px';
-        this.previewElement.style.top = Math.round(y) + 'px';
-        this.previewElement.style.visibility = 'visible';
+      if (this.currentGuide != null && hideGuide) {
+        this.currentGuide.hide();
       }
 
-      this.currentPoint = new mxPoint(x, y);
-    };
+      if (this.previewOffset != null) {
+        x += this.previewOffset.x;
+        y += this.previewOffset.y;
+      }
+
+      this.previewElement.style.left = Math.round(x) + 'px';
+      this.previewElement.style.top = Math.round(y) + 'px';
+      this.previewElement.style.visibility = 'visible';
+    }
+
+    this.currentPoint = new mxPoint(x, y);
+  };
   // tslint:enable
 }
-import { initGuides } from "./guide";
+
 export function init(graph: IMxGraph): void {
 
   mxGraph.prototype.tolerance = 8;
@@ -237,12 +303,11 @@ export function init(graph: IMxGraph): void {
   graph.setConnectable(true);
   initStyleSheet(graph);
 
-  initEdgeHandle(graph);
+  initEdgeHandle();
 
   initHighlightShape(graph);
   // html in-place editor
   graph.setHtmlLabels(true);
 
   initPort(graph);
-  initGuides(graph);
 }

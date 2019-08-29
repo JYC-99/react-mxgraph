@@ -15,7 +15,7 @@ import { IMxGraph } from "../types/mxGraph";
 
 interface IFlowProps {
   data: ICanvasData;
-  shortcut?: object;
+  shortcut: object;
 }
 
 interface IFlowState {
@@ -31,9 +31,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
   private _setGraph?: (graph: IMxGraph) => void;
   constructor(props: IFlowProps) {
     super(props);
-    if (this.props.shortcut) {
-      Object.assign(customShortcutDictionary, this.props.shortcut);
-    }
+    Object.assign(customShortcutDictionary, this.props.shortcut);
   }
 
   public render(): React.ReactNode {
@@ -49,9 +47,8 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         if (graph) {
           readData(graph, this.props.data);
         }
-        // const Background = require("../../images/grid.gif");
         return (
-          <div style={{width: "100%", height: "100%", overflow: "scroll"}} className="flow-container" ref={this._containerRef} />
+          <div className="flow-container" ref={this._containerRef} />
         );
       }}
       </MxGraphContext.Consumer>

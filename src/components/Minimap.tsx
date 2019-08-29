@@ -17,8 +17,9 @@ interface IMinimapProps {
   height?: string;
 }
 
+// tslint:disable-next-line: no-empty-interface
 interface IOutline {
-  labelsVisible: boolean;
+
 }
 
 export class Minimap extends React.PureComponent<IMinimapProps> {
@@ -27,7 +28,7 @@ export class Minimap extends React.PureComponent<IMinimapProps> {
 
   constructor(props: IMinimapProps) {
     super(props);
-    mxOutline.prototype.labelsVisible = true;
+
   }
   public render(): React.ReactNode {
     return (
@@ -52,6 +53,5 @@ export class Minimap extends React.PureComponent<IMinimapProps> {
       throw new Error("empty minimap container");
     }
     this.outline = new mxOutline(graph, this._containerRef.current);
-    if (this.outline) { this.outline.labelsVisible = true; }
   }
 }

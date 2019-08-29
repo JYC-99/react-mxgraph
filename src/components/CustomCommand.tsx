@@ -1,27 +1,24 @@
 import * as React from "react";
-import { RegisterCommand, withPropsApi } from "../../../src/index";
+import { RegisterCommand, withPropsApi } from "../index";
 
-import { IPropsAPI } from "../../../src/types/propsAPI";
+import { IPropsAPI } from "../components/WithPropsApi";
 
 interface IProps {
   propsAPI: IPropsAPI;
 }
 
-class CustomCommand extends React.PureComponent<IProps> {
-
+class ACommand extends React.PureComponent<IProps> {
   public render(): React.ReactNode {
-    // console.log("render");
     const { propsAPI } = this.props;
-    const { update, getSelected } = propsAPI;
+    const { save, update, getSelected } = propsAPI;
 
     const config = {
       enable(): boolean {
         return true;
       },
       execute(): void {
-        // const chart = save();
+        const chart = save();
         const selectedNodes = getSelected();
-        // console.log(selectedNodes);
         selectedNodes.map((node) => {
           update(node, {x : node.geometry.x + 2});
         });
@@ -33,4 +30,4 @@ class CustomCommand extends React.PureComponent<IProps> {
   }
 }
 
-export const FlowCustomCommand = withPropsApi(CustomCommand);
+export const CustomCommand = withPropsApi(ACommand);

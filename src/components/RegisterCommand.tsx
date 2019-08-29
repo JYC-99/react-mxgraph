@@ -6,6 +6,7 @@ import {
   IMxGraphContext,
   MxGraphContext,
 } from "../context/MxGraphContext";
+import { IMxGraph } from "../types/mxGraph";
 
 interface ICommandConfig {
   shortcutCodes: string[];
