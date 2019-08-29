@@ -1,5 +1,3 @@
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
 import {
   mxConstants,
   mxGraphHandler,

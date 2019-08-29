@@ -1,6 +1,3 @@
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
-
 import {
   mxCellHighlight,
   mxCellMarker,

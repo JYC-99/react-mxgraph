@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
+
 
 // const {
 //   mxCylinder,

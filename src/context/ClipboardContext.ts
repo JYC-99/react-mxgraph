@@ -1,5 +1,3 @@
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
 import * as React from "react";
 import {
   mxClipboard,

@@ -1,11 +1,5 @@
 import * as React from "react";
 
-// @ts-ignore
-// import * as mxGraphJs from "mxgraph-js";
-
-// const {
-//   mxEvent,
-// } = mxGraphJs;
 import {
   mxEvent
 } from "../mxgraph";
@@ -79,18 +73,8 @@ export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> 
 
     graph.getSelectionModel()
       .addListener(mxEvent.CHANGE, (_sender, _evt) => {
-        // console.log(_sender, _evt);
-        // console.log(graph.getSelectionCells()[0], graph.getDefaultParent());
         this.setState({ cells: graph.getSelectionCells() });
-        // this.forceUpdate();
       });
-    // const that = this;
-    // const selectChange = mxGraphSelectionModel.prototype.changeSelection;
-    // graph.getSelectionModel().changeSelection = function () {
-    //   selectChange.apply(this, arguments);
-
-    //   console.log("change");
-    // };
   }
 
   private readonly _getName = (graph: IMxGraph, cells?: IMxCell[]): string => {
