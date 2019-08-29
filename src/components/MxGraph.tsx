@@ -25,18 +25,18 @@ import {
 } from "../types/mxGraph";
 import { ICustomShape, } from "../types/shapes";
 
-const {
+import {
   mxClient,
-  mxUtils,
-  mxEvent,
-  mxGraphModel,
-  mxGeometry,
-  mxPoint,
-  mxUndoManager,
-  mxKeyHandler,
   mxConstants,
+  mxEvent,
+  mxGeometry,
+  mxGraphModel,
+  mxKeyHandler,
+  mxPoint,
   mxRubberband,
-} = mxGraphJs;
+  mxUndoManager,
+  mxUtils,
+} from "../mxgraph";
 
 (window as IWindow).mxGeometry = mxGeometry;
 (window as IWindow).mxGraphModel = mxGraphModel;

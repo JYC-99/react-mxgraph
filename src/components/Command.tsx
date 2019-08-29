@@ -1,8 +1,5 @@
 import * as React from "react";
 
-// @ts-ignore
-import * as mxGraph from "mxgraph";
-
 import {
   IMenuItemContext,
   MenuItemContext,

@@ -3,8 +3,15 @@ import {
   ICanvasData,
 } from "../types/flow";
 
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
+// // @ts-ignore
+// import * as mxGraphJs from "mxgraph-js";
+
+// const {
+//   mxGraph,
+// } = mxGraphJs;
+// import mxGraphFactory from 'mxgraph';
+// const { mxClient, mxGraphModel, mxGraph } = new mxGraphFactory();
+import { mxGraph } from "../mxgraph";
 
 import {
   IMxGraphContext,
@@ -21,10 +28,6 @@ interface IFlowProps {
 interface IFlowState {
   graph?: IMxGraph;
 }
-
-const {
-  mxGraph,
-} = mxGraphJs;
 
 export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
   private readonly _containerRef = React.createRef<HTMLDivElement>();

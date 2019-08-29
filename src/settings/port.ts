@@ -1,21 +1,21 @@
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 
-import { IMxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
-const {
-  mxGraph,
+import {
+  mxCellHighlight,
+  mxCellMarker,
+  mxClient,
   mxConstants,
   mxEdgeHandler,
-  mxVertexHandler,
-  mxRectangle,
   mxEvent,
-  mxCellMarker,
-  mxCellHighlight,
+  mxGraph,
   mxGraphView,
-  mxClient,
-  mxUtils,
   mxPoint,
-} = mxGraphJs;
+  mxRectangle,
+  mxUtils,
+  mxVertexHandler,
+} from "../mxgraph";
+import { IMxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
 
 // tslint:disable
 

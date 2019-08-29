@@ -8,9 +8,9 @@ import {
 } from "../context/MxGraphContext";
 import { IMxGraph } from "../types/mxGraph";
 
-const {
+import {
   mxOutline,
-} = mxGraphJs;
+} from "../mxgraph";
 
 interface IMinimapProps {
   width?: string;

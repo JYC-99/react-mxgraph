@@ -1,8 +1,5 @@
 import * as React from "react";
 
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
-
 import { IMxGraphContext, MxGraphContext } from "../context/MxGraphContext";
 
 export class ToolCommand extends React.PureComponent<{ name: string; text?: string }> {

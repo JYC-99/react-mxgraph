@@ -1,8 +1,9 @@
 import * as React from "react";
 
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
 import { IMxGraphContext, MxGraphContext } from "../context/MxGraphContext";
+import {
+  mxConstants,
+} from "../mxgraph";
 import { IEdge, IMxCell, } from "../types/mxGraph";
 import {
   ICellModel,
@@ -12,11 +13,6 @@ import {
   IPropsAPI,
   isEdgeModel,
 } from "../types/propsAPI";
-const {
-  mxConstants,
-} = mxGraphJs;
-
-// function isEdge(cell: ImxCell)
 
 // tslint:disable-next-line: export-name no-any
 export const withPropsApi = (WrappedComponent: any) =>

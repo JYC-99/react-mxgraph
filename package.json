@@ -87,6 +87,7 @@
   "dependencies": {
     "@storybook/react": "^5.1.9",
     "eslint": "^6.0.1",
+    "mxgraph": "^4.0.4",
     "mxgraph-js": "^1.0.1",
     "office-ui-fabric-react": "^7.28.1"
   }

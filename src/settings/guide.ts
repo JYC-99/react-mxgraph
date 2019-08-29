@@ -1,10 +1,10 @@
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
-import { IMxGraph } from "../types/mxGraph";
-const {
+import {
   mxConstants,
   mxGraphHandler,
-} = mxGraphJs;
+} from "../mxgraph";
+import { IMxGraph } from "../types/mxGraph";
 
 // graph.moveCells(graph.getSelectionCells(), dx, dy);
 

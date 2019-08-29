@@ -1,16 +1,15 @@
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
+
+// import { registerShape } from "./Shapes";
+import {
+  mxConstants,
+  mxConstraintHandler,
+  mxEdgeHandler,
+  mxEvent,
+  mxPoint,
+  mxRectangle,
+} from "../mxgraph";
 import { IMxGraph } from "../types/mxGraph";
 import { IMxPoint, IMxShape } from "../types/shapes";
-// import { registerShape } from "./Shapes";
-const {
-  mxEvent,
-  mxConstraintHandler,
-  mxPoint,
-  mxConstants,
-  mxEdgeHandler,
-  mxRectangle,
-} = mxGraphJs;
 
 const setSelectionShape = (): void => {
   mxEdgeHandler.prototype.createSelectionShape = function(_points: IMxPoint[]): IMxShape {

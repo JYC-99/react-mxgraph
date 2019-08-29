@@ -1,13 +1,13 @@
 // @ts-ignore
 import * as mxGraphJs from "mxgraph-js";
 import * as React from "react";
-import { IMxCell, IMxGraph } from "../types/mxGraph";
-const {
-  mxUtils,
+import {
   mxClipboard,
-  mxGraphModel,
   mxCodec,
-} = mxGraphJs;
+  mxGraphModel,
+  mxUtils,
+} from "../mxgraph";
+import { IMxCell, IMxGraph } from "../types/mxGraph";
 
 import {
   IClipboardEvent,
