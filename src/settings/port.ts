@@ -28,6 +28,7 @@ function setPortHandler(_graph: IMxGraph): void {
 
     shape.fill = isPort ? state.style[mxConstants.STYLE_FILLCOLOR] : this.getSelectionColor();
     shape.stroke = this.getSelectionColor();
+    shape.strokewidth = 1 * this.graph.view.scale;
 
     shape.fillOpacity = isPort ? 100 : 20;
     shape.strokeOpacity = 100;

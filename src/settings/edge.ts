@@ -43,12 +43,13 @@ const setSelectionShape = (): void => {
       this.shape.isDashed = this.isSelectionDashed();
       this.shape.stroke = this.getSelectionColor();
       this.shape.fill = this.getSelectionColor();
-      this.shape.strokewidth = this.getSelectionStrokeWidth() / this.shape.scale / this.shape.scale;
+
       this.shape.arrowStrokewidth = this.getSelectionStrokeWidth();
       this.shape.arrowStroke = this.getSelectionColor();
       this.shape.isShadow = false;
       console.log(this.shape);
       this.shape.redraw();
+      console.log(this.shape.style);
     }
 
     if (this.parentHighlight != null) {

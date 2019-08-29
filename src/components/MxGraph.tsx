@@ -313,7 +313,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
     function updateNodeStyle(state: IMxState, isHover: boolean): void {
       state.style.strokeColor = (isHover) ? "#1976d2" : "grey";
-      state.style.strokeWidth = (isHover) ? 1 : 0;
+      // state.style.strokeWidth = (isHover) ? 2 : 1;
     }
 
     function updateStyle(state: IMxState, isHover: boolean): void {
