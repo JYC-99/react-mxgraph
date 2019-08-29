@@ -1,4 +1,3 @@
-
 // import { registerShape } from "./Shapes";
 import {
   mxCellState,
