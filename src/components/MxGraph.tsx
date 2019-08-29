@@ -263,6 +263,18 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   }
 
   private readonly insertEdge = (parent: IMxCell, graph: IMxGraph, edge: ICanvasEdge, source: IMxCell, target: IMxCell): IMxCell => {
+
+    const sourceAnchor = edge.sourceAnchor;
+    const targetAnchor = edge.targetAnchor;
+    if (sourceAnchor !== undefined && targetAnchor !== undefined) {
+      const port1 = graph.getModel()
+        .getChildAt(source, Number(sourceAnchor));
+      const port2 = graph.getModel()
+        .getChildAt(target, Number(targetAnchor));
+      if (port1 && port2) {
+        return graph.insertEdge(parent, edge.id, "", port1, port2);
+      }
+    }
     return graph.insertEdge(parent, edge.id, "", source, target);
   }
 
@@ -286,7 +298,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         const target = vertexes.find((v) => v.id === edge.target);
 
         if (source && target) {
-          graph.insertEdge(parent, edge.id, "", source.vertex, target.vertex);
+          this.insertEdge(parent, graph, edge, source.vertex, target.vertex);
         }
       });
     } finally {

@@ -34,6 +34,8 @@ export interface INodeModel extends IBasicModel{
 export interface IEdgeModel extends IBasicModel {
   source: string; // cell id
   target: string; // cell id
+  sourcePort: string; // cell id
+  targetPort: string; // cell id
   id: string;
 }
 

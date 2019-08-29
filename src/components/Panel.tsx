@@ -4,26 +4,34 @@ import {
   PanelContext,
 } from "../context/PanelContext";
 
-class Panel extends React.PureComponent<{name: string}> {
+class Panel extends React.PureComponent<{ name: string }> {
+  public key?: string;
+
   public render(): React.ReactNode {
+    // console.log("render");
+    // const childrenWithProps = React.Children.map(this.props.children, (child) => React.cloneElement(child, {}))
     return (
       <PanelContext.Consumer>{(value: IPanelContext) => {
         const {
           name, cells,
         } = value;
-
+        this.key = cells && cells.length ? cells[0].id : undefined;
         if (name && cells && name === this.props.name) {
-          return (
-            <div>
-              {this.props.children}
-            </div>
-          );
+          // console.log("render panel", this.props.children);
+          if (React.isValidElement(this.props.children)) {
+            return (
+              <div>
+                {React.cloneElement(this.props.children, {key: this.key, })}
+              </div>
+            );
+          }
         }
         return null;
       }}</PanelContext.Consumer>
 
     );
   }
+
 }
 
 import {

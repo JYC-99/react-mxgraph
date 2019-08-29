@@ -4,7 +4,7 @@ import * as React from "react";
 import * as mxGraphJs from "mxgraph-js";
 
 const {
-  mxEvent
+  mxEvent,
 } = mxGraphJs;
 
 import {
@@ -17,7 +17,8 @@ import {
   PanelContext,
 } from "../context/PanelContext";
 
-export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> {
+// tslint:disable-next-line: use-react-pure-component
+export class DetailPanel extends React.Component<{}, { cells?: IMxCell[] }> {
   public _first: boolean;
   constructor(props: {}) {
     super(props);
@@ -27,6 +28,22 @@ export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> 
     };
 
   }
+
+  // public shouldComponentUpdate(_nextProps: {}, nextState: { cells?: IMxCell[]}): boolean {
+  //   if (this.state.cells && nextState.cells) {
+  //     if (this.state.cells.length === nextState.cells.length) {
+  //       for (let i = 0; i < this.state.cells.length; i += 1) {
+  //         if (this.state.cells[i] !== nextState.cells[i]) {
+  //           return true;
+  //         }
+  //       }
+  //       return false;
+  //     }
+  //     else { return true; }
+  //   } else {
+  //     return this.state.cells !== nextState.cells;
+  //   }
+  // }
 
   public render(): React.ReactNode {
     // console.log("render");
@@ -40,7 +57,9 @@ export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> 
             this._setListener(graph);
             this._first = false;
           }
-          const name = this._getName(graph, this.state.cells);
+          const name = this._getName(graph, graph.getSelectionCells());
+          // console.log("render root")
+          // console.log(this.state.cells);
           return (
             <PanelContext.Provider value={{ name, cells: this.state.cells }}>
               <div>
@@ -61,7 +80,15 @@ export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> 
         // console.log(_sender, _evt);
         // console.log(graph.getSelectionCells()[0], graph.getDefaultParent());
         this.setState({ cells: graph.getSelectionCells() });
+        // this.forceUpdate();
       });
+    // const that = this;
+    // const selectChange = mxGraphSelectionModel.prototype.changeSelection;
+    // graph.getSelectionModel().changeSelection = function () {
+    //   selectChange.apply(this, arguments);
+
+    //   console.log("change");
+    // };
   }
 
   private readonly _getName = (graph: IMxGraph, cells?: IMxCell[]): string => {

@@ -60,7 +60,6 @@ export const withPropsApi = (WrappedComponent: any) =>
               getCellModel: (cell: IMxCell) => {
                 const geo = graphModel.getGeometry(cell);
                 const style = graph.getCellStyle(cell);
-
                 // tslint:disable-next-line: no-any
                 const cellData: any = {
                   id: cell.id,
@@ -73,6 +72,8 @@ export const withPropsApi = (WrappedComponent: any) =>
                 if (graphModel.isEdge(cell)) {
                   cellData.source = (cell as IEdge).source.id;
                   cellData.target = (cell as IEdge).target.id;
+                  cellData.sourcePort = style.sourcePort;
+                  cellData.targetPort = style.targetPort;
                   return (cellData as IEdgeModel);
                 } else {
                   cellData.x = geo.x;
