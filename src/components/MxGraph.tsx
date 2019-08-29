@@ -1,8 +1,4 @@
 import * as React from "react";
-
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
-
 import {
   ClipboardContext,
 } from "../context/ClipboardContext";
@@ -25,18 +21,18 @@ import {
 } from "../types/mxGraph";
 import { ICustomShape, } from "../types/shapes";
 
-const {
+import {
   mxClient,
-  mxUtils,
-  mxEvent,
-  mxGraphModel,
-  mxGeometry,
-  mxPoint,
-  mxUndoManager,
-  mxKeyHandler,
   mxConstants,
+  mxEvent,
+  mxGeometry,
+  mxGraphModel,
+  mxKeyHandler,
+  mxPoint,
   mxRubberband,
-} = mxGraphJs;
+  mxUndoManager,
+  mxUtils,
+} from "../mxgraph";
 
 (window as IWindow).mxGeometry = mxGeometry;
 (window as IWindow).mxGraphModel = mxGraphModel;
@@ -263,6 +259,18 @@ export class MxGraph extends React.PureComponent<{}, IState> {
   }
 
   private readonly insertEdge = (parent: IMxCell, graph: IMxGraph, edge: ICanvasEdge, source: IMxCell, target: IMxCell): IMxCell => {
+
+    const sourceAnchor = edge.sourceAnchor;
+    const targetAnchor = edge.targetAnchor;
+    if (sourceAnchor !== undefined && targetAnchor !== undefined) {
+      const port1 = graph.getModel()
+        .getChildAt(source, Number(sourceAnchor));
+      const port2 = graph.getModel()
+        .getChildAt(target, Number(targetAnchor));
+      if (port1 && port2) {
+        return graph.insertEdge(parent, edge.id, "", port1, port2);
+      }
+    }
     return graph.insertEdge(parent, edge.id, "", source, target);
   }
 
@@ -286,7 +294,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
         const target = vertexes.find((v) => v.id === edge.target);
 
         if (source && target) {
-          graph.insertEdge(parent, edge.id, "", source.vertex, target.vertex);
+          this.insertEdge(parent, graph, edge, source.vertex, target.vertex);
         }
       });
     } finally {
@@ -305,7 +313,7 @@ export class MxGraph extends React.PureComponent<{}, IState> {
 
     function updateNodeStyle(state: IMxState, isHover: boolean): void {
       state.style.strokeColor = (isHover) ? "#1976d2" : "grey";
-      state.style.strokeWidth = (isHover) ? 1 : 0;
+      // state.style.strokeWidth = (isHover) ? 2 : 1;
     }
 
     function updateStyle(state: IMxState, isHover: boolean): void {

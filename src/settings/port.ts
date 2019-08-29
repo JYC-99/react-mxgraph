@@ -1,21 +1,18 @@
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
-
-import { IMxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
-const {
-  mxGraph,
+import {
+  mxCellHighlight,
+  mxCellMarker,
+  mxClient,
   mxConstants,
   mxEdgeHandler,
-  mxVertexHandler,
-  mxRectangle,
   mxEvent,
-  mxCellMarker,
-  mxCellHighlight,
+  mxGraph,
   mxGraphView,
-  mxClient,
-  mxUtils,
   mxPoint,
-} = mxGraphJs;
+  mxRectangle,
+  mxUtils,
+  mxVertexHandler,
+} from "../mxgraph";
+import { IMxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
 
 // tslint:disable
 
@@ -31,6 +28,7 @@ function setPortHandler(_graph: IMxGraph): void {
 
     shape.fill = isPort ? state.style[mxConstants.STYLE_FILLCOLOR] : this.getSelectionColor();
     shape.stroke = this.getSelectionColor();
+    shape.strokewidth = 1 * this.graph.view.scale;
 
     shape.fillOpacity = isPort ? 100 : 20;
     shape.strokeOpacity = 100;

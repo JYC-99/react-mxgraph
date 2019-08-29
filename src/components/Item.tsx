@@ -1,11 +1,8 @@
 import * as React from "react";
 
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
-
-const {
-    mxUtils,
-  } = mxGraphJs;
+import {
+  mxUtils
+} from "../mxgraph";
 
 import {
   IMxGraphContext,
@@ -74,7 +71,7 @@ export class Item extends React.PureComponent<IItemProps>{
 
   private readonly insertNode = (graph: IMxGraph, _evt: PointerEvent, target: IMxCell, x: number, y: number): void => {
     const label = this.props.model && this.props.model.label ? this.props.model.label : "none";
-    // tslint:disable-next-line: newline-per-chained-call
+
     const shape = this.props.shape;
     const tmp = this.props.size ? this.props.size.split("*")
        .map((s) => parseInt(s, 10)) : [100, 70];

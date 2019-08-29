@@ -4,7 +4,6 @@ import {
   EdgePanel,
   NodePanel,
   PortPanel,
-  TextEditor,
 } from "../../../src/index";
 
 import {
@@ -15,13 +14,13 @@ export const FlowDetailPanel = () => {
   return (
     <DetailPanel >
       <NodePanel >
-        <FlowDetailForm />
+        <FlowDetailForm name="node"/>
       </NodePanel>
       <EdgePanel >
-        <FlowDetailForm />
+        <FlowDetailForm name="edge"/>
       </EdgePanel>
       <PortPanel>
-        <FlowDetailForm />
+        <FlowDetailForm name="port"/>
       </PortPanel>
     </DetailPanel>
   );

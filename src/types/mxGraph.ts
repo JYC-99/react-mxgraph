@@ -280,7 +280,7 @@ export interface IMxGraph {
   getTooltipForCell(cell: IMxCell): IMxToolTip;
   getGraphBounds(): void;
   insertVertex(parent: IMxCell, id?: string | null, value?: string, x?: number, y?: number, width?: number, height?: number, style?: string, isRelative?: boolean): IMxCell;
-  insertEdge(parent: IMxCell, id?: string | null, value?: string, source?: IMxCell, target?: IMxCell): IMxCell;
+  insertEdge(parent: IMxCell, id?: string | null, value?: string, source?: IMxCell, target?: IMxCell, style?: string): IMxCell;
   importCells(cells: IMxCell[], x: number, y: number, target: IMxCell): IMxCell[];
   scrollCellToVisible(cells: IMxCell[]): void;
   setSelectionCells(cells: IMxCell[]): void;
@@ -318,7 +318,7 @@ export interface IMxGraph {
   cloneCells(cells: IMxCell[]): IMxCell[];
   // drill down
   isPort(cell: IMxCell): boolean;
-  getTerminalForPort(portCell: IMxCell, isSource: boolean): IMxCell;
+  getTerminalForPort(portCell: IMxCell, source: boolean/* if the cell is source or target port*/): IMxCell;
   zoomIn(): void;
   zoomOut(): void;
   fit(): void;

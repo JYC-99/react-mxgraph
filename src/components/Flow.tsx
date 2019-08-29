@@ -3,8 +3,7 @@ import {
   ICanvasData,
 } from "../types/flow";
 
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
+import { mxGraph } from "../mxgraph";
 
 import {
   IMxGraphContext,
@@ -21,10 +20,6 @@ interface IFlowProps {
 interface IFlowState {
   graph?: IMxGraph;
 }
-
-const {
-  mxGraph,
-} = mxGraphJs;
 
 export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
   private readonly _containerRef = React.createRef<HTMLDivElement>();
@@ -49,7 +44,7 @@ export class Flow extends React.PureComponent<IFlowProps, IFlowState> {
         if (graph) {
           readData(graph, this.props.data);
         }
-        // const Background = require("../../images/grid.gif");
+
         return (
           <div style={{width: "100%", height: "100%", overflow: "scroll"}} className="flow-container" ref={this._containerRef} />
         );

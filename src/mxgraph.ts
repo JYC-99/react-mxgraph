@@ -1,0 +1,33 @@
+// @ts-ignore
+import mxGraphFactory from "mxgraph";
+// tslint:disable-next-line: export-name
+export const {
+  mxEvent,
+  mxUtils,
+  mxConstraintHandler,
+  mxGraph,
+  mxPoint,
+  mxEllipse,
+  mxConstants,
+  mxConnectionHandler,
+  mxCellState,
+  mxDragSource,
+  mxRectangle,
+  mxOutline,
+  mxClient,
+  mxGraphModel,
+  mxGeometry,
+  mxUndoManager,
+  mxKeyHandler,
+  mxRubberband,
+  mxCellRenderer,
+  mxRectangleShape,
+  mxClipboard,
+  mxCodec,
+  mxEdgeHandler,
+  mxGraphHandler,
+  mxVertexHandler,
+  mxCellMarker,
+  mxCellHighlight,
+  mxGraphView,
+} = new mxGraphFactory();

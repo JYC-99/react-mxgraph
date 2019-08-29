@@ -1,22 +1,20 @@
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
+// import { registerShape } from "./Shapes";
+import {
+  mxCellState,
+  mxConnectionHandler,
+  mxConstants,
+  mxConstraintHandler,
+  mxDragSource,
+  mxEllipse,
+  mxEvent,
+  mxGraph,
+  mxPoint,
+  mxRectangle,
+  mxUtils,
+} from "../mxgraph";
 import { IMxCell, IMxGraph, IMxMouseEvent, IMxState } from "../types/mxGraph";
 import { initEdgeHandle } from "./edge";
 import { initPort } from "./port";
-// import { registerShape } from "./Shapes";
-const {
-  mxEvent,
-  mxConstraintHandler,
-  mxGraph,
-  mxPoint,
-  mxEllipse,
-  mxConstants,
-  mxConnectionHandler,
-  mxCellState,
-  mxDragSource,
-  mxRectangle,
-  mxUtils,
-} = mxGraphJs;
 
 function initStyleSheet(graph: IMxGraph): void {
   const edgeStyle = graph.getStylesheet()

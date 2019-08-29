@@ -18,6 +18,8 @@ export interface IConfig {
   textOpacity?: number; // 0~100
   fontFamily?: string;
   points?: number[][];
+  sourcePort?: number;
+  targetPort?: number;
 }
 
 export interface IShape {

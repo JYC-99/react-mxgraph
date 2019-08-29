@@ -1,11 +1,9 @@
-// @ts-ignore
-import * as mxGraphJs from "mxgraph-js";
 import * as React from "react";
 
-const {
+import {
   mxEvent,
   mxUtils,
-} = mxGraphJs;
+} from "../mxgraph";
 
 import {
   IMxGraphContext,
