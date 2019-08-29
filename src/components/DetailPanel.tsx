@@ -17,8 +17,7 @@ import {
   PanelContext,
 } from "../context/PanelContext";
 
-// tslint:disable-next-line: use-react-pure-component
-export class DetailPanel extends React.Component<{}, { cells?: IMxCell[] }> {
+export class DetailPanel extends React.PureComponent<{}, { cells?: IMxCell[] }> {
   public _first: boolean;
   constructor(props: {}) {
     super(props);
