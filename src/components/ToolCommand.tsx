@@ -18,19 +18,17 @@ export class ToolCommand extends React.PureComponent<{ name: string; text?: stri
       <div ref={this._containerRef} >
         {this.props.children}
         <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
-          const { graph, action } = value;
+          const { graph, actions } = value;
           const container = this._containerRef.current;
-          if (!graph || !container || !action) {
+          if (!graph || !container || !actions) {
             return null;
           }
 
           const itemType = this.props.name;
-          const func = itemType === "paste" ?
-          action.paste.getFunc() :
-          action[itemType].func;
-
           // this.addListener(container, graph, clipboard); do not know if there will be influence
-          container.addEventListener("click", (_evt) => { func(); });
+          container.addEventListener("click", (_evt) => {
+            actions[itemType].func();
+          });
           return null;
 
         }}</MxGraphContext.Consumer>

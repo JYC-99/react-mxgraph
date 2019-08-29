@@ -4,13 +4,7 @@ import * as React from "react";
 import * as mxGraphJs from "mxgraph-js";
 
 const {
-    mxCell,
     mxUtils,
-    mxGeometry,
-    mxConnectionConstraint,
-    mxPoint,
-    mxRectangleShape,
-    mxConstants,
   } = mxGraphJs;
 
 import {
@@ -18,13 +12,16 @@ import {
   MxGraphContext,
 } from "../context/MxGraphContext";
 
-import { ICanvasNode } from "../types/flow";
 import {
-  ImxCell,
+  IMxCell,
   IMxGraph,
 } from "../types/mxGraph";
 
-interface IItem {
+import {
+  ICanvasNode
+} from "../types/flow";
+
+export interface IItemProps {
   shape: string;
   size?: string;
   model?: {
@@ -33,45 +30,55 @@ interface IItem {
   };
 }
 
-export class Item extends React.PureComponent<IItem>{
-  public _insertVertex?: (parent, graph, node) => ImxCell;
+export class Item extends React.PureComponent<IItemProps>{
+  public _insertVertex?: (parent: IMxCell, graph: IMxGraph, node: ICanvasNode) => IMxCell;
   private readonly _containerRef = React.createRef<HTMLDivElement>();
-  constructor(props: IItem) {
+  private _graph?: IMxGraph;
+  constructor(props: IItemProps) {
     super(props);
   }
 
   public render(): React.ReactNode {
+
     return (
-      <div ref={this._containerRef} >
+      <div ref={this._containerRef} style={{height: "100%"}}>
+        {this.props.children}
         <MxGraphContext.Consumer>{(context: IMxGraphContext) => {
           const { graph, insertVertex } = context;
           const container = this._containerRef.current;
-
-          if (!graph || !container) {
+          if (graph && insertVertex) {
+            this._graph = graph;
+            this._insertVertex = insertVertex;
+          } else {
             return null;
           }
-          this._insertVertex = insertVertex;
-          this.addToolbarItem(graph, container);
+          if (container) {
+            this.addToolbarItem(graph, container);
+          }
           return null;
         }}</MxGraphContext.Consumer>
-        {this.props.children}
       </div>
     );
   }
 
-  private readonly addVertex = (text: string, width: string, height: string, style: string): ImxCell => {
-    const vertex = new mxCell(text, new mxGeometry(0, 0, width, height), style);
-    vertex.setVertex(true);
-    return vertex;
+  public componentDidMount = () => {
+
+    if (this._graph && this._containerRef.current) {
+      this.addToolbarItem(this._graph, this._containerRef.current);
+    }
   }
 
-  private readonly insertNode = (graph: IMxGraph, _evt: PointerEvent, target: ImxCell, x: number, y: number): void => {
+  public componentDidUpdate = () => {
+    // console.log("item did update");
+  }
+
+  private readonly insertNode = (graph: IMxGraph, _evt: PointerEvent, target: IMxCell, x: number, y: number): void => {
     const label = this.props.model && this.props.model.label ? this.props.model.label : "none";
     // tslint:disable-next-line: newline-per-chained-call
     const shape = this.props.shape;
-    const size = this.props.size ? (this.props.size.split("*")
-      // tslint:disable-next-line
-      .map((x) => parseInt(x))) : [100, 70];
+    const tmp = this.props.size ? this.props.size.split("*")
+       .map((s) => parseInt(s, 10)) : [100, 70];
+    const size: [number, number] = [tmp[0], tmp[1]];
     const nodeData: ICanvasNode = { label, size, x, y, shape, };
 
     if (!this._insertVertex) {
@@ -81,7 +88,7 @@ export class Item extends React.PureComponent<IItem>{
 
   }
 
-  private readonly addToolbarItem = (graph: IMxGraph, elt: HTMLDivElement): void => {
+  private readonly addToolbarItem = (graph: IMxGraph, elt: HTMLDivElement | HTMLSpanElement): void => {
     const size = this.props.size ? this.props.size.split("*") : [100, 70];
     const dragElt = document.createElement("div");
     dragElt.style.border = "dashed black 1px";

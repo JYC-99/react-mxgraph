@@ -7,8 +7,8 @@ import {
 } from "../context/MenuContext";
 
 import {
-  createMenu,
-} from "./CreateMenu";
+  withNameProps,
+} from "./WithNameProps";
 
 export class Menu extends React.PureComponent<{name: string}> {
   public menu: Array<{
@@ -39,6 +39,6 @@ export class Menu extends React.PureComponent<{name: string}> {
   }
 }
 
-export const VertexMenu = createMenu(Menu, "vertex");
-export const EdgeMenu = createMenu(Menu, "edge");
-export const CanvasMenu = createMenu(Menu, "canvas");
+export const VertexMenu = withNameProps(Menu, "vertex");
+export const EdgeMenu = withNameProps(Menu, "edge");
+export const CanvasMenu = withNameProps(Menu, "canvas");

@@ -5,7 +5,6 @@ import * as React from "react";
 const {
   mxEvent,
   mxUtils,
-  mxPopupMenuHandler,
 } = mxGraphJs;
 
 import {
@@ -19,7 +18,6 @@ import {
 
 import {
   ClipboardContext,
-  IClipboardContext,
 } from "../context/ClipboardContext";
 
 import {
@@ -28,9 +26,7 @@ import {
 } from "../types/menu";
 
 import {
-  ImxCell,
-  IMxGraph,
-  IMxMenu,
+  IMxCell,
 } from "../types/mxGraph";
 
 export class ContextMenu extends React.PureComponent {
@@ -47,8 +43,6 @@ export class ContextMenu extends React.PureComponent {
   }
 
   public render(): React.ReactNode {
-    // tslint:disable-next-line: deprecation
-    const { copy, textInput } = this.context;
 
     return (
       <MenuContext.Provider value={{ setMenu: this.setMenu }}>
@@ -56,44 +50,41 @@ export class ContextMenu extends React.PureComponent {
         <MxGraphContext.Consumer>{(value: IMxGraphContext) => {
           const {
             graph,
-            action,
+            actions,
           } = value;
 
           mxEvent.disableContextMenu(document.body);
 
-          if (graph && action) {
+          if (graph && actions) {
             graph.popupMenuHandler.autoExpand = true;
             graph.popupMenuHandler.factoryMethod = (menu, cell, _evt) => {
               const currentMenu: IMenu[] = this._getMenuFromCell(cell);
               if (currentMenu.length !== 0) {
 
                 // tslint:disable-next-line: cyclomatic-complexity
-                currentMenu.map((item) => {
+                currentMenu.forEach((item) => {
                   const text = item.text ? item.text : "default";
+                  const command = item.menuItemType;
                   // tslint:disable-next-line: prefer-switch
-                  if (item.menuItemType === "separator") {
+                  if (command === "separator") {
                     menu.addSeparator();
                   } else {
-                    if (!action.hasOwnProperty(item.menuItemType)) {
+                    if (!actions.hasOwnProperty(command)) {
                       throw new Error("not be initialized in action");
                     }
-                    const func = item.menuItemType === "paste" ?
-                      action.paste.getFunc(menu.triggerX, menu.triggerY) :
-                      action[item.menuItemType].func;
-                    const menuItem = menu.addItem(text, null, func);
-                    const td = menuItem.firstChild.nextSibling.nextSibling;
+                    const menuItem = menu.addItem(text, null, () => {
+                      actions[command].func({x: menu.triggerX, y: menu.triggerY});
+                    });
+                    const td = (menuItem.firstChild && menuItem.firstChild.nextSibling && menuItem.firstChild.nextSibling) ? menuItem.firstChild.nextSibling.nextSibling : null;
                     const span = document.createElement("span");
                     span.style.color = "gray";
-                    const shortCutText = item.menuItemType === "paste" ? "Ctrl+V" :
-                    item.menuItemType === "copy" ? "Ctrl+C" :
-                    item.menuItemType === "cut" ? "Ctrl+X" :
-                    item.menuItemType === "undo" ? "Ctrl+Z" : "";
+                    const shortCutText = actions[command].shortcuts ? actions[command].shortcuts[0] : "";
                     mxUtils.write(span, shortCutText);
-                    td.appendChild(span);
+                    if (td) { td.appendChild(span); }
                     // tslint:disable-next-line: prefer-switch
-                    if (item.menuItemType === "copy" || item.menuItemType === "cut") {
-                      this.addListener(menuItem, graph, copy, textInput);
-                    }
+                    // if (item.menuItemType === "copy" || item.menuItemType === "cut") {
+                    //   this.addListener(menuItem, graph, copy, textInput);
+                    // }
                   }
                 });
 
@@ -108,22 +99,8 @@ export class ContextMenu extends React.PureComponent {
       </MenuContext.Provider>
     );
   }
-  private readonly addListener = (targetMenuItem: HTMLTableRowElement, graph: IMxGraph, copy: ICopy, textInput: HTMLTextAreaElement): void => {
-    mxEvent.addListener(targetMenuItem, "pointerdown", (evt: PointerEvent) => {
-      // tslint:disable-next-line: deprecation
-      const source = mxEvent.getSource(evt);
-      if (graph.isEnabled() && !graph.isEditing() && source.nodeName !== "INPUT") {
-        // tslint:disable-next-line: deprecation
-        this.context.beforeUsingClipboard(graph, copy, textInput);
-      }
-    });
-    mxEvent.addListener(targetMenuItem, "pointerup", (_evt: PointerEvent) => {
-      // tslint:disable-next-line: deprecation
-      this.context.afterUsingClipboard(graph, copy, textInput);
-    });
-  }
 
-  private readonly _getMenuFromCell = (cell: ImxCell | null) => {
+  private readonly _getMenuFromCell = (cell: IMxCell | null) => {
     let name = "item";
     if (cell === null) {
       name = "canvas";
